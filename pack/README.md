@@ -85,15 +85,15 @@ KeystorePwd = 'your store password'
 - 终端运行
 <img src="./screenshots/0.png">
 
-<br>
+
 - 执行成功
 <img src="./screenshots/1.png">
 
-<br>
+
 - 分发的index.html页面
 <img src="./screenshots/2.png" width='50%'>
 
-<br>
+
 - 在oss中查看上传的包
 <img src="./screenshots/3.png">
 
