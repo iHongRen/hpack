@@ -1,0 +1,3 @@
+oss2
+json5
+segno
