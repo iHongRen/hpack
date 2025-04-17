@@ -1,18 +1,23 @@
 /node_modules
 /oh_modules
 /local.properties
-/.idea
+.idea/
+*/.idea/
 **/build
-/.hvigor
+.hvigor/
+*/.hvigor/
 .cxx
 /.clangd
 /.clang-format
 /.clang-tidy
 **/.test
 /.appanalyzer
-
+dist
 # 忽略 __pycache__ 目录
 __pycache__/
 
-# 忽略 hpack 目录
-hpack/
+# 忽略 demo下的 hpack 目录
+/demo/hpack
+
+# 忽略 hpack.egg-info 目录
+**/hpack.egg-info
