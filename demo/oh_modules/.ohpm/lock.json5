@@ -1,0 +1,69 @@
+{
+  "lockVersion": "1.0",
+  "settings": {
+    "resolveConflict": true,
+    "resolveConflictStrict": false,
+    "installAll": true
+  },
+  "overrides": {},
+  "overrideDependencyMap": {},
+  "modules": {
+    ".": {
+      "name": "",
+      "dependencies": {},
+      "devDependencies": {
+        "@ohos/hypium": {
+          "specifier": "1.0.21",
+          "version": "1.0.21"
+        },
+        "@ohos/hamock": {
+          "specifier": "1.0.0",
+          "version": "1.0.0"
+        }
+      },
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "common/hsp1": {
+      "name": "hsp1",
+      "dependencies": {},
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "common/hsp2": {
+      "name": "hsp2",
+      "dependencies": {},
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    },
+    "entry": {
+      "name": "entry",
+      "dependencies": {},
+      "devDependencies": {},
+      "dynamicDependencies": {},
+      "maskedByOverrideDependencyMap": false
+    }
+  },
+  "packages": {
+    "@ohos/hypium@1.0.21": {
+      "integrity": "sha512-iyKGMXxE+9PpCkqEwu0VykN/7hNpb+QOeIuHwkmZnxOpI+dFZt6yhPB7k89EgV1MiSK/ieV/hMjr5Z2mWwRfMQ==",
+      "storePath": "oh_modules/.ohpm/@ohos+hypium@1.0.21",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": true,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    },
+    "@ohos/hamock@1.0.0": {
+      "integrity": "sha512-K6lDPYc6VkKe6ZBNQa9aoG+ZZMiwqfcR/7yAVFSUGIuOAhPvCJAo9+t1fZnpe0dBRBPxj2bxPPbKh69VuyAtDg==",
+      "storePath": "oh_modules/.ohpm/@ohos+hamock@1.0.0",
+      "dependencies": {},
+      "dynamicDependencies": {},
+      "dev": true,
+      "dynamic": false,
+      "maskedByOverrideDependencyMap": false
+    }
+  }
+}

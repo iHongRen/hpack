@@ -83,19 +83,19 @@ KeystorePwd = 'your store password'
 
 #### 5、运行
 - 终端运行
-<img src="./pack/screenshots/0.png">
+<img src="./demo/pack/screenshots/0.png">
 
 
 - 执行成功
-<img src="./pack/screenshots/1.png">
+<img src="./demo/pack/screenshots/1.png">
 
 
 - 分发的index.html页面
-<img src="./pack/screenshots/2.png" width='50%'>
+<img src="./demo/pack/screenshots/2.png" width='50%'>
 
 
 - 在oss中查看上传的包
-<img src="./pack/screenshots/3.png">
+<img src="./demo/pack/screenshots/3.png">
 
 
 

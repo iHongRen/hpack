@@ -1,0 +1,22 @@
+{
+	"CommonInfo":{
+		"current.select.target":"default"
+	},
+	"BuildOptions":{
+		"SELECT_BUILD_TARGET":"default",
+		"BUILD_PATH":{
+			"OUTPUT_METADATA_JSON":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/hsp_metadata/default/output_metadata.json",
+			"OUTPUT_PATH":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/outputs/default",
+			"RES_PATH":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/res/default",
+			"ETS_SUPER_VISUAL_PATH":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/cache/default/default@CompileArkTS/esmodule",
+			"JS_ASSETS_PATH":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/loader_out/default",
+			"SOURCE_MAP_DIR":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/source_map/default",
+			"INTERMEDIA_PATH":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates",
+			"RES_PROFILE_PATH":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/res/default/resources/base/profile",
+			"WORKER_LOADER":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/loader/default/loader.json",
+			"MANIFEST_JSON":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/manifest/default",
+			"JS_LITE_ASSETS_PATH":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/loader_out_lite/default",
+			"JS_SUPER_VISUAL_PATH":"/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/cache/default/default@CompileJS/jsbundle"
+		}
+	}
+}

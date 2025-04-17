@@ -1,0 +1,420 @@
+{
+  "ohos-module-entry": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "/Users/cxy/Desktop/CXY/hpack/entry/build",
+    "DEPENDENCY_INFO": {},
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "/Users/cxy/Desktop/CXY/hpack/entry/src/main",
+        "RESOURCES_PATH": [
+          "/Users/cxy/Desktop/CXY/hpack/entry/src/main/resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/outputs/default",
+          "INTERMEDIA_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates",
+          "JS_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/loader_out/default",
+          "JS_LITE_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/loader_out_lite/default",
+          "RES_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/res/default",
+          "RES_PROFILE_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/res/default/resources/base/profile",
+          "ETS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/cache/default/default@CompileArkTS/esmodule",
+          "JS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/cache/default/default@CompileJS/jsbundle",
+          "WORKER_LOADER": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/loader/default/loader.json",
+          "MANIFEST_JSON": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/manifest/default",
+          "OUTPUT_METADATA_JSON": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/hap_metadata/default/output_metadata.json",
+          "SOURCE_MAP_DIR": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/source_map/default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "/Users/cxy/Desktop/CXY/hpack/entry/src/ohosTest",
+        "RESOURCES_PATH": [
+          "/Users/cxy/Desktop/CXY/hpack/entry/src/ohosTest/resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/outputs/ohosTest",
+          "INTERMEDIA_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates",
+          "JS_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/loader_out/ohosTest",
+          "JS_LITE_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/loader_out_lite/ohosTest",
+          "RES_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/res/ohosTest",
+          "RES_PROFILE_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/res/ohosTest/resources/base/profile",
+          "ETS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/cache/ohosTest/ohosTest@OhosTestCompileArkTS/esmodule",
+          "JS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/cache/ohosTest/ohosTest@OhosTestCompileJS/jsbundle",
+          "WORKER_LOADER": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/loader/ohosTest/loader.json",
+          "MANIFEST_JSON": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/manifest/ohosTest",
+          "OUTPUT_METADATA_JSON": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/hap_metadata/ohosTest/output_metadata.json",
+          "SOURCE_MAP_DIR": "/Users/cxy/Desktop/CXY/hpack/entry/build/default/intermediates/source_map/ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "strictMode": {
+          "caseSensitiveCheck": true,
+          "useNormalizedOHMUrl": true
+        },
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": false,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-hsp1": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build",
+    "DEPENDENCY_INFO": {},
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/src/main",
+        "RESOURCES_PATH": [
+          "/Users/cxy/Desktop/CXY/hpack/common/hsp1/src/main/resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/outputs/default",
+          "INTERMEDIA_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates",
+          "JS_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/loader_out/default",
+          "JS_LITE_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/loader_out_lite/default",
+          "RES_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/res/default",
+          "RES_PROFILE_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/res/default/resources/base/profile",
+          "ETS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/cache/default/default@CompileArkTS/esmodule",
+          "JS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/cache/default/default@CompileJS/jsbundle",
+          "WORKER_LOADER": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/loader/default/loader.json",
+          "MANIFEST_JSON": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/manifest/default",
+          "OUTPUT_METADATA_JSON": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/hsp_metadata/default/output_metadata.json",
+          "SOURCE_MAP_DIR": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/source_map/default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/src/ohosTest",
+        "RESOURCES_PATH": [
+          "/Users/cxy/Desktop/CXY/hpack/common/hsp1/src/ohosTest/resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/outputs/ohosTest",
+          "INTERMEDIA_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates",
+          "JS_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/loader_out/ohosTest",
+          "JS_LITE_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/loader_out_lite/ohosTest",
+          "RES_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/res/ohosTest",
+          "RES_PROFILE_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/res/ohosTest/resources/base/profile",
+          "ETS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/cache/ohosTest/ohosTest@OhosTestCompileArkTS/esmodule",
+          "JS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/cache/ohosTest/ohosTest@OhosTestCompileJS/jsbundle",
+          "WORKER_LOADER": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/loader/ohosTest/loader.json",
+          "MANIFEST_JSON": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/manifest/ohosTest",
+          "OUTPUT_METADATA_JSON": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/hsp_metadata/ohosTest/output_metadata.json",
+          "SOURCE_MAP_DIR": "/Users/cxy/Desktop/CXY/hpack/common/hsp1/build/default/intermediates/source_map/ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "strictMode": {
+          "caseSensitiveCheck": true,
+          "useNormalizedOHMUrl": true
+        },
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": false,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-module-hsp2": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build",
+    "DEPENDENCY_INFO": {},
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/src/main",
+        "RESOURCES_PATH": [
+          "/Users/cxy/Desktop/CXY/hpack/common/hsp2/src/main/resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/outputs/default",
+          "INTERMEDIA_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates",
+          "JS_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/loader_out/default",
+          "JS_LITE_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/loader_out_lite/default",
+          "RES_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/res/default",
+          "RES_PROFILE_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/res/default/resources/base/profile",
+          "ETS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/cache/default/default@CompileArkTS/esmodule",
+          "JS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/cache/default/default@CompileJS/jsbundle",
+          "WORKER_LOADER": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/loader/default/loader.json",
+          "MANIFEST_JSON": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/manifest/default",
+          "OUTPUT_METADATA_JSON": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/hsp_metadata/default/output_metadata.json",
+          "SOURCE_MAP_DIR": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/source_map/default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/src/ohosTest",
+        "RESOURCES_PATH": [
+          "/Users/cxy/Desktop/CXY/hpack/common/hsp2/src/ohosTest/resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/outputs/ohosTest",
+          "INTERMEDIA_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates",
+          "JS_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/loader_out/ohosTest",
+          "JS_LITE_ASSETS_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/loader_out_lite/ohosTest",
+          "RES_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/res/ohosTest",
+          "RES_PROFILE_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/res/ohosTest/resources/base/profile",
+          "ETS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/cache/ohosTest/ohosTest@OhosTestCompileArkTS/esmodule",
+          "JS_SUPER_VISUAL_PATH": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/cache/ohosTest/ohosTest@OhosTestCompileJS/jsbundle",
+          "WORKER_LOADER": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/loader/ohosTest/loader.json",
+          "MANIFEST_JSON": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/manifest/ohosTest",
+          "OUTPUT_METADATA_JSON": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/hsp_metadata/ohosTest/output_metadata.json",
+          "SOURCE_MAP_DIR": "/Users/cxy/Desktop/CXY/hpack/common/hsp2/build/default/intermediates/source_map/ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "strictMode": {
+          "caseSensitiveCheck": true,
+          "useNormalizedOHMUrl": true
+        },
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": false,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default"
+        },
+        {
+          "name": "ohosTest"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-project": {
+    "SELECT_PRODUCT_NAME": "default",
+    "MODULE_BUILD_DIR": "/Users/cxy/Desktop/CXY/hpack/build",
+    "BUNDLE_NAME": "com.cxy.hpack",
+    "BUILD_PATH": {
+      "OUTPUT_PATH": "/Users/cxy/Desktop/CXY/hpack/build/outputs/default"
+    },
+    "MODULES": [
+      {
+        "name": "entry",
+        "srcPath": "/Users/cxy/Desktop/CXY/hpack/entry",
+        "targets": [
+          {
+            "name": "default",
+            "applyToProducts": [
+              "default"
+            ]
+          }
+        ],
+        "belongProjectPath": "/Users/cxy/Desktop/CXY/hpack"
+      },
+      {
+        "name": "hsp1",
+        "srcPath": "/Users/cxy/Desktop/CXY/hpack/common/hsp1",
+        "targets": [
+          {
+            "name": "default",
+            "applyToProducts": [
+              "default"
+            ]
+          }
+        ],
+        "belongProjectPath": "/Users/cxy/Desktop/CXY/hpack"
+      },
+      {
+        "name": "hsp2",
+        "srcPath": "/Users/cxy/Desktop/CXY/hpack/common/hsp2",
+        "targets": [
+          {
+            "name": "default",
+            "applyToProducts": [
+              "default"
+            ]
+          }
+        ],
+        "belongProjectPath": "/Users/cxy/Desktop/CXY/hpack"
+      }
+    ],
+    "PROFILE_OPT": {
+      "app": {
+        "signingConfigs": [],
+        "products": [
+          {
+            "name": "default",
+            "signingConfig": "default",
+            "compatibleSdkVersion": "5.0.1(13)",
+            "runtimeOS": "HarmonyOS",
+            "buildOption": {
+              "strictMode": {
+                "caseSensitiveCheck": true,
+                "useNormalizedOHMUrl": true
+              }
+            }
+          }
+        ],
+        "buildModeSet": [
+          {
+            "name": "debug"
+          },
+          {
+            "name": "release"
+          }
+        ]
+      },
+      "modules": [
+        {
+          "name": "entry",
+          "srcPath": "./entry",
+          "targets": [
+            {
+              "name": "default",
+              "applyToProducts": [
+                "default"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "hsp1",
+          "srcPath": "./common/hsp1",
+          "targets": [
+            {
+              "name": "default",
+              "applyToProducts": [
+                "default"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "hsp2",
+          "srcPath": "./common/hsp2",
+          "targets": [
+            {
+              "name": "default",
+              "applyToProducts": [
+                "default"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "CONFIG_PROPERTIES": {
+      "enableSignTask": true,
+      "skipNativeIncremental": false,
+      "hvigor.keepDependency": true
+    },
+    "OVERALL_PROJECT_PATHS": [
+      "/Users/cxy/Desktop/CXY/hpack"
+    ],
+    "BUILD_CACHE_DIR": ""
+  },
+  "version": 1
+}
