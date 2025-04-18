@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+#  @github : https://github.com/iHongRen/hpack
+ 
 import os
 import sys
 import importlib.util

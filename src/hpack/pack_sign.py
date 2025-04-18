@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-
-#  @author : @cxy
-#  @date : 2025/4/10
 #  @github : https://github.com/iHongRen/hpack
-
+ 
 import os
 import subprocess
 import shutil

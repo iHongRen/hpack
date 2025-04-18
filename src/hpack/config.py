@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-
-#  @author : @cxy
-#  @date : 2025/4/10
 #  @github : https://github.com/iHongRen/hpack
  
 import os
@@ -14,6 +11,8 @@ class Config:
     Bucket_name = 'your Bucket_name'
     Bucket_dir = 'hpack'
     Cname = 'your cname'
+    
+    # 安装包存放的服务器地址，必须是 https
     BaseURL = f"https://{Cname}/{Bucket_dir}"
 
     # 应用名称和图标 - 有想法的可自行修改代码，从工程项目中获取

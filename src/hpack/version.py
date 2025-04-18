@@ -1,2 +1,3 @@
 # -*- coding: utf-8 -*-
-__version__ = '0.1'
+#  @github : https://github.com/iHongRen/hpack
+ __version__ = '0.1'

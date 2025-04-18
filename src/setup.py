@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-
+#  @github : https://github.com/iHongRen/hpack
+ 
 from setuptools import setup, find_packages
 
 setup(
