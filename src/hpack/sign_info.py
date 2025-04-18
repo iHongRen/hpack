@@ -4,7 +4,6 @@
 import os
 import sys
 import json
-import oss2  # 先安装 pip3 install oss2
 import json5  # 先安装 pip3 install json5
 import segno  # 先安装 pip3 install segno 生成二维码
 
@@ -19,37 +18,6 @@ sys.path.append(current_dir)
 
 from utils import printError, printSuccess, get_directory_size,calculate_sha256
 from toolConfig import ToolConfig
-
-def upload_to_oss(Config, target_dir, timestamp):
-    if len(os.listdir(target_dir)) == 0:
-        printError(f"无法上传空的目录 {target_dir}")
-        return False
-
-    auth = oss2.Auth(Config.Access_key_id, Config.Access_key_secret)
-    bucket = oss2.Bucket(auth, Config.Endpoint, Config.Bucket_name)
-
-    for root, _, files in os.walk(target_dir):
-        for file in files:
-            if file == ToolConfig.UnsignManifestFile:
-                continue
-            
-            file_path = os.path.join(root, file)
-            try:
-                print(f"正在上传： {file} ")
-                romotePath = f"{Config.Bucket_dir}/{timestamp}/{file}"
-                result = bucket.put_object_from_file(romotePath, file_path)
-                if result.status == 200:
-                    print(f"文件 {file} 上传到 OSS 成功。")      
-                else:
-                    printError(f"文件 {file} 上传到 OSS 失败，状态码: {result.status}。")
-
-            except Exception as e:
-                printError(f"文件 {file} 上传到 OSS 时出现异常: {e}。")
-                return False
-
-
-    printSuccess("所有文件上传到 OSS 成功。")
-    return True
 
 
 def read_app_info():
@@ -135,7 +103,7 @@ def create_unsign_manifest(Config, target_dir, timestamp, bundle_name, version_c
             "versionCode": version_code,
             "versionName": version_name,
             "label": Config.AppName,
-            "deployDomain": Config.Cname,
+            "deployDomain": Config.DeployDomain,
             "icons": {
                 "normal": Config.AppIcon,
                 "large": Config.AppIcon,
@@ -213,12 +181,12 @@ def create_sign_manifest(Config, target_dir):
     return True
 
 
-def handle_html_index(Config, target_dir, timestamp, version_name, version_code, size, desc, packText):
-    file_path = os.path.join(target_dir, "index.html")
+def handle_html(Config, result):
+    file_path = os.path.join(result["build_dir"], "index.html")
     date = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     # 要编码的内容
-    data = f"{Config.BaseURL}/{timestamp}/index.html"
+    data = f"{Config.BaseURL}/{result["timestamp"]}/index.html"
     # 生成二维码
     qr = segno.make(data)
     svg_string = qr.svg_data_uri(scale=10)
@@ -231,22 +199,22 @@ def handle_html_index(Config, target_dir, timestamp, version_name, version_code,
     template = Template(html)
     html_template = template.safe_substitute(
         app_icon=Config.AppIcon,
-        version_name=version_name,
-        version_code=version_code,
+        version_name=result["version_name"],
+        version_code=result["version_code"],
         date=date,
-        size=size,
-        desc=desc,
-        timestamp=timestamp,
+        size=result["size"],
+        desc=result["desc"],
+        timestamp=result["timestamp"],
         svg_string=svg_string,
         baseUrl=Config.BaseURL,
-        packText=packText
+        packText=Config.AppName
     )
 
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(html_template)
+    return svg_string
 
-
-def signUploader(Config, desc=""):
+def signInfo(Config, desc=""):
 
     bundle_name, version_code, version_name = read_app_info()
     if not bundle_name or not version_code or not version_name:
@@ -266,11 +234,21 @@ def signUploader(Config, desc=""):
     
     size = get_directory_size(target_dir)
 
-    handle_html_index(Config, target_dir, timestamp, version_name, version_code, size, desc, Config.AppName)
-
-    # 上传 ./build 里面的文件到 OSS
-    upload_to_oss(Config, target_dir, timestamp)
-
+    result = {
+        "bundle_name": bundle_name,
+        "version_code": version_code,
+        "version_name": version_name,
+        "timestamp": timestamp,
+        "size": size,
+        "desc": desc,
+        "build_dir": target_dir,
+        "url": f"{Config.BaseURL}/{timestamp}/index.html"
+    }
+    
+    qrcode = handle_html(Config, result)
+    if qrcode:
+        result["qrcode"] = qrcode
+    
     printSuccess(f"打包完成，版本：{version_name}，版本号：{version_code}，大小：{size}")
-    printSuccess(f"请访问 {Config.BaseURL}/{timestamp}/index.html")
+    return result
 

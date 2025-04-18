@@ -17,7 +17,6 @@ setup(
     },
     install_requires=[
         # 列出项目依赖的库，如 'requests'
-        'oss2',
         'json5',
         'segno'
     ],
