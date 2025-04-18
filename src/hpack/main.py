@@ -3,7 +3,8 @@ import sys
 import importlib.util
 import shutil
 from .version import __version__
-
+from .pack_sign import packSign
+from .sign_uploader import signUploader
 
 def init_command():
     hpack_dir = os.path.join(os.getcwd(), 'hpack')
@@ -36,15 +37,10 @@ def init_command():
         print(f"init 失败：复制文件或文件夹时出错 - {e}")
 
 
-def pack_command():
+def pack_command(desc):
     config = get_config()
-    if config:
-        # 获取 Config 类的属性
-        for attr_name in dir(config):
-            if not attr_name.startswith('__'):
-                attr_value = getattr(config, attr_name)
-                print(f"{attr_name}: {attr_value}")
-
+    packSign(config)
+    signUploader(config, desc)
 
 def get_config():
     config_file_path = os.path.join(os.getcwd(), 'hpack', 'config.py')
@@ -97,7 +93,11 @@ def main():
         elif sys.argv[1] == 'init':
             init_command()
         elif sys.argv[1] == 'pack':
-            pack_command()
+            if len(sys.argv) > 2:
+                desc = sys.argv[2]
+            else:
+                desc = ""
+            pack_command(desc)
         else:
             print("无效的命令或选项，请使用 'hpack -h' 查看帮助信息。")
     else:

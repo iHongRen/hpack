@@ -21,11 +21,10 @@ class Config:
     AppIcon = f"https://{Cname}/xx/AppIcon.png"
     
     # 打包签名配置 
-    HpackDir = 'hpack'
     SignDir = 'sign'
-    Cert = os.path.join(HpackDir, SignDir, 'release.cer') 
-    Profile = os.path.join(HpackDir, SignDir, 'test_release.p7b')  
-    Keystore =  os.path.join(HpackDir, SignDir, 'harmony.p12') 
+    Cert = os.path.join(SignDir, 'release.cer') 
+    Profile = os.path.join(SignDir, 'test_release.p7b')  
+    Keystore =  os.path.join(SignDir, 'harmony.p12') 
     Alias = 'your key alias'
     KeyPwd = 'your key password'
     KeystorePwd = 'your store password'

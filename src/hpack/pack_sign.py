@@ -7,8 +7,8 @@
 import os
 import subprocess
 import shutil
-from utils import printError, isWin, timeit
-from config import Config
+from .utils import printError, isWin, timeit
+from .toolConfig import ToolConfig
 
 
 @timeit
@@ -21,8 +21,8 @@ def clean():
 
 
 def mkBuildDir():
-    """处理 pack/build 目录，若存在则删除再创建"""
-    build_dir = Config.BuildDir
+    """处理 hpack/build 目录，若存在则删除再创建"""
+    build_dir  = ToolConfig.BuildDir
     if os.path.exists(build_dir) and os.path.isdir(build_dir):
         shutil.rmtree(build_dir)
         print(f"已删除 {build_dir} 目录。")
@@ -40,37 +40,38 @@ def buildHapHsp():
 
 
 @timeit
-def signHapHsp():
+def signHapHsp(Config):
     """对 Hap&Hsp 文件进行签名"""
     result = []
-    source_dir = os.path.join('.') 
+    source_dir = os.getcwd()
     for root, dirs, files in os.walk(source_dir):
         # 排除 oh_modules 和 pack 目录
-        dirs[:] = [d for d in dirs if d not in Config.ExcludeDirs]
+        dirs[:] = [d for d in dirs if d not in ToolConfig.ExcludeDirs]
         for file in files:
             if file.endswith(('-unsigned.hap', '-unsigned.hsp')):
                 result.append(os.path.join(root, file))
      
     for file in result:
-        sign(file)
+        sign(Config, file)
 
 
-def sign(unsigned_file_path):
+def sign(Config, unsigned_file_path):
     """对未签名文件进行签名"""
     print(f"路径: {unsigned_file_path}")
     file_name = os.path.basename(unsigned_file_path)
-    signed_file_path = os.path.join(Config.BuildDir, file_name.replace("unsigned", "signed"))
+    build_dir  = ToolConfig.BuildDir
+    signed_file_path = os.path.join(build_dir, file_name.replace("unsigned", "signed"))
     
     command = [
-        'java', '-jar', Config.HapSignTool,
+        'java', '-jar', ToolConfig.HapSignTool,
         'sign-app',
         '-keyAlias', Config.Alias,
         '-signAlg', 'SHA256withECDSA',
         '-mode', 'localSign',
-        '-appCertFile', Config.Cert,
-        '-profileFile', Config.Profile,
+        '-appCertFile', os.path.join(ToolConfig.HpackDir, Config.Cert),
+        '-profileFile', os.path.join(ToolConfig.HpackDir, Config.Profile),
         '-inFile', unsigned_file_path,
-        '-keystoreFile', Config.Keystore,
+        '-keystoreFile', os.path.join(ToolConfig.HpackDir, Config.Keystore),
         '-outFile', signed_file_path,
         '-keyPwd', Config.KeyPwd,
         '-keystorePwd', Config.KeystorePwd,
@@ -82,9 +83,9 @@ def sign(unsigned_file_path):
         printError(f"签名 {unsigned_file_path} 出错: {e}")
 
 
-def packSign():
+def packSign(Config):
     clean()
     buildHapHsp()
     mkBuildDir()
-    signHapHsp()
+    signHapHsp(Config)
 

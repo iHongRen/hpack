@@ -14,12 +14,10 @@ from datetime import datetime
 from string import Template
 import subprocess
 
-from utils import printError, printSuccess, get_directory_size,calculate_sha256
-from config import Config
+from .utils import printError, printSuccess, get_directory_size,calculate_sha256
+from .toolConfig import ToolConfig
 
-
-
-def upload_to_oss(target_dir, timestamp):
+def upload_to_oss(Config, target_dir, timestamp):
     if len(os.listdir(target_dir)) == 0:
         printError(f"无法上传空的目录 {target_dir}")
         return False
@@ -29,7 +27,7 @@ def upload_to_oss(target_dir, timestamp):
 
     for root, _, files in os.walk(target_dir):
         for file in files:
-            if file == Config.UnsignManifestFile:
+            if file == ToolConfig.UnsignManifestFile:
                 continue
             
             file_path = os.path.join(root, file)
@@ -90,7 +88,7 @@ def read_api_version():
     return None
 
 
-def get_module_infos(target_dir, timestamp):
+def get_module_infos(Config, target_dir, timestamp):
     result = []
     for root, dirs, files in os.walk(target_dir):
         for file in files:
@@ -113,14 +111,14 @@ def get_module_infos(target_dir, timestamp):
                 result.append(file_info)    
     return result
 
-def create_unsign_manifest(target_dir, timestamp, bundle_name, version_code, version_name):
+def create_unsign_manifest(Config, target_dir, timestamp, bundle_name, version_code, version_name):
     apiVersion = read_api_version()
     if apiVersion is None:
         printError("无法获取 sdk api version，无法处理 manifest.json5 文件。")
         return False
 
 
-    modules = get_module_infos(target_dir,timestamp)
+    modules = get_module_infos(Config, target_dir,timestamp)
     if not modules:
         printError("无法获取打包模块信息，无法处理 manifest.json5 文件。")
         return False
@@ -146,7 +144,7 @@ def create_unsign_manifest(target_dir, timestamp, bundle_name, version_code, ver
     }
 
     # 定义目标目录和文件名
-    file_path = os.path.join(target_dir, Config.UnsignManifestFile)
+    file_path = os.path.join(target_dir, ToolConfig.UnsignManifestFile)
 
  
     # 将数据写入 JSON5 文件
@@ -161,18 +159,18 @@ def create_unsign_manifest(target_dir, timestamp, bundle_name, version_code, ver
     return True
 
 
-def create_sign_manifest(target_dir):
+def create_sign_manifest(Config, target_dir):
     # 打印签名开始信息
     print("----开始签名 manifest.json5----")
-    inputFile = os.path.join(target_dir , Config.UnsignManifestFile) 
-    outputFile = os.path.join(target_dir , Config.SignedManifestFile) 
-    keystore = Config.Keystore
+    inputFile = os.path.join(target_dir , ToolConfig.UnsignManifestFile) 
+    outputFile = os.path.join(target_dir , ToolConfig.SignedManifestFile) 
+    keystore = os.path.join(ToolConfig.HpackDir ,Config.Keystore)
     KeystorePwd = Config.KeystorePwd
     KeyPwd = Config.KeyPwd
 
     # 定义签名命令
     sign_command = [
-        'java','-jar',Config.ManifestSignTool,
+        'java','-jar',ToolConfig.ManifestSignTool,
         '-operation', 'sign',
         '-mode', 'localjks',
         '-inputFile', inputFile,
@@ -195,7 +193,7 @@ def create_sign_manifest(target_dir):
 
     # 定义验证命令
     verify_command = [
-        'java','-jar', Config.ManifestSignTool,
+        'java','-jar', ToolConfig.ManifestSignTool,
         '-operation', 'verify',
         '-inputFile', outputFile,
         '-keystore', keystore,
@@ -212,7 +210,7 @@ def create_sign_manifest(target_dir):
     return True
 
 
-def handle_html_index(target_dir, timestamp, version_name, version_code, size, desc, packText):
+def handle_html_index(Config, target_dir, timestamp, version_name, version_code, size, desc, packText):
     file_path = os.path.join(target_dir, "index.html")
     date = datetime.now().strftime("%Y-%m-%d %H:%M")
 
@@ -223,7 +221,7 @@ def handle_html_index(target_dir, timestamp, version_name, version_code, size, d
     svg_string = qr.svg_data_uri(scale=10)
 
     # 读取 HTML 模板文件
-    template_path = Config.IndexTemplateHtml
+    template_path = ToolConfig.IndexTemplateHtml
     with open(template_path, "r", encoding="utf-8") as template_file:
         html = template_file.read()
 
@@ -245,7 +243,7 @@ def handle_html_index(target_dir, timestamp, version_name, version_code, size, d
         f.write(html_template)
 
 
-def signUploader(desc):
+def signUploader(Config, desc=""):
 
     bundle_name, version_code, version_name = read_app_info()
     if not bundle_name or not version_code or not version_name:
@@ -253,22 +251,22 @@ def signUploader(desc):
         return
     
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    target_dir = Config.BuildDir
+    target_dir = ToolConfig.BuildDir
 
-    unsignRet = create_unsign_manifest(target_dir, timestamp, bundle_name, version_code, version_name)
+    unsignRet = create_unsign_manifest(Config, target_dir, timestamp, bundle_name, version_code, version_name)
     if not unsignRet:
         return
 
-    signRet = create_sign_manifest(target_dir)
+    signRet = create_sign_manifest(Config, target_dir)
     if not signRet:
         return
     
     size = get_directory_size(target_dir)
 
-    handle_html_index(target_dir, timestamp, version_name, version_code, size, desc, Config.AppName)
+    handle_html_index(Config, target_dir, timestamp, version_name, version_code, size, desc, Config.AppName)
 
     # 上传 ./build 里面的文件到 OSS
-    upload_to_oss(target_dir, timestamp)
+    upload_to_oss(Config, target_dir, timestamp)
 
     printSuccess(f"打包完成，版本：{version_name}，版本号：{version_code}，大小：{size}")
     printSuccess(f"请访问 {Config.BaseURL}/{timestamp}/index.html")
