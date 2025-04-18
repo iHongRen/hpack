@@ -10,14 +10,16 @@ class Config:
     Endpoint = 'your Endpoint'
     Bucket_name = 'your Bucket_name'
     Bucket_dir = 'hpack'
-    Cname = 'your cname'
     
-    # 安装包存放的服务器地址，必须是 https
-    BaseURL = f"https://{Cname}/{Bucket_dir}"
+    # 安装包存放的服务器地址的域名
+    DeployDomain = 'your cname'
+    
+    # 安装包存放的服务器地址，必须是 https，包含
+    BaseURL = f"https://{DeployDomain}/{Bucket_dir}"
 
     # 应用名称和图标 - 有想法的可自行修改代码，从工程项目中获取
     AppName = 'hpack'
-    AppIcon = f"https://{Cname}/xx/AppIcon.png"
+    AppIcon = f"https://{DeployDomain}/xx/AppIcon.png"
     
     # 打包签名配置 
     SignDir = 'sign'

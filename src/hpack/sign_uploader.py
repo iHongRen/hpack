@@ -2,6 +2,7 @@
 #  @github : https://github.com/iHongRen/hpack
  
 import os
+import sys
 import json
 import oss2  # 先安装 pip3 install oss2
 import json5  # 先安装 pip3 install json5
@@ -11,8 +12,13 @@ from datetime import datetime
 from string import Template
 import subprocess
 
-from .utils import printError, printSuccess, get_directory_size,calculate_sha256
-from .toolConfig import ToolConfig
+# 获取当前脚本所在目录
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 将当前目录添加到 sys.path
+sys.path.append(current_dir)
+
+from utils import printError, printSuccess, get_directory_size,calculate_sha256
+from toolConfig import ToolConfig
 
 def upload_to_oss(Config, target_dir, timestamp):
     if len(os.listdir(target_dir)) == 0:

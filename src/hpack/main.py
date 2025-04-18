@@ -5,10 +5,28 @@ import os
 import sys
 import importlib.util
 import shutil
-from .version import __version__
-from .pack_sign import packSign
-from .sign_uploader import signUploader
+import subprocess  
 
+# 获取当前脚本所在目录
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 将当前目录添加到 sys.path
+sys.path.append(current_dir)
+
+from version import __version__
+from pack_sign import packSign
+from sign_uploader import signUploader
+from toolConfig import ToolConfig
+
+def get_python_command():
+    # 检查系统中是否存在 python3
+    if shutil.which("python3"):
+        return "python3"
+    # 如果没有 python3，则使用 python
+    elif shutil.which("python"):
+        return "python"
+    else:
+        raise EnvironmentError("未找到可用的 Python 解释器，请确保已安装 Python。")
+        
 def init_command():
     hpack_dir = os.path.join(os.getcwd(), 'hpack')
     if os.path.exists(hpack_dir):
@@ -33,7 +51,12 @@ def init_command():
             print(sign_folder_path)
             print("警告：sign 文件夹不存在，无法复制。")
 
-        print("init 成功：已在 hpack 目录下创建 config.py 文件并复制 sign 文件夹。")
+        # 复制 PackFile.py 文件
+        pack_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'PackFile.py')
+        target_pack_file_path = os.path.join(hpack_dir, 'PackFile.py')
+        shutil.copy2(pack_file_path, target_pack_file_path)
+
+        print("init 成功：已在 hpack 目录下创建 config.py 文件并复制 sign 文件夹和 PackFile.py 文件。")
     except OSError as e:
         print(f"init 失败：创建目录或文件时出错 - {e}")
     except shutil.Error as e:
@@ -42,11 +65,40 @@ def init_command():
 
 def pack_command(desc):
     config = get_config()
+    if config is None:
+        return
+
+    # 获取 PackFile.py 的路径
+    pack_file_path = os.path.join(os.getcwd(), ToolConfig.HpackDir, 'PackFile.py')
+
+    # 检查 PackFile.py 是否存在
+    if not os.path.exists(pack_file_path):
+        print(f"PackFile.py 文件不存在: {pack_file_path}")
+        return
+
+    # 获取 Python 命令
+    python_cmd = get_python_command()
+
+    # 执行 PackFile.py 的 packBefore 函数
+    try:
+        subprocess.run([python_cmd, pack_file_path, '--before'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"执行 PackFile.py 的 packBefore 时出错: {e}")
+        return
+
+    # 执行 packSign 和 signUploader
     packSign(config)
     signUploader(config, desc)
 
+    # 执行 PackFile.py 的 packAfter 函数
+    try:
+        subprocess.run([python_cmd, pack_file_path, '--after'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"执行 PackFile.py 的 packAfter 时出错: {e}")
+
+
 def get_config():
-    config_file_path = os.path.join(os.getcwd(), 'hpack', 'config.py')
+    config_file_path = os.path.join(os.getcwd(), ToolConfig.HpackDir, 'config.py')
     if os.path.exists(config_file_path):
         try:
             # 获取 config.py 文件的规格
@@ -79,8 +131,8 @@ def show_help():
   -h, --help     显示帮助信息
 
 命令:
-  init           初始化 hpack 目录并创建 config.py 文件，复制 sign 文件夹
-  pack           读取并打印 config.py 文件中的配置信息
+  init           初始化 hpack 目录并创建配置文件
+  pack           执行打包签名和上传
 
 版本: {__version__}
 """
@@ -109,4 +161,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
