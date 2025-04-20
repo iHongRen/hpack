@@ -6,11 +6,6 @@ import subprocess
 import shutil
 import sys
 
-# 获取当前脚本所在目录
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# 将当前目录添加到 sys.path
-sys.path.append(current_dir)
-
 from utils import printError, isWin, timeit
 from toolConfig import ToolConfig
 

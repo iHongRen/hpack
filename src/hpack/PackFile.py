@@ -33,18 +33,18 @@ def packAfter():
 
 
 def upload_to_oss(Config, result):
-    target_dir = result["build_dir"]
+    build_dir = result["build_dir"]
     timestamp = result["timestamp"]
    
     # 上传 hpack/build 目录里的打包文件到 OSS
-    if len(os.listdir(target_dir)) == 0:
-        print(f"无法上传空的目录 {target_dir}")
+    if len(os.listdir(build_dir)) == 0:
+        print(f"无法上传空的目录 {build_dir}")
         return False
 
     auth = oss2.Auth(Config.Access_key_id, Config.Access_key_secret)
     bucket = oss2.Bucket(auth, Config.Endpoint, Config.Bucket_name)
 
-    for root, _, files in os.walk(target_dir):
+    for root, _, files in os.walk(build_dir):
         for file in files:
             if file == "unsign_manifest.json5":
                 continue

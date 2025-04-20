@@ -4,7 +4,6 @@
 import os
 class Config: 
     # 阿里云OSS配置
-    UseOSS = True  # 是否使用阿里云OSS，不使用设置为 False
     Access_key_id = 'your Access_key_id'
     Access_key_secret = 'your Access_key_secret'
     Endpoint = 'your Endpoint'

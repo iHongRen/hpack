@@ -11,11 +11,6 @@ from datetime import datetime
 from string import Template
 import subprocess
 
-# 获取当前脚本所在目录
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# 将当前目录添加到 sys.path
-sys.path.append(current_dir)
-
 from utils import printError, printSuccess, get_directory_size,calculate_sha256
 from toolConfig import ToolConfig
 
@@ -54,14 +49,14 @@ def read_api_version():
                 print("未找到 compatibleSdkVersion 的值。")
             return api_version
     except Exception as e:
-        printError(f"读取 AppScope/app.json5 文件时出错: {e}")
+        printError(f"读取 build-profile.json5 文件时出错: {e}")
         return None
     return None
 
 
-def get_module_infos(Config, target_dir, timestamp):
+def get_module_infos(Config, build_dir, timestamp):
     result = []
-    for root, dirs, files in os.walk(target_dir):
+    for root, dirs, files in os.walk(build_dir):
         for file in files:
             if file.endswith(("-signed.hsp", "-signed.hap")):
                 file_path = os.path.join(root, file)
@@ -82,14 +77,14 @@ def get_module_infos(Config, target_dir, timestamp):
                 result.append(file_info)    
     return result
 
-def create_unsign_manifest(Config, target_dir, timestamp, bundle_name, version_code, version_name):
+def create_unsign_manifest(Config, build_dir, timestamp, bundle_name, version_code, version_name):
     apiVersion = read_api_version()
     if apiVersion is None:
         printError("无法获取 sdk api version，无法处理 manifest.json5 文件。")
         return False
 
 
-    modules = get_module_infos(Config, target_dir,timestamp)
+    modules = get_module_infos(Config, build_dir,timestamp)
     if not modules:
         printError("无法获取打包模块信息，无法处理 manifest.json5 文件。")
         return False
@@ -115,7 +110,7 @@ def create_unsign_manifest(Config, target_dir, timestamp, bundle_name, version_c
     }
 
     # 定义目标目录和文件名
-    file_path = os.path.join(target_dir, ToolConfig.UnsignManifestFile)
+    file_path = os.path.join(build_dir, ToolConfig.UnsignManifestFile)
 
  
     # 将数据写入 JSON5 文件
@@ -130,11 +125,11 @@ def create_unsign_manifest(Config, target_dir, timestamp, bundle_name, version_c
     return True
 
 
-def create_sign_manifest(Config, target_dir):
+def create_sign_manifest(Config, build_dir):
     # 打印签名开始信息
     print("----开始签名 manifest.json5----")
-    inputFile = os.path.join(target_dir , ToolConfig.UnsignManifestFile) 
-    outputFile = os.path.join(target_dir , ToolConfig.SignedManifestFile) 
+    inputFile = os.path.join(build_dir , ToolConfig.UnsignManifestFile) 
+    outputFile = os.path.join(build_dir , ToolConfig.SignedManifestFile) 
     keystore = os.path.join(ToolConfig.HpackDir ,Config.Keystore)
     KeystorePwd = Config.KeystorePwd
     KeyPwd = Config.KeyPwd
@@ -222,17 +217,17 @@ def signInfo(Config, desc=""):
         return
     
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    target_dir = ToolConfig.BuildDir
+    build_dir = ToolConfig.BuildDir
 
-    unsignRet = create_unsign_manifest(Config, target_dir, timestamp, bundle_name, version_code, version_name)
+    unsignRet = create_unsign_manifest(Config, build_dir, timestamp, bundle_name, version_code, version_name)
     if not unsignRet:
         return
 
-    signRet = create_sign_manifest(Config, target_dir)
+    signRet = create_sign_manifest(Config, build_dir)
     if not signRet:
         return
     
-    size = get_directory_size(target_dir)
+    size = get_directory_size(build_dir)
 
     result = {
         "bundle_name": bundle_name,
@@ -241,7 +236,7 @@ def signInfo(Config, desc=""):
         "timestamp": timestamp,
         "size": size,
         "desc": desc,
-        "build_dir": target_dir,
+        "build_dir": build_dir,
         "url": f"{Config.BaseURL}/{timestamp}/index.html"
     }
     
