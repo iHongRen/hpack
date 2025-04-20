@@ -32,6 +32,8 @@ def read_app_info():
         return None
     return None
 
+
+
 def read_api_version():
     json_path = os.path.join("build-profile.json5")
     if not os.path.exists(json_path):
@@ -50,6 +52,7 @@ def read_api_version():
         printError(f"读取 build-profile.json5 文件时出错: {e}")
         return None
     return None
+
 
 
 def get_module_infos(build_dir, remotePath):
@@ -74,6 +77,8 @@ def get_module_infos(build_dir, remotePath):
                 }
                 result.append(file_info)    
     return result
+
+
 
 def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name):
     apiVersion = read_api_version()
@@ -121,6 +126,7 @@ def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_c
         return False
 
     return True
+
 
 
 def create_sign_manifest(Config, build_dir):
@@ -174,11 +180,8 @@ def create_sign_manifest(Config, build_dir):
     return True
 
 
-def handle_html(Config, result, remotePath):
-    # 生成二维码
-    index_url = f"{remotePath}/index.html"
-    qr = segno.make(index_url)
-    svg_string = qr.svg_data_uri(scale=10)
+
+def handle_html(Config, packInfo, remotePath, qrcode):
 
     # 读取 HTML 模板文件
     template_path = ToolConfig.IndexTemplateHtml
@@ -191,20 +194,22 @@ def handle_html(Config, result, remotePath):
     template = Template(html)
     html_template = template.safe_substitute(
         app_icon=Config.AppIcon,
-        version_name=result["version_name"],
-        version_code=result["version_code"],
+        version_name=packInfo["version_name"],
+        version_code=packInfo["version_code"],
         date=date,
-        size=result["size"],
-        desc=result["desc"],
+        size=packInfo["size"],
+        desc=packInfo["desc"],
         manifest_url=manifest_url,
-        svg_string=svg_string,
-        packText=Config.AppName
+        qrcode=qrcode,
+        title=Config.AppName,
+        badge=Config.Badge
     )
 
-    file_path = os.path.join(result["build_dir"], "index.html")
+    file_path = os.path.join(packInfo["build_dir"], "index.html")
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(html_template)
-    return svg_string
+
+
 
 def signInfo(Config, desc=""):
 
@@ -228,7 +233,12 @@ def signInfo(Config, desc=""):
     
     size = get_directory_size(build_dir)
 
-    result = {
+    # 生成二维码
+    index_url = f"{remotePath}/index.html"
+    qr = segno.make(index_url)
+    qrcode = qr.svg_data_uri(scale=10)
+    
+    packInfo = {
         "bundle_name": bundle_name,
         "version_code": version_code,
         "version_name": version_name,
@@ -236,11 +246,10 @@ def signInfo(Config, desc=""):
         "desc": desc,
         "build_dir": build_dir,
         "remote_dir": remote_dir,
+        "qrcode": qrcode,
     }
     
-    qrcode = handle_html(Config, result, remotePath)
-    if qrcode:
-        result["qrcode"] = qrcode
+    handle_html(Config, packInfo, remotePath, qrcode)
     
-    return result
+    return packInfo
 

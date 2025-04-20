@@ -53,6 +53,8 @@ def init_command():
         pack_file_path = os.path.join(absPath, 'Packfile.py')
         target_pack_file_path = os.path.join(hpack_dir, 'Packfile.py')
         shutil.copy2(pack_file_path, target_pack_file_path)
+        
+        
         print("\033[34mhpack 初始化完成。请修改配置：\033[0m", end="")
         print("""
 hpack/

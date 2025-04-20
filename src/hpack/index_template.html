@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>hpack</title>
+        <title>$title</title>
         <style>
             * {
                 margin: 0;
@@ -88,7 +88,7 @@
             .info-item {
                 display: flex;
                 margin-bottom: 10px;
-                font-size: 13px;
+                font-size: 14px;
                 color: #555;
                 align-items: center;
             }
@@ -250,8 +250,8 @@
             <img src="$app_icon" class="app-icon float" alt="App Icon" />
 
             <div class="app-title">
-                $packText
-                <span class="version-badge">鸿蒙版</span>
+                $title
+                <span class="version-badge">$badge</span>
             </div>
 
             <div class="app-version">(v$version_name $version_code) • $size</div>
@@ -273,7 +273,7 @@
 
             <div class="qr-container">
                 <div class="qr-label">扫描二维码安装</div>
-                <img class="qr-code" src="$svg_string" alt="QR Code" />
+                <img class="qr-code" src="$qrcode" alt="QR Code" />
             </div>
 
             <button class="download-btn pulse" onclick="window.location.href='store://enterprise/manifest?url=$manifest_url'">

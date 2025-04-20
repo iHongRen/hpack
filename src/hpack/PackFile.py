@@ -1,41 +1,43 @@
+# -*- coding: utf-8 -*-
+#  @github : https://github.com/iHongRen/hpack
+ 
 import argparse
 import json
 import os
 import sys
 
-import oss2
+import oss2  # pip3 install oss2
 from config import Config
 
 
 def willPack():
+    """_summary_: 打包前调用"""
     print("============开始打包=============")
 
+
 def didPack():
+    """_summary_: 打包后回调，通常在这里上传打包结果到服务器和自定义index.html
+    """
     # 从标准输入读取 JSON 数据
-    try:
-        result_json = sys.stdin.read()
-        result = json.loads(result_json)
-    except json.JSONDecodeError as e:
-        print(f"解析 JSON 数据时出错: {e}")
-        return
-    except Exception as e:
-        print(f"读取标准输入时出错: {e}")
-        return
-
+    packJson = sys.stdin.read()
+    packInfo = json.loads(packJson)  
+    
     # 打包完成后，上传到 OSS， 你也可以上传到自己的服务器
-    upload_to_oss(Config, result)
+    upload_to_oss(Config, packInfo)
 
-    print("============打包信息:============")
-    print(json.dumps(result, indent=4, ensure_ascii=False))
-    print("================================")
+    # print("============打印打包信息:============")
+    # print(json.dumps(result, indent=4, ensure_ascii=False))
+    # print("================================")
 
-    url = f"{Config.BaseURL}/{result['remote_dir']}/index.html" 
+    url = f"{Config.BaseURL}/{packInfo['remote_dir']}/index.html" 
     print(f"\033[0m请访问 {url}\033[0m")
 
 
-def upload_to_oss(Config, result):
-    build_dir = result["build_dir"]
-    remote_dir = result["remote_dir"]
+def upload_to_oss(Config, packInfo):
+    """_summary_: 上传打包结果到 OSS"""
+    
+    build_dir = packInfo["build_dir"]
+    remote_dir = packInfo["remote_dir"]
    
     # 上传 hpack/build 目录里的打包文件到 OSS
     if len(os.listdir(build_dir)) == 0:
@@ -69,6 +71,7 @@ def upload_to_oss(Config, result):
 
 
 if __name__ == "__main__":
+    """_summary_: 无需修改"""
     parser = argparse.ArgumentParser(description="Packfile script")
     parser.add_argument('--will', action='store_true', help="Execute willPack")
     parser.add_argument('--did', action='store_true', help="Execute didPack")
@@ -79,4 +82,4 @@ if __name__ == "__main__":
     elif args.did:
         didPack() 
     else:
-        print("No valid action specified.")
+        print("无效的参数，请使用 --will 或 --did。")
