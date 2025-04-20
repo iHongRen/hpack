@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
 #  @github : https://github.com/iHongRen/hpack
  
-import os
-import sys
 import importlib.util
-import shutil
-import subprocess  
 import json
+import os
+import shutil
+import subprocess
+import sys
+
 # 获取当前脚本所在目录
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # 将当前目录添加到 sys.path
 sys.path.append(current_dir)
 
-from version import __version__
 from pack_sign import packSign
 from sign_info import signInfo
 from toolConfig import ToolConfig
-from utils import timeit
+from utils import printError, timeit
+from version import __version__
+
 
 def get_python_command():
     # 检查系统中是否存在 python3
@@ -36,33 +38,31 @@ def init_command():
     try:
         os.makedirs(hpack_dir)
         absPath = os.path.dirname(os.path.abspath(__file__))
+        
+        # 复制配置文件
         template_file_path = os.path.join(absPath, 'config.py')
         config_file_path = os.path.join(hpack_dir, 'config.py')
-
-        # 复制配置文件
         shutil.copy2(template_file_path, config_file_path)
 
-        # 获取 sign 文件夹路径
+        # 复制 sign 文件夹
         sign_folder_path = os.path.join(absPath, 'sign')
         target_sign_folder_path = os.path.join(hpack_dir, 'sign')
-
-        if os.path.exists(sign_folder_path):
-            # 复制 sign 文件夹
-            shutil.copytree(sign_folder_path, target_sign_folder_path)
-        else:
-            print(sign_folder_path)
-            print("警告：sign 文件夹不存在，无法复制。")
+        shutil.copytree(sign_folder_path, target_sign_folder_path)
 
         # 复制 Packfile.py 文件
         pack_file_path = os.path.join(absPath, 'Packfile.py')
         target_pack_file_path = os.path.join(hpack_dir, 'Packfile.py')
         shutil.copy2(pack_file_path, target_pack_file_path)
-
-        print("init 成功：已在 hpack 目录下创建 config.py 文件并复制 sign 文件夹和 Packfile.py 文件。")
+        print("\033[34mhpack 初始化完成。请修改配置：\033[0m", end="")
+        print("""
+hpack/
+  config.py # 配置文件
+  sign/  # 替换自己的签名证书文件
+  Packfile.py 打包完成后的回调文件""")
     except OSError as e:
-        print(f"init 失败：创建目录或文件时出错 - {e}")
+        printError(f"init 失败 - {e}")
     except shutil.Error as e:
-        print(f"init 失败：复制文件或文件夹时出错 - {e}")
+        printError(f"init 失败- {e}")
 
 @timeit
 def pack_command(desc):
@@ -75,37 +75,36 @@ def pack_command(desc):
 
     # 检查 Packfile.py 是否存在
     if not os.path.exists(pack_file_path):
-        print(f"Packfile.py 文件不存在: {pack_file_path}")
+        printError(f"Packfile.py 文件不存在: {pack_file_path}")
         return
 
     # 获取 Python 命令
     python_cmd = get_python_command()
 
-    # 执行 Packfile.py 的 packBefore 函数
+    # 执行 Packfile.py 的 willPack 函数
     try:
-        subprocess.run([python_cmd, pack_file_path, '--before'], check=True)
+        subprocess.run([python_cmd, pack_file_path, '--will'], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"执行 Packfile.py 的 packBefore 时出错: {e}")
-        return
+        printError(f"执行 willPack 时出错: {e}, 跳过处理")
 
     # 执行 packSign 和 signInfo
     packSign(config)
-    result = signInfo(config, desc)  # 获取返回的 JSON 数据
+    result = signInfo(config, desc) 
 
-    # 执行 Packfile.py 的 packAfter 函数，并传递 JSON 数据
+    # 执行 Packfile.py 的 didPack 函数，并传递 JSON 数据
     try:
         if result:
             result_json = json.dumps(result, ensure_ascii=False, indent=4)  # 将字典转换为 JSON 字符串
             process = subprocess.run(
-                [python_cmd, pack_file_path, '--after'], 
+                [python_cmd, pack_file_path, '--did'], 
                 input=result_json,  # 将 JSON 数据通过标准输入传递
                 text=True,  # 指定输入为文本
                 check=True
             )
         else:
-            print("signInfo 未返回有效的结果，跳过 packAfter.")
+            printError("signInfo 未返回有效的结果，跳过 didPack.")
     except subprocess.CalledProcessError as e:
-        print(f"执行 PackFile.py 的 packAfter 时出错: {e}")
+        printError(f"执行 didPack 时出错: {e}, 跳过处理")
 
 def get_config():
     config_file_path = os.path.join(os.getcwd(), ToolConfig.HpackDir, 'config.py')
@@ -122,9 +121,9 @@ def get_config():
             Config = getattr(config_module, 'Config')
             return Config
         except Exception as e:
-            print(f"读取 config.py 文件时出错 - {e}")
+            printError(f"读取 config.py 文件时出错 - {e}")
     else:
-        print("pack 失败：hpack/config.py 文件不存在，请先执行 hpack init。")
+        printError("pack 失败：hpack/config.py 文件不存在，请先执行 hpack init。")
     return None
 
 

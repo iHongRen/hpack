@@ -1,15 +1,16 @@
 import argparse
-import json  
+import json
 import os
-import sys  # 添加 sys 模块
-import oss2
+import sys
 
+import oss2
 from config import Config
 
-def packBefore():
+
+def willPack():
     print("============开始打包=============")
 
-def packAfter():
+def didPack():
     # 从标准输入读取 JSON 数据
     try:
         result_json = sys.stdin.read()
@@ -28,13 +29,13 @@ def packAfter():
     print(json.dumps(result, indent=4, ensure_ascii=False))
     print("================================")
 
-    url = result["url"]
+    url = f"{Config.BaseURL}/{result['remote_dir']}/index.html" 
     print(f"\033[0m请访问 {url}\033[0m")
 
 
 def upload_to_oss(Config, result):
     build_dir = result["build_dir"]
-    timestamp = result["timestamp"]
+    remote_dir = result["remote_dir"]
    
     # 上传 hpack/build 目录里的打包文件到 OSS
     if len(os.listdir(build_dir)) == 0:
@@ -52,8 +53,8 @@ def upload_to_oss(Config, result):
             file_path = os.path.join(root, file)
             try:
                 print(f"正在上传： {file} ")
-                romotePath = f"{Config.Bucket_dir}/{timestamp}/{file}"
-                result = bucket.put_object_from_file(romotePath, file_path)
+                remotePath = f"{Config.Bucket_dir}/{remote_dir}/{file}"
+                result = bucket.put_object_from_file(remotePath, file_path)
                 if result.status == 200:
                     print(f"文件 {file} 上传到 OSS 成功。")      
                 else:
@@ -69,13 +70,13 @@ def upload_to_oss(Config, result):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Packfile script")
-    parser.add_argument('--before', action='store_true', help="Execute packBefore")
-    parser.add_argument('--after', action='store_true', help="Execute packAfter")
+    parser.add_argument('--will', action='store_true', help="Execute willPack")
+    parser.add_argument('--did', action='store_true', help="Execute didPack")
     args = parser.parse_args()
 
-    if args.before:
-        packBefore()
-    elif args.after:
-        packAfter()  # 不再需要通过命令行参数传递 JSON 数据
+    if args.will:
+        willPack()
+    elif args.did:
+        didPack() 
     else:
         print("No valid action specified.")

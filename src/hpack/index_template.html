@@ -30,7 +30,7 @@
                 box-shadow: 0 10px 30px rgba(0, 51, 204, 0.1);
                 width: 90%;
                 max-width: 380px;
-                padding: 30px;
+                padding: 20px;
                 position: relative;
                 z-index: 1;
                 margin-bottom: 30px;
@@ -73,7 +73,7 @@
 
             .app-version {
                 color: #666;
-                font-size: 14px;
+                font-size: 13px;
                 margin-bottom: 20px;
             }
 
@@ -81,14 +81,14 @@
                 background-color: #f8f9fa;
                 border-radius: 12px;
                 padding: 15px;
-                margin: 20px 0;
+                margin: 15px 0;
                 text-align: left;
             }
 
             .info-item {
                 display: flex;
                 margin-bottom: 10px;
-                font-size: 14px;
+                font-size: 13px;
                 color: #555;
                 align-items: center;
             }
@@ -116,11 +116,10 @@
             }
 
             .qr-code {
-                width: 150px;
-                height: 150px;
+                width: 140px;
+                height: 140px;
                 margin: 0 auto;
                 background-color: white;
-                padding: 5px;
                 border-radius: 10px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
                 transition: all 0.3s ease;
@@ -277,7 +276,7 @@
                 <img class="qr-code" src="$svg_string" alt="QR Code" />
             </div>
 
-            <button class="download-btn pulse" onclick="window.location.href='store://enterprise/manifest?url=$baseUrl/$timestamp/manifest.json5'">
+            <button class="download-btn pulse" onclick="window.location.href='store://enterprise/manifest?url=$manifest_url'">
                 <svg class="btn-icon" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
                 </svg>

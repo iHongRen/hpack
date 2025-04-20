@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 #  @github : https://github.com/iHongRen/hpack
  
-import sys
-import os
 import hashlib
+import os
+import sys
 from datetime import datetime
-
 
 # 定义颜色代码
 RED = '\033[31m'

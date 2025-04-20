@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 #  @github : https://github.com/iHongRen/hpack
  
-import os
-import sys
 import json
-import json5  # 先安装 pip3 install json5
-import segno  # 先安装 pip3 install segno 生成二维码
-
+import os
+import subprocess
 from datetime import datetime
 from string import Template
-import subprocess
 
-from utils import printError, printSuccess, get_directory_size,calculate_sha256
+import json5
+import segno  # 生成二维码
 from toolConfig import ToolConfig
+from utils import calculate_sha256, get_directory_size, printError
 
 
 def read_app_info():
@@ -54,7 +52,7 @@ def read_api_version():
     return None
 
 
-def get_module_infos(Config, build_dir, timestamp):
+def get_module_infos(build_dir, remotePath):
     result = []
     for root, dirs, files in os.walk(build_dir):
         for file in files:
@@ -66,7 +64,7 @@ def get_module_infos(Config, build_dir, timestamp):
                     _type = "entry"
                 else:
                     _type = "share"
-                package_url = f"{Config.BaseURL}/{timestamp}/{file}"
+                package_url = f"{remotePath}/{file}"
                 file_info = {
                     "name": name,
                     "type": _type,
@@ -77,14 +75,14 @@ def get_module_infos(Config, build_dir, timestamp):
                 result.append(file_info)    
     return result
 
-def create_unsign_manifest(Config, build_dir, timestamp, bundle_name, version_code, version_name):
+def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name):
     apiVersion = read_api_version()
     if apiVersion is None:
         printError("无法获取 sdk api version，无法处理 manifest.json5 文件。")
         return False
 
 
-    modules = get_module_infos(Config, build_dir,timestamp)
+    modules = get_module_infos(build_dir,remotePath)
     if not modules:
         printError("无法获取打包模块信息，无法处理 manifest.json5 文件。")
         return False
@@ -176,14 +174,10 @@ def create_sign_manifest(Config, build_dir):
     return True
 
 
-def handle_html(Config, result):
-    file_path = os.path.join(result["build_dir"], "index.html")
-    date = datetime.now().strftime("%Y-%m-%d %H:%M")
-
-    # 要编码的内容
-    data = f"{Config.BaseURL}/{result["timestamp"]}/index.html"
+def handle_html(Config, result, remotePath):
     # 生成二维码
-    qr = segno.make(data)
+    index_url = f"{remotePath}/index.html"
+    qr = segno.make(index_url)
     svg_string = qr.svg_data_uri(scale=10)
 
     # 读取 HTML 模板文件
@@ -191,6 +185,9 @@ def handle_html(Config, result):
     with open(template_path, "r", encoding="utf-8") as template_file:
         html = template_file.read()
 
+    manifest_url = f"{remotePath}/{ToolConfig.SignedManifestFile}"
+    date = datetime.now().strftime("%Y-%m-%d %H:%M")
+    
     template = Template(html)
     html_template = template.safe_substitute(
         app_icon=Config.AppIcon,
@@ -199,12 +196,12 @@ def handle_html(Config, result):
         date=date,
         size=result["size"],
         desc=result["desc"],
-        timestamp=result["timestamp"],
+        manifest_url=manifest_url,
         svg_string=svg_string,
-        baseUrl=Config.BaseURL,
         packText=Config.AppName
     )
 
+    file_path = os.path.join(result["build_dir"], "index.html")
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(html_template)
     return svg_string
@@ -216,10 +213,12 @@ def signInfo(Config, desc=""):
         printError("无法获取版本信息，无法处理 manifest.json5 文件。")
         return
     
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    build_dir = ToolConfig.BuildDir
+    remote_dir = datetime.now().strftime("%Y%m%d%H%M%S")
+    remotePath = f"{Config.BaseURL}/{remote_dir}"
 
-    unsignRet = create_unsign_manifest(Config, build_dir, timestamp, bundle_name, version_code, version_name)
+    build_dir = ToolConfig.BuildDir
+    
+    unsignRet = create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name)
     if not unsignRet:
         return
 
@@ -233,17 +232,15 @@ def signInfo(Config, desc=""):
         "bundle_name": bundle_name,
         "version_code": version_code,
         "version_name": version_name,
-        "timestamp": timestamp,
         "size": size,
         "desc": desc,
         "build_dir": build_dir,
-        "url": f"{Config.BaseURL}/{timestamp}/index.html"
+        "remote_dir": remote_dir,
     }
     
-    qrcode = handle_html(Config, result)
+    qrcode = handle_html(Config, result, remotePath)
     if qrcode:
         result["qrcode"] = qrcode
     
-    printSuccess(f"打包完成，版本：{version_name}，版本号：{version_code}，大小：{size}")
     return result
 

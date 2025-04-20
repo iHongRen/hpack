@@ -2,12 +2,11 @@
 #  @github : https://github.com/iHongRen/hpack
  
 import os
-import subprocess
 import shutil
-import sys
+import subprocess
 
-from utils import printError, isWin, timeit
 from toolConfig import ToolConfig
+from utils import isWin, printError, timeit
 
 
 @timeit

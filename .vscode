@@ -1,8 +1,0 @@
-{
-    "servers": {
-        "hpack Docs": {
-            "type": "sse",
-            "url": "https://gitmcp.io/iHongRen/hpack"
-        }
-    }
-}
