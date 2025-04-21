@@ -18,6 +18,18 @@ def clean():
         printError(f"清理操作出错: {e}")
 
 
+@timeit
+def buildHapHsp():
+    """构建 Hap & Hsp"""
+    try:
+        subprocess.run(['hvigorw', 'assembleHap', 'assembleHsp', '--mode', 'module', '-p', 'product=default', '-p', 'debuggable=true','--no-daemon'], check=True, shell=isWin())
+        print("构建 Hap Hsp 完成")
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"构建 Hap 出错: {e}")
+        return False
+
+
 def mkBuildDir():
     """处理 hpack/build 目录，若存在则删除再创建"""
     build_dir  = ToolConfig.BuildDir
@@ -26,16 +38,6 @@ def mkBuildDir():
         print(f"已删除 {build_dir} 目录。")
     os.makedirs(build_dir, exist_ok=True)
     print(f"已创建 {build_dir} 目录。")
-
-@timeit
-def buildHapHsp():
-    """构建 Hap & Hsp"""
-    try:
-        subprocess.run(['hvigorw', 'assembleHap', 'assembleHsp', '--mode', 'module', '-p', 'product=default', '-p', 'debuggable=true','--no-daemon'], check=True, shell=isWin())
-        print("构建 Hap Hsp 完成")
-    except subprocess.CalledProcessError as e:
-        print(f"构建 Hap 出错: {e}")
-
 
 @timeit
 def signHapHsp(Config):
@@ -83,7 +85,8 @@ def sign(Config, unsigned_file_path):
 
 def pack_sign(Config):
     clean()
-    buildHapHsp()
+    if not buildHapHsp():
+        return
     mkBuildDir()
     signHapHsp(Config)
 

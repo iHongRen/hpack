@@ -175,9 +175,9 @@ def show_help():
   -h, --help     显示帮助信息
 
 命令:
-  init           初始化 hpack 目录并创建配置文件
-  pack [desc]    执行打包签名和上传, 更新说明可选
-
+  init / i             初始化 hpack 目录并创建配置文件
+  pack / p [desc]      执行打包签名和上传, desc 可选
+  template / t [name]  生成 html 模板文件，name 可选，默认 default
 版本: {__version__}
 """
     print(help_text)
