@@ -1,5 +1,8 @@
 ### [hpack](https://github.com/iHongRen/hpack) 简介
 
+> 您当前阅读的是 v0.0.1版本的 hpack，最新版本请查看 [hpack](https://github.com/iHongRen/hpack) 
+>
+
 **[h-pack](https://github.com/iHongRen/hpack)** 是一个针对HarmonyOS的内测分发工具，一行命令完成鸿蒙应用的构建打包、签名、上传到阿里云OSS进行内测分发。
 
 
