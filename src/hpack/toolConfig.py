@@ -2,12 +2,14 @@
 #  @github : https://github.com/iHongRen/hpack
  
 import os
+
+
 class ToolConfig: 
     CurrentDir = os.path.dirname(os.path.abspath(__file__))
+    TemplateDir = os.path.join(CurrentDir, 'templates')
 
     HpackDir = 'hpack'
     BuildDir = os.path.join(HpackDir, 'build')
-    IndexTemplateHtml = os.path.join(CurrentDir,'index_template.html')
 
     # 打包工具配置 - 无需修改
     SignDir = 'hap-manifest-sign-tool'

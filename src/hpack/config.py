@@ -23,6 +23,11 @@ class Config:
     AppName = 'hpack'
     Badge = '鸿蒙版'
     
+    # index模板, 取值 [default, tech, cartoon, tradition, custom]
+    # 如果是 custom，则表示自定义模板，需要自己在hpack目录写一个 index.html，
+    # 打包完成后进行内容填充，再写入hpack/build目录
+    IndexTemplate = "default" 
+
     # 打包签名配置 
     Alias = 'your key alias'
     KeyPwd = 'your key password'

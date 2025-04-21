@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>$title</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Comic Sans MS', 'Marker Felt', 'Arial Rounded MT Bold', sans-serif;
+                background-color: #fff5f7;
+                color: #333;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                position: relative;
+                overflow-x: hidden;
+                background-image: radial-gradient(circle at 20% 30%, #ffd6e7 0%, transparent 25%), radial-gradient(circle at 80% 70%, #d6f4ff 0%, transparent 25%);
+            }
+
+            .bubble {
+                position: absolute;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.2);
+                z-index: 0;
+            }
+
+            .bubble1 {
+                width: 150px;
+                height: 150px;
+                top: 10%;
+                left: 5%;
+                animation: float 8s ease-in-out infinite;
+            }
+
+            .bubble2 {
+                width: 200px;
+                height: 200px;
+                top: 30%;
+                right: 5%;
+                animation: float 10s ease-in-out infinite reverse;
+            }
+
+            .bubble3 {
+                width: 100px;
+                height: 100px;
+                bottom: 15%;
+                left: 15%;
+                animation: float 12s ease-in-out infinite;
+            }
+
+            .card {
+                background-color: white;
+                border-radius: 30px;
+                box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
+                width: 90%;
+                max-width: 400px;
+                padding: 30px;
+                position: relative;
+                z-index: 1;
+                margin-bottom: 30px;
+                text-align: center;
+                border: 4px solid #ff85c0;
+                transform-style: preserve-3d;
+            }
+
+            .card::before {
+                content: '';
+                position: absolute;
+                top: -8px;
+                left: -8px;
+                right: -8px;
+                bottom: -8px;
+                border-radius: 35px;
+                background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+                z-index: -1;
+                opacity: 0.4;
+                transform: translateZ(-10px);
+            }
+
+            .app-icon {
+                width: 80px;
+                height: 80px;
+                border-radius: 20px;
+                margin: 0 auto 25px;
+                border: 4px solid white;
+                box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+                transition: all 0.3s ease;
+                background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 32px;
+                font-weight: bold;
+                transform: rotate(-5deg);
+            }
+
+            .app-icon:hover {
+                transform: scale(1.1) rotate(5deg);
+            }
+
+            .app-title {
+                font-size: 26px;
+                font-weight: 800;
+                color: #ff6b9d;
+                margin-bottom: 5px;
+                text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.8);
+                letter-spacing: 1px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .version-badge {
+                background-color: #ff85c0;
+                color: white;
+                font-size: 14px;
+                padding: 4px 12px;
+                border-radius: 15px;
+                margin-left: 10px;
+                font-weight: bold;
+                box-shadow: 0 3px 8px rgba(255, 105, 180, 0.3);
+                transform: rotate(5deg);
+            }
+
+            .app-version {
+                color: #888;
+                font-size: 15px;
+                margin-bottom: 25px;
+                font-weight: 500;
+            }
+
+            .info-card {
+                background-color: #fff9fc;
+                border-radius: 20px;
+                padding: 20px;
+                margin: 20px 0;
+                text-align: left;
+                border: 2px dashed #ffb6c1;
+                position: relative;
+            }
+
+            .info-card::before {
+                content: '✨';
+                position: absolute;
+                top: -15px;
+                left: 20px;
+                font-size: 24px;
+            }
+
+            .info-item {
+                display: flex;
+                margin-bottom: 15px;
+                font-size: 15px;
+                color: #666;
+                align-items: center;
+            }
+
+            .info-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .info-icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 12px;
+                color: #ff6b9d;
+                flex-shrink: 0;
+                font-size: 20px;
+            }
+
+            .qr-container {
+                margin: 25px 0;
+                position: relative;
+            }
+
+            .qr-container::after {
+                content: '';
+                position: absolute;
+                bottom: -15px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80%;
+                height: 10px;
+                background: radial-gradient(ellipse at center, rgba(255, 105, 180, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+                z-index: -1;
+            }
+
+            .qr-label {
+                font-size: 16px;
+                color: #ff6b9d;
+                margin-bottom: 12px;
+                font-weight: bold;
+            }
+
+            .qr-code {
+                width: 160px;
+                height: 160px;
+                margin: 0 auto;
+                background-color: white;
+                border-radius: 15px;
+                box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+                transition: all 0.3s ease;
+                border: 3px solid #ffb6c1;
+                padding: 10px;
+                background-image: radial-gradient(circle at center, #ffecf5 0%, white 70%);
+            }
+
+            .qr-code:hover {
+                transform: scale(1.05) rotate(2deg);
+            }
+
+            .download-btn {
+                background: linear-gradient(135deg, #ff6b9d 0%, #ff85c0 100%);
+                color: white;
+                border: none;
+                border-radius: 50px;
+                padding: 16px 30px;
+                font-size: 18px;
+                font-weight: bold;
+                width: 100%;
+                max-width: 240px;
+                margin: 20px auto 10px;
+                cursor: pointer;
+                box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .download-btn:hover {
+                transform: translateY(-3px) scale(1.05);
+                box-shadow: 0 12px 25px rgba(255, 105, 180, 0.5);
+            }
+
+            .download-btn:active {
+                transform: translateY(0) scale(0.98);
+            }
+
+            .download-btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+                transition: all 0.5s ease;
+            }
+
+            .download-btn:hover::before {
+                left: 100%;
+            }
+
+            .btn-icon {
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+            }
+
+            .harmony-badge {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 15px;
+            }
+
+            .hpack-power {
+                font-size: 12px;
+                color: #ff85c0;
+                display: inline-block;
+                font-weight: bold;
+            }
+
+            .hpack-link {
+                color: #ff6b9d;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            @keyframes float {
+                0% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+                100% {
+                    transform: translateY(0px);
+                }
+            }
+
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+
+            .pulse {
+                animation: pulse 1.5s infinite;
+            }
+
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.4);
+                }
+                70% {
+                    box-shadow: 0 0 0 15px rgba(255, 105, 180, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(255, 105, 180, 0);
+                }
+            }
+
+            .float {
+                animation: float 3s ease-in-out infinite;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="bubble bubble1"></div>
+        <div class="bubble bubble2"></div>
+        <div class="bubble bubble3"></div>
+
+        <div class="card">
+            <img src="$app_icon" class="app-icon float" alt="App Icon" />
+
+            <div class="app-title">
+                $title
+                <span class="version-badge">$badge</span>
+            </div>
+
+            <div class="app-version">(v$version_name $version_code) • $size</div>
+
+            <div class="info-card">
+                <div class="info-item">
+                    <svg class="info-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,19H5V8H19M16,1V3H8V1H6V3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H18V1M17,12H12V17H17V12Z" />
+                    </svg>
+                    <span>更新时间: $date</span>
+                </div>
+                <div class="info-item">
+                    <svg class="info-icon" viewBox="0 0 24 24">
+                        <path
+                            fill="currentColor"
+                            d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 002 12a10 10 0 0010 10 10 10 0 0010-10A10 10 0 0012 2m-1 15h2v-6h-2v6z"
+                        />
+                    </svg>
+                    <span>更新说明: $desc</span>
+                </div>
+            </div>
+
+            <div class="qr-container">
+                <div class="qr-label">扫描二维码安装</div>
+                <img class="qr-code" src="$qrcode" alt="QR Code" />
+            </div>
+
+            <button class="download-btn pulse" onclick="window.location.href='store://enterprise/manifest?url=$manifest_url'">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+                </svg>
+                立即安装
+            </button>
+
+            <div class="harmony-badge">
+                <p class="hpack-power">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Add ripple effect to download button
+                const downloadBtn = document.querySelector('.download-btn')
+
+                downloadBtn.addEventListener('click', function (e) {
+                    // Create ripple element
+                    const ripple = document.createElement('span')
+                    ripple.className = 'ripple'
+
+                    // Position the ripple
+                    const rect = this.getBoundingClientRect()
+                    const size = Math.max(rect.width, rect.height)
+                    const x = e.clientX - rect.left - size / 2
+                    const y = e.clientY - rect.top - size / 2
+
+                    // Style the ripple
+                    ripple.style.width = ripple.style.height = size + 'px'
+                    ripple.style.left = x + 'px'
+                    ripple.style.top = y + 'px'
+                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.4)'
+                    ripple.style.position = 'absolute'
+                    ripple.style.borderRadius = '50%'
+                    ripple.style.transform = 'scale(0)'
+                    ripple.style.animation = 'ripple 0.6s linear'
+
+                    // Add ripple to button
+                    this.appendChild(ripple)
+
+                    // Remove ripple after animation
+                    setTimeout(() => {
+                        ripple.remove()
+                    }, 600)
+
+                    // Create confetti
+                    for (let i = 0; i < 20; i++) {
+                        const confetti = document.createElement('div')
+                        confetti.style.position = 'fixed'
+                        confetti.style.width = `${Math.random() * 10 + 5}px`
+                        confetti.style.height = `${Math.random() * 10 + 5}px`
+                        confetti.style.backgroundColor = `hsl(${Math.random() * 60 + 330}, 100%, ${Math.random() * 30 + 60}%)`
+                        confetti.style.borderRadius = '50%'
+                        confetti.style.left = `${e.clientX}px`
+                        confetti.style.top = `${e.clientY}px`
+                        confetti.style.opacity = '0.8'
+                        confetti.style.zIndex = '100'
+                        confetti.style.transform = `rotate(${Math.random() * 360}deg)`
+
+                        document.body.appendChild(confetti)
+
+                        // Animate confetti
+                        const animation = confetti.animate(
+                            [
+                                { top: `${e.clientY}px`, opacity: 1, transform: `translateX(${(Math.random() - 0.5) * 50}px) rotate(0deg)` },
+                                { top: `${e.clientY + 200}px`, opacity: 0, transform: `translateX(${(Math.random() - 0.5) * 200}px) rotate(${Math.random() * 360}deg)` }
+                            ],
+                            {
+                                duration: Math.random() * 1000 + 1000,
+                                easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
+                            }
+                        )
+
+                        animation.onfinish = () => confetti.remove()
+                    }
+                })
+
+                // QR code click effect
+                const qrCode = document.querySelector('.qr-code')
+                qrCode.addEventListener('click', function () {
+                    this.style.transform = 'scale(0.95) rotate(-5deg)'
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1) rotate(0deg)'
+                    }, 300)
+                })
+
+                // Make bubbles interactive
+                const bubbles = document.querySelectorAll('.bubble')
+                bubbles.forEach(bubble => {
+                    bubble.addEventListener('mouseenter', function () {
+                        this.style.transform = 'scale(1.2)'
+                    })
+                    bubble.addEventListener('mouseleave', function () {
+                        this.style.transform = 'scale(1)'
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>

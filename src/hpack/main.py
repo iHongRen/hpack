@@ -108,6 +108,39 @@ def pack_command(desc):
     except subprocess.CalledProcessError as e:
         printError(f"执行 didPack 时出错: {e}, 跳过处理")
 
+
+def template_command(tname="default"):
+    names = get_template_filenames()
+    if not tname in names:
+        print(f"该模板不存在，模板列表：{names}")
+        return
+    
+    hpack_dir = os.path.join(os.getcwd(), ToolConfig.HpackDir)
+    if not os.path.exists(hpack_dir):
+        print("请先初始化：hpack init")
+        return
+    
+    try:
+        template_path = os.path.join(ToolConfig.TemplateDir, f"{tname}.html")
+        target_template_path = os.path.join(hpack_dir, "index.html")
+        if os.path.exists(target_template_path):
+            print(f"html模板文件已存在：{target_template_path}")
+            return
+        shutil.copy2(template_path, target_template_path)
+    except OSError as e:
+        printError(f"html模板文件生成 失败 - {e}")
+    
+
+def get_template_filenames():
+    template_dir = ToolConfig.TemplateDir
+    filenames = []
+    if os.path.exists(template_dir):
+        for filename in os.listdir(template_dir):
+            if os.path.isfile(os.path.join(template_dir, filename)):
+                name, _ = os.path.splitext(filename)
+                filenames.append(name)
+    return filenames
+    
 def get_config():
     config_file_path = os.path.join(os.getcwd(), ToolConfig.HpackDir, 'config.py')
     if os.path.exists(config_file_path):
@@ -156,14 +189,20 @@ def main():
             show_version()
         elif sys.argv[1] in ['-h', '--help']:
             show_help()
-        elif sys.argv[1] == 'init':
+        elif sys.argv[1] in ['init', 'i']:
             init_command()
-        elif sys.argv[1] == 'pack':
+        elif sys.argv[1] in ['pack', 'p']:
             if len(sys.argv) > 2:
                 desc = sys.argv[2]
             else:
                 desc = ""
             pack_command(desc)
+        elif sys.argv[1] in ['template', 't']:
+            if len(sys.argv) > 2:
+                tname = sys.argv[2]
+            else:
+                tname = "default"
+            template_command(tname)
         else:
             print("无效的命令或选项，请使用 'hpack -h' 查看帮助信息。")
     else:

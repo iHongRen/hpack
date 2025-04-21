@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>$title</title>
+        <style>
+            /* Chinese-style fonts */
+            @font-face {
+                font-family: 'ChineseFont';
+                src: local('SimSun'), local('Songti SC');
+            }
+
+            :root {
+                --primary: #d81b60;
+                --primary-dark: #9c1352;
+                --secondary: #ff8a65;
+                --bg-dark: #f8f3e6;
+                --bg-light: #fff9f0;
+                --text: #5c3a21;
+                --text-secondary: #8d6e63;
+                --border: #d7ccc8;
+                --shadow: 0 4px 12px rgba(92, 58, 33, 0.1);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'ChineseFont', serif;
+                background-color: var(--bg-dark);
+                color: var(--text);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                position: relative;
+                overflow-x: hidden;
+                background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm-6 60c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm29 22c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-19-36c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%23d7ccc8' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            }
+
+            .card {
+                background: var(--bg-light);
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+                width: 90%;
+                max-width: 420px;
+                padding: 30px;
+                position: relative;
+                z-index: 1;
+                margin-bottom: 30px;
+                text-align: center;
+                border: 1px solid var(--border);
+                overflow: hidden;
+            }
+
+            .card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 8px;
+                background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            }
+
+            .app-icon {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                margin: 20px auto;
+                border: 3px solid var(--primary);
+                box-shadow: var(--shadow);
+                transition: all 0.4s ease;
+                position: relative;
+                overflow: hidden;
+                background-color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .app-icon:hover {
+                transform: scale(1.05);
+                box-shadow: 0 8px 25px rgba(216, 27, 96, 0.2);
+            }
+
+            .app-title {
+                font-size: 28px;
+                font-weight: bold;
+                color: var(--primary);
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                letter-spacing: 2px;
+            }
+
+            .version-badge {
+                background: linear-gradient(90deg, var(--primary-dark) 0%, var(--secondary) 100%);
+                color: white;
+                font-size: 12px;
+                padding: 3px 10px;
+                border-radius: 12px;
+                margin-left: 10px;
+                font-weight: 500;
+                box-shadow: 0 2px 8px rgba(156, 19, 82, 0.3);
+                letter-spacing: 0.5px;
+            }
+
+            .app-version {
+                color: var(--text-secondary);
+                font-size: 14px;
+                margin-bottom: 25px;
+                letter-spacing: 0.3px;
+            }
+
+            .info-card {
+                background: white;
+                border-radius: 8px;
+                padding: 18px;
+                margin: 20px 0;
+                text-align: left;
+                border: 1px solid var(--border);
+                box-shadow: var(--shadow);
+            }
+
+            .info-item {
+                display: flex;
+                margin-bottom: 12px;
+                font-size: 14px;
+                color: var(--text);
+                align-items: flex-start;
+                line-height: 1.5;
+            }
+
+            .info-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .info-icon {
+                width: 20px;
+                height: 20px;
+                margin-right: 12px;
+                color: var(--primary);
+                flex-shrink: 0;
+            }
+
+            .qr-container {
+                margin: 25px 0;
+                position: relative;
+            }
+
+            .qr-label {
+                font-size: 14px;
+                color: var(--text-secondary);
+                margin-bottom: 10px;
+                letter-spacing: 0.5px;
+            }
+
+            .qr-code {
+                width: 160px;
+                height: 160px;
+                margin: 0 auto;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+                transition: all 0.3s ease;
+                border: 1px solid var(--border);
+                padding: 10px;
+            }
+
+            .qr-code:hover {
+                transform: scale(1.05);
+                box-shadow: 0 8px 20px rgba(92, 58, 33, 0.15);
+            }
+
+            .download-btn {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 16px 24px;
+                font-size: 16px;
+                font-weight: 500;
+                width: 100%;
+                max-width: 240px;
+                margin: 15px auto;
+                cursor: pointer;
+                box-shadow: var(--shadow);
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                overflow: hidden;
+                letter-spacing: 2px;
+            }
+
+            .download-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(216, 27, 96, 0.3);
+            }
+
+            .download-btn:active {
+                transform: translateY(0);
+            }
+
+            .download-btn::after {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+                transform: rotate(30deg);
+                transition: all 0.6s ease;
+            }
+
+            .download-btn:hover::after {
+                left: 100%;
+            }
+
+            .btn-icon {
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+                color: white;
+            }
+
+            .instruction {
+                font-size: 12px;
+                color: var(--text-secondary);
+                margin-top: 20px;
+                letter-spacing: 0.3px;
+            }
+
+            .harmony-badge {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .harmony-icon {
+                width: 16px;
+                height: 16px;
+                margin-right: 6px;
+                color: var(--primary);
+            }
+
+            .hpack-power {
+                font-size: 12px;
+                color: var(--text-secondary);
+                display: inline-block;
+                letter-spacing: 0.3px;
+            }
+
+            .hpack-link {
+                color: var(--primary);
+                text-decoration: none;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .hpack-link::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 1px;
+                background: var(--primary);
+                transition: width 0.3s ease;
+            }
+
+            .hpack-link:hover::after {
+                width: 100%;
+            }
+
+            .corner-decoration {
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                opacity: 0.8;
+            }
+
+            .corner-tl {
+                top: 0;
+                left: 0;
+                border-top: 2px solid var(--primary);
+                border-left: 2px solid var(--primary);
+                border-top-left-radius: 8px;
+            }
+
+            .corner-tr {
+                top: 0;
+                right: 0;
+                border-top: 2px solid var(--primary);
+                border-right: 2px solid var(--primary);
+                border-top-right-radius: 8px;
+            }
+
+            .corner-bl {
+                bottom: 0;
+                left: 0;
+                border-bottom: 2px solid var(--primary);
+                border-left: 2px solid var(--primary);
+                border-bottom-left-radius: 8px;
+            }
+
+            .corner-br {
+                bottom: 0;
+                right: 0;
+                border-bottom: 2px solid var(--primary);
+                border-right: 2px solid var(--primary);
+                border-bottom-right-radius: 8px;
+            }
+
+            .floating-sakura {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d81b60'%3E%3Cpath d='M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z'/%3E%3Cpath d='M12 6c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6zm0 10c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z'/%3E%3Cpath d='M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'/%3E%3C/svg%3E");
+                background-size: contain;
+                opacity: 0.6;
+                z-index: -1;
+                animation: float 8s ease-in-out infinite;
+            }
+
+            @keyframes float {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                }
+                50% {
+                    transform: translateY(-20px) rotate(180deg);
+                }
+                100% {
+                    transform: translateY(0) rotate(360deg);
+                }
+            }
+
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+
+            .chinese-pattern {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm-6 60c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm29 22c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-19-36c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%23d7ccc8' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+                opacity: 0.3;
+                z-index: -1;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="chinese-pattern"></div>
+
+        <div class="card relative">
+            <div class="corner-decoration corner-tl"></div>
+            <div class="corner-decoration corner-tr"></div>
+            <div class="corner-decoration corner-bl"></div>
+            <div class="corner-decoration corner-br"></div>
+
+            <div class="app-icon">
+                <svg viewBox="0 0 24 24" width="60" height="60" fill="var(--primary)">
+                    <path d="M12,3L2,12H5V20H19V12H22L12,3M12,7.7L16,11.2V18H14V14H10V18H8V11.2L12,7.7Z" />
+                </svg>
+            </div>
+
+            <div class="app-title">
+                $title
+                <span class="version-badge">$badge</span>
+            </div>
+
+            <div class="app-version">(v$version_name $version_code) • $size</div>
+
+            <div class="info-card">
+                <div class="info-item">
+                    <svg class="info-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,19H5V8H19M16,1V3H8V1H6V3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H18V1M17,12H12V17H17V12Z" />
+                    </svg>
+                    <span>更新时间: $date</span>
+                </div>
+                <div class="info-item">
+                    <svg class="info-icon" viewBox="0 0 24 24">
+                        <path
+                            fill="currentColor"
+                            d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 002 12a10 10 0 0010 10 10 10 0 0010-10A10 10 0 0012 2m-1 15h2v-6h-2v6z"
+                        />
+                    </svg>
+                    <span>更新说明: $desc</span>
+                </div>
+            </div>
+
+            <div class="qr-container">
+                <div class="qr-label">扫描二维码安装</div>
+                <img class="qr-code" src="$qrcode" alt="QR Code" />
+            </div>
+
+            <button class="download-btn" onclick="window.location.href='store://enterprise/manifest?url=$manifest_url'">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+                </svg>
+                立即安装
+            </button>
+
+            <div class="harmony-badge">
+                <p class="hpack-power">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Create sakura petals
+                const sakuraCount = 12
+                const container = document.body
+
+                for (let i = 0; i < sakuraCount; i++) {
+                    const sakura = document.createElement('div')
+                    sakura.className = 'floating-sakura'
+
+                    // Random position
+                    const posX = Math.random() * 100
+                    const posY = Math.random() * 100
+                    sakura.style.left = `${posX}%`
+                    sakura.style.top = `${posY}%`
+
+                    // Random size
+                    const size = Math.random() * 20 + 10
+                    sakura.style.width = `${size}px`
+                    sakura.style.height = `${size}px`
+
+                    // Random animation duration and delay
+                    const duration = Math.random() * 10 + 5
+                    const delay = Math.random() * 5
+                    sakura.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`
+
+                    container.appendChild(sakura)
+                }
+
+                // Add ripple effect to download button
+                const downloadBtn = document.querySelector('.download-btn')
+
+                downloadBtn.addEventListener('click', function (e) {
+                    // Create ripple element
+                    const ripple = document.createElement('span')
+                    ripple.className = 'ripple'
+
+                    // Position the ripple
+                    const rect = this.getBoundingClientRect()
+                    const size = Math.max(rect.width, rect.height)
+                    const x = e.clientX - rect.left - size / 2
+                    const y = e.clientY - rect.top - size / 2
+
+                    // Style the ripple
+                    ripple.style.width = ripple.style.height = size + 'px'
+                    ripple.style.left = x + 'px'
+                    ripple.style.top = y + 'px'
+                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'
+                    ripple.style.position = 'absolute'
+                    ripple.style.borderRadius = '50%'
+                    ripple.style.transform = 'scale(0)'
+                    ripple.style.animation = 'ripple 0.6s linear'
+
+                    // Add ripple to button
+                    this.appendChild(ripple)
+
+                    // Remove ripple after animation
+                    setTimeout(() => {
+                        ripple.remove()
+                    }, 600)
+                })
+
+                // QR code click effect
+                const qrCode = document.querySelector('.qr-code')
+                qrCode.addEventListener('click', function () {
+                    this.style.transform = 'scale(0.95)'
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)'
+                    }, 300)
+                })
+            })
+        </script>
+    </body>
+</html>

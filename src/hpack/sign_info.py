@@ -181,28 +181,33 @@ def create_sign_manifest(Config, build_dir):
 
 
 
-def handle_html(Config, packInfo, remotePath, qrcode):
-
+def handle_html(Config, packInfo):
+    if Config.IndexTemplate == "custom" or not Config.IndexTemplate:
+        print("您选择了自定义模板，请自行处理 index.html 文件。")
+        return
+    
     # 读取 HTML 模板文件
-    template_path = ToolConfig.IndexTemplateHtml
+    template_path = os.path.join(ToolConfig.HpackDir, "index.html")
+    if not os.path.exists(template_path):
+        template_path = os.path.join(ToolConfig.TemplateDir, Config.IndexTemplate)
+
     with open(template_path, "r", encoding="utf-8") as template_file:
         html = template_file.read()
-
-    manifest_url = f"{remotePath}/{ToolConfig.SignedManifestFile}"
+        
     date = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     template = Template(html)
     html_template = template.safe_substitute(
         app_icon=Config.AppIcon,
+        title=Config.AppName,
+        badge=Config.Badge,
+        date=date,
         version_name=packInfo["version_name"],
         version_code=packInfo["version_code"],
-        date=date,
         size=packInfo["size"],
         desc=packInfo["desc"],
-        manifest_url=manifest_url,
-        qrcode=qrcode,
-        title=Config.AppName,
-        badge=Config.Badge
+        manifest_url=packInfo["manifest_url"],
+        qrcode=packInfo["qrcode"]
     )
 
     file_path = os.path.join(packInfo["build_dir"], "index.html")
@@ -238,6 +243,8 @@ def signInfo(Config, desc=""):
     qr = segno.make(index_url)
     qrcode = qr.svg_data_uri(scale=10)
     
+    manifest_url = f"{remotePath}/{ToolConfig.SignedManifestFile}"
+
     packInfo = {
         "bundle_name": bundle_name,
         "version_code": version_code,
@@ -246,10 +253,11 @@ def signInfo(Config, desc=""):
         "desc": desc,
         "build_dir": build_dir,
         "remote_dir": remote_dir,
+        "manifest_url": manifest_url,
         "qrcode": qrcode,
     }
     
-    handle_html(Config, packInfo, remotePath, qrcode)
+    handle_html(Config, packInfo)
     
     return packInfo
 

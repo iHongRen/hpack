@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>$title</title>
+        <style>
+            :root {
+                --primary: #00f0ff;
+                --primary-dark: #0066ff;
+                --secondary: #7b2dff;
+                --bg-dark: #0a0a1a;
+                --bg-light: #1a1a2e;
+                --text: #e0e0ff;
+                --text-secondary: #a0a0c0;
+                --glow: 0 0 10px rgba(0, 240, 255, 0.5);
+                --glow-intense: 0 0 20px rgba(0, 240, 255, 0.8);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+                background-color: var(--bg-dark);
+                color: var(--text);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                position: relative;
+                overflow-x: hidden;
+                background-image: radial-gradient(circle at 20% 30%, rgba(0, 240, 255, 0.05) 0%, transparent 20%), radial-gradient(circle at 80% 70%, rgba(123, 45, 255, 0.05) 0%, transparent 20%);
+            }
+
+            .card {
+                background: linear-gradient(145deg, var(--bg-light) 0%, #151528 100%);
+                border-radius: 16px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), var(--glow);
+                width: 90%;
+                max-width: 420px;
+                padding: 30px;
+                position: relative;
+                z-index: 1;
+                margin-bottom: 30px;
+                text-align: center;
+                border: 1px solid rgba(0, 240, 255, 0.1);
+                overflow: hidden;
+            }
+
+            .card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(to bottom right, transparent 0%, rgba(0, 240, 255, 0.03) 50%, transparent 100%);
+                transform: rotate(30deg);
+                pointer-events: none;
+            }
+
+            .app-icon {
+                width: 80px;
+                height: 80px;
+                border-radius: 20px;
+                margin: 0 auto 25px;
+                border: 2px solid rgba(0, 240, 255, 0.3);
+                box-shadow: 0 5px 20px rgba(0, 240, 255, 0.2), var(--glow);
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .app-icon::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, rgba(0, 240, 255, 0.1) 0%, rgba(123, 45, 255, 0.1) 100%);
+                border-radius: inherit;
+            }
+
+            .app-icon:hover {
+                transform: scale(1.1) rotate(5deg);
+                box-shadow: 0 8px 25px rgba(0, 240, 255, 0.3), var(--glow-intense);
+            }
+
+            .app-title {
+                font-size: 26px;
+                font-weight: 600;
+                background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                letter-spacing: 0.5px;
+            }
+
+            .version-badge {
+                background: linear-gradient(90deg, var(--primary-dark) 0%, var(--secondary) 100%);
+                color: white;
+                font-size: 12px;
+                padding: 3px 10px;
+                border-radius: 12px;
+                margin-left: 10px;
+                font-weight: 500;
+                box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .app-version {
+                color: var(--text-secondary);
+                font-size: 14px;
+                margin-bottom: 25px;
+                letter-spacing: 0.3px;
+            }
+
+            .info-card {
+                background: rgba(10, 10, 25, 0.5);
+                border-radius: 12px;
+                padding: 18px;
+                margin: 20px 0;
+                text-align: left;
+                border: 1px solid rgba(0, 240, 255, 0.1);
+                backdrop-filter: blur(5px);
+            }
+
+            .info-item {
+                display: flex;
+                margin-bottom: 12px;
+                font-size: 14px;
+                color: var(--text);
+                align-items: flex-start;
+                line-height: 1.5;
+            }
+
+            .info-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .info-icon {
+                width: 20px;
+                height: 20px;
+                margin-right: 12px;
+                color: var(--primary);
+                flex-shrink: 0;
+                filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.5));
+            }
+
+            .qr-container {
+                margin: 25px 0;
+                position: relative;
+            }
+
+            .qr-label {
+                font-size: 14px;
+                color: var(--text-secondary);
+                margin-bottom: 10px;
+                letter-spacing: 0.5px;
+            }
+
+            .qr-code {
+                width: 160px;
+                height: 160px;
+                margin: 0 auto;
+                background-color: white;
+                border-radius: 12px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 240, 255, 0.3);
+                transition: all 0.3s ease;
+                border: 1px solid rgba(0, 240, 255, 0.3);
+                padding: 10px;
+            }
+
+            .qr-code:hover {
+                transform: scale(1.05);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), var(--glow-intense);
+            }
+
+            .download-btn {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                padding: 16px 24px;
+                font-size: 16px;
+                font-weight: 500;
+                width: 100%;
+                max-width: 240px;
+                margin: 15px auto;
+                cursor: pointer;
+                box-shadow: 0 5px 20px rgba(0, 102, 255, 0.3), var(--glow);
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                overflow: hidden;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+            }
+
+            .download-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(0, 102, 255, 0.4), var(--glow-intense);
+            }
+
+            .download-btn:active {
+                transform: translateY(0);
+            }
+
+            .download-btn::after {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+                transform: rotate(30deg);
+                transition: all 0.6s ease;
+            }
+
+            .download-btn:hover::after {
+                left: 100%;
+            }
+
+            .btn-icon {
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+                filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+            }
+
+            .instruction {
+                font-size: 12px;
+                color: var(--text-secondary);
+                margin-top: 20px;
+                letter-spacing: 0.3px;
+            }
+
+            .harmony-badge {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .harmony-icon {
+                width: 16px;
+                height: 16px;
+                margin-right: 6px;
+                color: var(--primary);
+            }
+
+            .hpack-power {
+                font-size: 12px;
+                color: var(--text-secondary);
+                display: inline-block;
+                letter-spacing: 0.3px;
+            }
+
+            .hpack-link {
+                color: var(--primary);
+                text-decoration: none;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .hpack-link::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 1px;
+                background: var(--primary);
+                transition: width 0.3s ease;
+            }
+
+            .hpack-link:hover::after {
+                width: 100%;
+            }
+
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 5px 20px rgba(0, 102, 255, 0.3), 0 0 10px rgba(0, 240, 255, 0.5);
+                }
+                50% {
+                    box-shadow: 0 5px 20px rgba(0, 102, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.8);
+                }
+                100% {
+                    box-shadow: 0 5px 20px rgba(0, 102, 255, 0.3), 0 0 10px rgba(0, 240, 255, 0.5);
+                }
+            }
+
+            .pulse {
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes float {
+                0% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+                100% {
+                    transform: translateY(0px);
+                }
+            }
+
+            .float {
+                animation: float 3s ease-in-out infinite;
+            }
+
+            @keyframes scanline {
+                0% {
+                    transform: translateY(-100%);
+                }
+                100% {
+                    transform: translateY(100%);
+                }
+            }
+
+            .scanline {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(to bottom, transparent 0%, rgba(0, 240, 255, 0.5) 50%, transparent 100%);
+                animation: scanline 6s linear infinite;
+                opacity: 0.5;
+                pointer-events: none;
+            }
+
+            .corner {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                border-color: var(--primary);
+                border-style: solid;
+                border-width: 0;
+                opacity: 0.6;
+            }
+
+            .corner-tl {
+                top: 10px;
+                left: 10px;
+                border-top-width: 2px;
+                border-left-width: 2px;
+                border-top-left-radius: 6px;
+            }
+
+            .corner-tr {
+                top: 10px;
+                right: 10px;
+                border-top-width: 2px;
+                border-right-width: 2px;
+                border-top-right-radius: 6px;
+            }
+
+            .corner-bl {
+                bottom: 10px;
+                left: 10px;
+                border-bottom-width: 2px;
+                border-left-width: 2px;
+                border-bottom-left-radius: 6px;
+            }
+
+            .corner-br {
+                bottom: 10px;
+                right: 10px;
+                border-bottom-width: 2px;
+                border-right-width: 2px;
+                border-bottom-right-radius: 6px;
+            }
+
+            .particles {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                overflow: hidden;
+                pointer-events: none;
+                z-index: -1;
+                opacity: 0.3;
+            }
+
+            .particle {
+                position: absolute;
+                background: var(--primary);
+                border-radius: 50%;
+                opacity: 0;
+            }
+
+            @keyframes particle-anim {
+                0% {
+                    transform: translateY(0) translateX(0);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 0.5;
+                }
+                100% {
+                    transform: translateY(-1000px) translateX(100px);
+                    opacity: 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="particles" id="particles"></div>
+
+        <div class="card">
+            <div class="scanline"></div>
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+
+            <img src="$app_icon" class="app-icon float" alt="App Icon" />
+
+            <div class="app-title">
+                $title
+                <span class="version-badge">$badge</span>
+            </div>
+
+            <div class="app-version">(v$version_name $version_code) • $size</div>
+
+            <div class="info-card">
+                <div class="info-item">
+                    <svg class="info-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,19H5V8H19M16,1V3H8V1H6V3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H18V1M17,12H12V17H17V12Z" />
+                    </svg>
+                    <span>更新时间: $date</span>
+                </div>
+                <div class="info-item">
+                    <svg class="info-icon" viewBox="0 0 24 24">
+                        <path
+                            fill="currentColor"
+                            d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 002 12a10 10 0 0010 10 10 10 0 0010-10A10 10 0 0012 2m-1 15h2v-6h-2v6z"
+                        />
+                    </svg>
+                    <span>更新说明: $desc</span>
+                </div>
+            </div>
+
+            <div class="qr-container">
+                <div class="qr-label">扫描二维码安装</div>
+                <img class="qr-code" src="$qrcode" alt="QR Code" />
+            </div>
+
+            <button class="download-btn pulse" onclick="window.location.href='store://enterprise/manifest?url=$manifest_url'">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+                </svg>
+                立即安装
+            </button>
+
+            <div class="harmony-badge">
+                <p class="hpack-power">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Add ripple effect to download button
+                const downloadBtn = document.querySelector('.download-btn')
+
+                downloadBtn.addEventListener('click', function (e) {
+                    // Create ripple element
+                    const ripple = document.createElement('span')
+                    ripple.className = 'ripple'
+
+                    // Position the ripple
+                    const rect = this.getBoundingClientRect()
+                    const size = Math.max(rect.width, rect.height)
+                    const x = e.clientX - rect.left - size / 2
+                    const y = e.clientY - rect.top - size / 2
+
+                    // Style the ripple
+                    ripple.style.width = ripple.style.height = size + 'px'
+                    ripple.style.left = x + 'px'
+                    ripple.style.top = y + 'px'
+                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'
+                    ripple.style.position = 'absolute'
+                    ripple.style.borderRadius = '50%'
+                    ripple.style.transform = 'scale(0)'
+                    ripple.style.animation = 'ripple 0.6s linear'
+
+                    // Add ripple to button
+                    this.appendChild(ripple)
+
+                    // Remove ripple after animation
+                    setTimeout(() => {
+                        ripple.remove()
+                    }, 600)
+                })
+
+                // QR code click effect
+                const qrCode = document.querySelector('.qr-code')
+                qrCode.addEventListener('click', function () {
+                    this.style.transform = 'scale(0.95)'
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)'
+                    }, 300)
+                })
+
+                // Create particles
+                const particlesContainer = document.getElementById('particles')
+                const particleCount = 30
+
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div')
+                    particle.className = 'particle'
+
+                    // Random size between 1px and 3px
+                    const size = Math.random() * 2 + 1
+                    particle.style.width = `${size}px`
+                    particle.style.height = `${size}px`
+
+                    // Random position
+                    const posX = Math.random() * 100
+                    const posY = Math.random() * 100 + 100 // Start below viewport
+                    particle.style.left = `${posX}%`
+                    particle.style.top = `${posY}%`
+
+                    // Random animation duration and delay
+                    const duration = Math.random() * 10 + 5
+                    const delay = Math.random() * 5
+                    particle.style.animation = `particle-anim ${duration}s linear ${delay}s infinite`
+
+                    particlesContainer.appendChild(particle)
+                }
+            })
+        </script>
+
+        <style>
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        </style>
+    </body>
+</html>
