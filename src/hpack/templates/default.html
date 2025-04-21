@@ -38,8 +38,8 @@
             }
 
             .app-icon {
-                width: 60px;
-                height: 60px;
+                width: 64px;
+                height: 64px;
                 border-radius: 10px;
                 margin: 0 auto 20px;
                 border: 3px solid white;
@@ -290,60 +290,5 @@
                 <p class="hpack-power">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
             </div>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Add ripple effect to download button
-                const downloadBtn = document.querySelector('.download-btn')
-
-                downloadBtn.addEventListener('click', function (e) {
-                    // Create ripple element
-                    const ripple = document.createElement('span')
-                    ripple.className = 'ripple'
-
-                    // Position the ripple
-                    const rect = this.getBoundingClientRect()
-                    const size = Math.max(rect.width, rect.height)
-                    const x = e.clientX - rect.left - size / 2
-                    const y = e.clientY - rect.top - size / 2
-
-                    // Style the ripple
-                    ripple.style.width = ripple.style.height = size + 'px'
-                    ripple.style.left = x + 'px'
-                    ripple.style.top = y + 'px'
-                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'
-                    ripple.style.position = 'absolute'
-                    ripple.style.borderRadius = '50%'
-                    ripple.style.transform = 'scale(0)'
-                    ripple.style.animation = 'ripple 0.6s linear'
-
-                    // Add ripple to button
-                    this.appendChild(ripple)
-
-                    // Remove ripple after animation
-                    setTimeout(() => {
-                        ripple.remove()
-                    }, 600)
-                })
-
-                // QR code click effect
-                const qrCode = document.querySelector('.qr-code')
-                qrCode.addEventListener('click', function () {
-                    this.style.transform = 'scale(0.95)'
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)'
-                    }, 300)
-                })
-            })
-        </script>
-
-        <style>
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        </style>
     </body>
 </html>

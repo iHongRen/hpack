@@ -25,44 +25,13 @@
                 background-image: radial-gradient(circle at 20% 30%, #ffd6e7 0%, transparent 25%), radial-gradient(circle at 80% 70%, #d6f4ff 0%, transparent 25%);
             }
 
-            .bubble {
-                position: absolute;
-                border-radius: 50%;
-                background-color: rgba(255, 255, 255, 0.2);
-                z-index: 0;
-            }
-
-            .bubble1 {
-                width: 150px;
-                height: 150px;
-                top: 10%;
-                left: 5%;
-                animation: float 8s ease-in-out infinite;
-            }
-
-            .bubble2 {
-                width: 200px;
-                height: 200px;
-                top: 30%;
-                right: 5%;
-                animation: float 10s ease-in-out infinite reverse;
-            }
-
-            .bubble3 {
-                width: 100px;
-                height: 100px;
-                bottom: 15%;
-                left: 15%;
-                animation: float 12s ease-in-out infinite;
-            }
-
             .card {
                 background-color: white;
                 border-radius: 30px;
                 box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
                 width: 90%;
                 max-width: 400px;
-                padding: 30px;
+                padding: 20px;
                 position: relative;
                 z-index: 1;
                 margin-bottom: 30px;
@@ -86,8 +55,8 @@
             }
 
             .app-icon {
-                width: 80px;
-                height: 80px;
+                width: 64px;
+                height: 64px;
                 border-radius: 20px;
                 margin: 0 auto 25px;
                 border: 4px solid white;
@@ -112,7 +81,6 @@
                 font-weight: 800;
                 color: #ff6b9d;
                 margin-bottom: 5px;
-                text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.8);
                 letter-spacing: 1px;
                 display: flex;
                 align-items: center;
@@ -122,27 +90,24 @@
             .version-badge {
                 background-color: #ff85c0;
                 color: white;
-                font-size: 14px;
-                padding: 4px 12px;
+                font-size: 12px;
+                padding: 4px 10px;
                 border-radius: 15px;
                 margin-left: 10px;
-                font-weight: bold;
-                box-shadow: 0 3px 8px rgba(255, 105, 180, 0.3);
-                transform: rotate(5deg);
             }
 
             .app-version {
                 color: #888;
-                font-size: 15px;
-                margin-bottom: 25px;
+                font-size: 13px;
+                margin-bottom: 20px;
                 font-weight: 500;
             }
 
             .info-card {
                 background-color: #fff9fc;
                 border-radius: 20px;
-                padding: 20px;
-                margin: 20px 0;
+                padding: 10px;
+                margin: 15x 0;
                 text-align: left;
                 border: 2px dashed #ffb6c1;
                 position: relative;
@@ -158,8 +123,8 @@
 
             .info-item {
                 display: flex;
-                margin-bottom: 15px;
-                font-size: 15px;
+                margin-bottom: 10px;
+                font-size: 13px;
                 color: #666;
                 align-items: center;
             }
@@ -178,7 +143,7 @@
             }
 
             .qr-container {
-                margin: 25px 0;
+                margin: 20px 0;
                 position: relative;
             }
 
@@ -195,22 +160,21 @@
             }
 
             .qr-label {
-                font-size: 16px;
+                font-size: 12px;
                 color: #ff6b9d;
                 margin-bottom: 12px;
                 font-weight: bold;
             }
 
             .qr-code {
-                width: 160px;
-                height: 160px;
+                width: 140px;
+                height: 140px;
                 margin: 0 auto;
                 background-color: white;
                 border-radius: 15px;
                 box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
                 transition: all 0.3s ease;
                 border: 3px solid #ffb6c1;
-                padding: 10px;
                 background-image: radial-gradient(circle at center, #ffecf5 0%, white 70%);
             }
 
@@ -223,8 +187,8 @@
                 color: white;
                 border: none;
                 border-radius: 50px;
-                padding: 16px 30px;
-                font-size: 18px;
+                padding: 14px 30px;
+                font-size: 15px;
                 font-weight: bold;
                 width: 100%;
                 max-width: 240px;
@@ -236,6 +200,21 @@
                 overflow: hidden;
                 text-transform: uppercase;
                 letter-spacing: 1px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .download-btn::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100px;
+                height: 100px;
+                background: radial-gradient(circle, rgba(255, 105, 180, 0.5) 0%, rgba(255, 105, 180, 0) 70%);
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
             }
 
             .download-btn:hover {
@@ -300,13 +279,6 @@
                 }
             }
 
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-
             .pulse {
                 animation: pulse 1.5s infinite;
             }
@@ -329,10 +301,6 @@
         </style>
     </head>
     <body>
-        <div class="bubble bubble1"></div>
-        <div class="bubble bubble2"></div>
-        <div class="bubble bubble3"></div>
-
         <div class="card">
             <img src="$app_icon" class="app-icon float" alt="App Icon" />
 
@@ -377,93 +345,5 @@
                 <p class="hpack-power">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
             </div>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Add ripple effect to download button
-                const downloadBtn = document.querySelector('.download-btn')
-
-                downloadBtn.addEventListener('click', function (e) {
-                    // Create ripple element
-                    const ripple = document.createElement('span')
-                    ripple.className = 'ripple'
-
-                    // Position the ripple
-                    const rect = this.getBoundingClientRect()
-                    const size = Math.max(rect.width, rect.height)
-                    const x = e.clientX - rect.left - size / 2
-                    const y = e.clientY - rect.top - size / 2
-
-                    // Style the ripple
-                    ripple.style.width = ripple.style.height = size + 'px'
-                    ripple.style.left = x + 'px'
-                    ripple.style.top = y + 'px'
-                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.4)'
-                    ripple.style.position = 'absolute'
-                    ripple.style.borderRadius = '50%'
-                    ripple.style.transform = 'scale(0)'
-                    ripple.style.animation = 'ripple 0.6s linear'
-
-                    // Add ripple to button
-                    this.appendChild(ripple)
-
-                    // Remove ripple after animation
-                    setTimeout(() => {
-                        ripple.remove()
-                    }, 600)
-
-                    // Create confetti
-                    for (let i = 0; i < 20; i++) {
-                        const confetti = document.createElement('div')
-                        confetti.style.position = 'fixed'
-                        confetti.style.width = `${Math.random() * 10 + 5}px`
-                        confetti.style.height = `${Math.random() * 10 + 5}px`
-                        confetti.style.backgroundColor = `hsl(${Math.random() * 60 + 330}, 100%, ${Math.random() * 30 + 60}%)`
-                        confetti.style.borderRadius = '50%'
-                        confetti.style.left = `${e.clientX}px`
-                        confetti.style.top = `${e.clientY}px`
-                        confetti.style.opacity = '0.8'
-                        confetti.style.zIndex = '100'
-                        confetti.style.transform = `rotate(${Math.random() * 360}deg)`
-
-                        document.body.appendChild(confetti)
-
-                        // Animate confetti
-                        const animation = confetti.animate(
-                            [
-                                { top: `${e.clientY}px`, opacity: 1, transform: `translateX(${(Math.random() - 0.5) * 50}px) rotate(0deg)` },
-                                { top: `${e.clientY + 200}px`, opacity: 0, transform: `translateX(${(Math.random() - 0.5) * 200}px) rotate(${Math.random() * 360}deg)` }
-                            ],
-                            {
-                                duration: Math.random() * 1000 + 1000,
-                                easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
-                            }
-                        )
-
-                        animation.onfinish = () => confetti.remove()
-                    }
-                })
-
-                // QR code click effect
-                const qrCode = document.querySelector('.qr-code')
-                qrCode.addEventListener('click', function () {
-                    this.style.transform = 'scale(0.95) rotate(-5deg)'
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1) rotate(0deg)'
-                    }, 300)
-                })
-
-                // Make bubbles interactive
-                const bubbles = document.querySelectorAll('.bubble')
-                bubbles.forEach(bubble => {
-                    bubble.addEventListener('mouseenter', function () {
-                        this.style.transform = 'scale(1.2)'
-                    })
-                    bubble.addEventListener('mouseleave', function () {
-                        this.style.transform = 'scale(1)'
-                    })
-                })
-            })
-        </script>
     </body>
 </html>

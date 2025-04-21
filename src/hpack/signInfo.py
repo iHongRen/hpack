@@ -33,7 +33,6 @@ def read_app_info():
     return None
 
 
-
 def read_api_version():
     json_path = os.path.join("build-profile.json5")
     if not os.path.exists(json_path):
@@ -52,7 +51,6 @@ def read_api_version():
         printError(f"读取 build-profile.json5 文件时出错: {e}")
         return None
     return None
-
 
 
 def get_module_infos(build_dir, remotePath):
@@ -77,7 +75,6 @@ def get_module_infos(build_dir, remotePath):
                 }
                 result.append(file_info)    
     return result
-
 
 
 def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name):
@@ -126,7 +123,6 @@ def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_c
         return False
 
     return True
-
 
 
 def create_sign_manifest(Config, build_dir):
@@ -180,7 +176,6 @@ def create_sign_manifest(Config, build_dir):
     return True
 
 
-
 def handle_html(Config, packInfo):
     if Config.IndexTemplate == "custom" or not Config.IndexTemplate:
         print("您选择了自定义模板，请自行处理 index.html 文件。")
@@ -189,11 +184,11 @@ def handle_html(Config, packInfo):
     # 读取 HTML 模板文件
     template_path = os.path.join(ToolConfig.HpackDir, "index.html")
     if not os.path.exists(template_path):
-        template_path = os.path.join(ToolConfig.TemplateDir, Config.IndexTemplate)
+        template_path = os.path.join(ToolConfig.TemplateDir, f"{Config.IndexTemplate}.html")
 
     with open(template_path, "r", encoding="utf-8") as template_file:
         html = template_file.read()
-        
+
     date = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     template = Template(html)
@@ -215,8 +210,7 @@ def handle_html(Config, packInfo):
         f.write(html_template)
 
 
-
-def signInfo(Config, desc=""):
+def sign_info(Config, desc=""):
 
     bundle_name, version_code, version_name = read_app_info()
     if not bundle_name or not version_code or not version_name:
@@ -258,6 +252,5 @@ def signInfo(Config, desc=""):
     }
     
     handle_html(Config, packInfo)
-    
     return packInfo
 

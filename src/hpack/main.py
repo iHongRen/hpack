@@ -13,8 +13,8 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 # 将当前目录添加到 sys.path
 sys.path.append(current_dir)
 
-from pack_sign import packSign
-from sign_info import signInfo
+from packSign import pack_sign
+from signInfo import sign_info
 from toolConfig import ToolConfig
 from utils import printError, timeit
 from version import __version__
@@ -90,8 +90,8 @@ def pack_command(desc):
         printError(f"执行 willPack 时出错: {e}, 跳过处理")
 
     # 执行 packSign 和 signInfo
-    packSign(config)
-    result = signInfo(config, desc) 
+    pack_sign(config)
+    result = sign_info(config, desc) 
 
     # 执行 Packfile.py 的 didPack 函数，并传递 JSON 数据
     try:

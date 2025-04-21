@@ -49,7 +49,7 @@
                 box-shadow: var(--shadow);
                 width: 90%;
                 max-width: 420px;
-                padding: 30px;
+                padding: 30px 20px;
                 position: relative;
                 z-index: 1;
                 margin-bottom: 30px;
@@ -69,19 +69,10 @@
             }
 
             .app-icon {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                margin: 20px auto;
-                border: 3px solid var(--primary);
-                box-shadow: var(--shadow);
-                transition: all 0.4s ease;
-                position: relative;
-                overflow: hidden;
-                background-color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                width: 64px;
+                height: 64px;
+                border-radius: 10px;
+                margin: 10px auto;
             }
 
             .app-icon:hover {
@@ -90,7 +81,7 @@
             }
 
             .app-title {
-                font-size: 28px;
+                font-size: 26px;
                 font-weight: bold;
                 color: var(--primary);
                 margin-bottom: 8px;
@@ -114,16 +105,16 @@
 
             .app-version {
                 color: var(--text-secondary);
-                font-size: 14px;
-                margin-bottom: 25px;
+                font-size: 13px;
+                margin-bottom: 20px;
                 letter-spacing: 0.3px;
             }
 
             .info-card {
                 background: white;
                 border-radius: 8px;
-                padding: 18px;
-                margin: 20px 0;
+                padding: 10px;
+                margin: 10px 0;
                 text-align: left;
                 border: 1px solid var(--border);
                 box-shadow: var(--shadow);
@@ -132,7 +123,7 @@
             .info-item {
                 display: flex;
                 margin-bottom: 12px;
-                font-size: 14px;
+                font-size: 13px;
                 color: var(--text);
                 align-items: flex-start;
                 line-height: 1.5;
@@ -151,27 +142,26 @@
             }
 
             .qr-container {
-                margin: 25px 0;
+                margin: 20px 0;
                 position: relative;
             }
 
             .qr-label {
-                font-size: 14px;
+                font-size: 13px;
                 color: var(--text-secondary);
                 margin-bottom: 10px;
                 letter-spacing: 0.5px;
             }
 
             .qr-code {
-                width: 160px;
-                height: 160px;
+                width: 140px;
+                height: 140px;
                 margin: 0 auto;
                 background-color: white;
                 border-radius: 8px;
                 box-shadow: var(--shadow);
                 transition: all 0.3s ease;
                 border: 1px solid var(--border);
-                padding: 10px;
             }
 
             .qr-code:hover {
@@ -183,8 +173,8 @@
                 background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
                 color: white;
                 border: none;
-                border-radius: 8px;
-                padding: 16px 24px;
+                border-radius: 30px;
+                padding: 15px 24px;
                 font-size: 16px;
                 font-weight: 500;
                 width: 100%;
@@ -371,11 +361,7 @@
             <div class="corner-decoration corner-bl"></div>
             <div class="corner-decoration corner-br"></div>
 
-            <div class="app-icon">
-                <svg viewBox="0 0 24 24" width="60" height="60" fill="var(--primary)">
-                    <path d="M12,3L2,12H5V20H19V12H22L12,3M12,7.7L16,11.2V18H14V14H10V18H8V11.2L12,7.7Z" />
-                </svg>
-            </div>
+            <img src="$app_icon" class="app-icon float" alt="App Icon" />
 
             <div class="app-title">
                 $title
@@ -418,78 +404,5 @@
                 <p class="hpack-power">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
             </div>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Create sakura petals
-                const sakuraCount = 12
-                const container = document.body
-
-                for (let i = 0; i < sakuraCount; i++) {
-                    const sakura = document.createElement('div')
-                    sakura.className = 'floating-sakura'
-
-                    // Random position
-                    const posX = Math.random() * 100
-                    const posY = Math.random() * 100
-                    sakura.style.left = `${posX}%`
-                    sakura.style.top = `${posY}%`
-
-                    // Random size
-                    const size = Math.random() * 20 + 10
-                    sakura.style.width = `${size}px`
-                    sakura.style.height = `${size}px`
-
-                    // Random animation duration and delay
-                    const duration = Math.random() * 10 + 5
-                    const delay = Math.random() * 5
-                    sakura.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`
-
-                    container.appendChild(sakura)
-                }
-
-                // Add ripple effect to download button
-                const downloadBtn = document.querySelector('.download-btn')
-
-                downloadBtn.addEventListener('click', function (e) {
-                    // Create ripple element
-                    const ripple = document.createElement('span')
-                    ripple.className = 'ripple'
-
-                    // Position the ripple
-                    const rect = this.getBoundingClientRect()
-                    const size = Math.max(rect.width, rect.height)
-                    const x = e.clientX - rect.left - size / 2
-                    const y = e.clientY - rect.top - size / 2
-
-                    // Style the ripple
-                    ripple.style.width = ripple.style.height = size + 'px'
-                    ripple.style.left = x + 'px'
-                    ripple.style.top = y + 'px'
-                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'
-                    ripple.style.position = 'absolute'
-                    ripple.style.borderRadius = '50%'
-                    ripple.style.transform = 'scale(0)'
-                    ripple.style.animation = 'ripple 0.6s linear'
-
-                    // Add ripple to button
-                    this.appendChild(ripple)
-
-                    // Remove ripple after animation
-                    setTimeout(() => {
-                        ripple.remove()
-                    }, 600)
-                })
-
-                // QR code click effect
-                const qrCode = document.querySelector('.qr-code')
-                qrCode.addEventListener('click', function () {
-                    this.style.transform = 'scale(0.95)'
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)'
-                    }, 300)
-                })
-            })
-        </script>
     </body>
 </html>

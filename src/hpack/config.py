@@ -5,7 +5,7 @@ import os
 
 
 class Config: 
-     # 阿里云OSS配置 - 如果您不使用阿里云OSS，则不用修改
+    # 阿里云OSS配置 - 如果您不使用阿里云OSS，则不用修改
     Access_key_id = 'your Access_key_id'
     Access_key_secret = 'your Access_key_secret'
     Endpoint = 'your Endpoint'

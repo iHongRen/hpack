@@ -43,10 +43,10 @@
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), var(--glow);
                 width: 90%;
                 max-width: 420px;
-                padding: 30px;
+                padding: 30px 20px;
                 position: relative;
                 z-index: 1;
-                margin-bottom: 30px;
+                margin-bottom: 20px;
                 text-align: center;
                 border: 1px solid rgba(0, 240, 255, 0.1);
                 overflow: hidden;
@@ -65,8 +65,8 @@
             }
 
             .app-icon {
-                width: 80px;
-                height: 80px;
+                width: 64px;
+                height: 64px;
                 border-radius: 20px;
                 margin: 0 auto 25px;
                 border: 2px solid rgba(0, 240, 255, 0.3);
@@ -122,7 +122,7 @@
             .app-version {
                 color: var(--text-secondary);
                 font-size: 14px;
-                margin-bottom: 25px;
+                margin-bottom: 20px;
                 letter-spacing: 0.3px;
             }
 
@@ -130,7 +130,7 @@
                 background: rgba(10, 10, 25, 0.5);
                 border-radius: 12px;
                 padding: 18px;
-                margin: 20px 0;
+                margin: 10px 0;
                 text-align: left;
                 border: 1px solid rgba(0, 240, 255, 0.1);
                 backdrop-filter: blur(5px);
@@ -139,7 +139,7 @@
             .info-item {
                 display: flex;
                 margin-bottom: 12px;
-                font-size: 14px;
+                font-size: 13px;
                 color: var(--text);
                 align-items: flex-start;
                 line-height: 1.5;
@@ -159,12 +159,12 @@
             }
 
             .qr-container {
-                margin: 25px 0;
+                margin: 20px 0;
                 position: relative;
             }
 
             .qr-label {
-                font-size: 14px;
+                font-size: 12px;
                 color: var(--text-secondary);
                 margin-bottom: 10px;
                 letter-spacing: 0.5px;
@@ -179,7 +179,6 @@
                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 240, 255, 0.3);
                 transition: all 0.3s ease;
                 border: 1px solid rgba(0, 240, 255, 0.3);
-                padding: 10px;
             }
 
             .qr-code:hover {
@@ -191,9 +190,9 @@
                 background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
                 color: white;
                 border: none;
-                border-radius: 12px;
-                padding: 16px 24px;
-                font-size: 16px;
+                border-radius: 30px;
+                padding: 15px 24px;
+                font-size: 15px;
                 font-weight: 500;
                 width: 100%;
                 max-width: 240px;
@@ -474,87 +473,5 @@
                 <p class="hpack-power">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
             </div>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Add ripple effect to download button
-                const downloadBtn = document.querySelector('.download-btn')
-
-                downloadBtn.addEventListener('click', function (e) {
-                    // Create ripple element
-                    const ripple = document.createElement('span')
-                    ripple.className = 'ripple'
-
-                    // Position the ripple
-                    const rect = this.getBoundingClientRect()
-                    const size = Math.max(rect.width, rect.height)
-                    const x = e.clientX - rect.left - size / 2
-                    const y = e.clientY - rect.top - size / 2
-
-                    // Style the ripple
-                    ripple.style.width = ripple.style.height = size + 'px'
-                    ripple.style.left = x + 'px'
-                    ripple.style.top = y + 'px'
-                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'
-                    ripple.style.position = 'absolute'
-                    ripple.style.borderRadius = '50%'
-                    ripple.style.transform = 'scale(0)'
-                    ripple.style.animation = 'ripple 0.6s linear'
-
-                    // Add ripple to button
-                    this.appendChild(ripple)
-
-                    // Remove ripple after animation
-                    setTimeout(() => {
-                        ripple.remove()
-                    }, 600)
-                })
-
-                // QR code click effect
-                const qrCode = document.querySelector('.qr-code')
-                qrCode.addEventListener('click', function () {
-                    this.style.transform = 'scale(0.95)'
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)'
-                    }, 300)
-                })
-
-                // Create particles
-                const particlesContainer = document.getElementById('particles')
-                const particleCount = 30
-
-                for (let i = 0; i < particleCount; i++) {
-                    const particle = document.createElement('div')
-                    particle.className = 'particle'
-
-                    // Random size between 1px and 3px
-                    const size = Math.random() * 2 + 1
-                    particle.style.width = `${size}px`
-                    particle.style.height = `${size}px`
-
-                    // Random position
-                    const posX = Math.random() * 100
-                    const posY = Math.random() * 100 + 100 // Start below viewport
-                    particle.style.left = `${posX}%`
-                    particle.style.top = `${posY}%`
-
-                    // Random animation duration and delay
-                    const duration = Math.random() * 10 + 5
-                    const delay = Math.random() * 5
-                    particle.style.animation = `particle-anim ${duration}s linear ${delay}s infinite`
-
-                    particlesContainer.appendChild(particle)
-                }
-            })
-        </script>
-
-        <style>
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        </style>
     </body>
 </html>

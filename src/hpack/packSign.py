@@ -81,7 +81,7 @@ def sign(Config, unsigned_file_path):
         printError(f"签名 {unsigned_file_path} 出错: {e}")
 
 
-def packSign(Config):
+def pack_sign(Config):
     clean()
     buildHapHsp()
     mkBuildDir()
