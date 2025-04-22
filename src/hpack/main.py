@@ -31,7 +31,7 @@ def get_python_command():
         raise EnvironmentError("未找到可用的 Python 解释器，请确保已安装 Python。")
         
 def init_command():
-    hpack_dir = os.path.join(os.getcwd(), ToolConfig.HpackDir)
+    hpack_dir = os.path.join(ToolConfig.HpackDir)
     if os.path.exists(hpack_dir):
         print("init 失败：hpack 目录已存在。")
         return
@@ -73,7 +73,7 @@ def pack_command(desc):
         return
 
     # 获取 Packfile.py 的路径
-    pack_file_path = os.path.join(os.getcwd(), ToolConfig.HpackDir, 'Packfile.py')
+    pack_file_path = os.path.join(ToolConfig.HpackDir, 'Packfile.py')
 
     # 检查 Packfile.py 是否存在
     if not os.path.exists(pack_file_path):
@@ -85,7 +85,16 @@ def pack_command(desc):
 
     # 执行 Packfile.py 的 willPack 函数
     try:
-        subprocess.run([python_cmd, pack_file_path, '--will'], check=True)
+        willPack_process = subprocess.run(
+            [python_cmd, pack_file_path, '--will'],
+            capture_output=True,  # 捕获标准输出
+            text=True,  # 输出为文本格式
+            check=True
+        )
+        willPack_output = willPack_process.stdout  # 获取 willPack 的输出
+    except subprocess.CalledProcessError as e:
+        printError(f"执行 willPack 时出错: {e}, 跳过处理")
+        return
     except subprocess.CalledProcessError as e:
         printError(f"执行 willPack 时出错: {e}, 跳过处理")
 
@@ -96,6 +105,9 @@ def pack_command(desc):
     # 执行 Packfile.py 的 didPack 函数，并传递 JSON 数据
     try:
         if result:
+            if willPack_output:
+                result['willPack_output'] = willPack_output  # 将 willPack 的输出添加到结果中
+
             result_json = json.dumps(result, ensure_ascii=False, indent=4)  # 将字典转换为 JSON 字符串
             process = subprocess.run(
                 [python_cmd, pack_file_path, '--did'], 
@@ -115,7 +127,7 @@ def template_command(tname="default"):
         print(f"该模板不存在，模板列表：{names}")
         return
     
-    hpack_dir = os.path.join(os.getcwd(), ToolConfig.HpackDir)
+    hpack_dir = ToolConfig.HpackDir
     if not os.path.exists(hpack_dir):
         print("请先初始化：hpack init")
         return
@@ -142,7 +154,7 @@ def get_template_filenames():
     return filenames
     
 def get_config():
-    config_file_path = os.path.join(os.getcwd(), ToolConfig.HpackDir, 'config.py')
+    config_file_path = os.path.join(ToolConfig.HpackDir, 'config.py')
     if os.path.exists(config_file_path):
         try:
             # 获取 config.py 文件的规格

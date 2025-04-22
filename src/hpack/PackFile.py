@@ -26,7 +26,7 @@ def didPack():
     upload_to_oss(Config, packInfo)
 
     # print("============打印打包信息:============")
-    # print(json.dumps(result, indent=4, ensure_ascii=False))
+    # print(json.dumps(packInfo, indent=4, ensure_ascii=False))
     # print("================================")
 
     url = f"{Config.BaseURL}/{packInfo['remote_dir']}/index.html" 

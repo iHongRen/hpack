@@ -20,4 +20,4 @@ __pycache__/
 /demo/hpack
 
 # 忽略 hpack.egg-info 目录
-**/hpack.egg-info
+**/harmony_hpack.egg-info

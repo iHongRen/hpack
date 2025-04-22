@@ -20,9 +20,9 @@
 
 ## 安装使用
 
-在阅读以下内容之前，我们建议您先详细阅读鸿蒙官方文档 [HarmonyOS 应用内部测试](https://developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-internaltest-0000001937800101#section042515172197)。
+在阅读以下内容之前，我们建议你先详细阅读鸿蒙官方文档 [HarmonyOS 应用内部测试](https://developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-internaltest-0000001937800101#section042515172197)。
 
-准备工作三个文件：
+**准备工作**，你需要生成这三个文件：
 
 1、发布证书： .cer 格式
 
@@ -42,16 +42,14 @@ DevEco-Studio IDE，集成了各种命令工具
 
 JDK 17+： 签名工具需要。 `java --version`
 
-python3.7+ ： hpack 由 python 编写
-
-pip3：python 的依赖包工具
+python3.7+ ： hpack 由 python 编写，执行环境
 
 
 
 ####  安装 hpack
 
 ```sh
-pip3 install harmony-hpack
+pip3 install harmony-hpack # 最新版本 v1.0.0
 ```
 
 ##### 查看帮助信息
