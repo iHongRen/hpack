@@ -9,7 +9,7 @@ class Config:
     DeployDomain = 'static.hpack.com'
     
     # 安装包存放的服务器地址，必须是 https --- 必填项
-    BaseURL = f"https://{DeployDomain}/{'bucket_dir'}"
+    BaseURL = f"https://{DeployDomain}/hpack"
 
     # 应用信息 
     AppIcon = f"{BaseURL}/AppIcon.png"  # --- 必填项

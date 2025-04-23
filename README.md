@@ -49,7 +49,7 @@ python3.7+ ： hpack 由 python 编写，执行环境
 ####  安装 hpack
 
 ```sh
-pip3 install harmony-hpack # 最新版本 v1.0.0
+pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.0
 ```
 
 ##### 查看帮助信息
@@ -160,18 +160,17 @@ hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [des
 打包完成后，所有打包的文件到在 `hpack/build` 目录下。
 
 #### 运行示例图
-- 开始打包
+- 开始打包  
 <img src="./screenshots/0.png"><br>
 
-- 打包完成
+- 打包完成  
 <img src="./screenshots/1.png"><br>
 
 - 安装  
 <img src="./screenshots/install.png" width=300>
 
 
-
-####模板图预览
+#### 模板图预览
 
 | <img src="./screenshots/default.png" width="300"> | <img src="./screenshots/simple.png" width="300"> | <img src="./screenshots/tech.png" width="300"> |
 | :---: | :---: | :---: |
@@ -191,7 +190,7 @@ hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [des
 IndexTemplate = 'custom'  # 表面自定义模板
 ```
 
-2、如果你想使用 hpack 提供的 HTML 模板来做进一步修改，可以执行以下命令：
+2、如果你想使用 [hpack](https://github.com/iHongRen/hpack) 提供的 HTML 模板来做进一步修改，可以执行以下命令：
 
 ```bash
 hpack template [tname] # 缩写 hpack t tech
@@ -243,14 +242,40 @@ if __name__ == "__main__":
 
 
 
-## QA
+## 提示
+
+1、在非 DevEco-Studio 的终端执行命令时，需要配置 `hvigorw` 的环境变量
+
+```sh
+# Mac
+export DEVECO_SDK_HOME=/Applications/DevEco-Studio.app/Contents/sdk
+
+# win
+https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-commandline
 
 
+# 查看是否成功
+hvigorw -v
+```
+
+2、如果已安装的 App 和准备要安装的 App 打包证书不一致，需先卸载已安装的 App 。
+
+3、安装时鸿蒙会进行联网校验，手机如果开了代理需要注意下。
+
+4、安装出错时会有提示，根据错误码找原因。[错误码说明](https://developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-internaltest-0000001937800101#section10455110143313)。
+
+5、在 `.gitigore` 文件中添加忽略  
+
+```txt
+.gitigore 文件
+# 忽略 __pycache__ 目录
+__pycache__/
+```
 
 
 
 ## 贡献
 
-如果你有任何建议或发现了 bug，欢迎提交 issues 或 pull requests，让 `hpack` 变得更好！
+如果你有任何建议或发现了 bug，欢迎提交 issues 或 pull requests，让 [hpack](https://github.com/iHongRen/hpack) 变得更好！
 
 
