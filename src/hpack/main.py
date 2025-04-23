@@ -15,130 +15,130 @@ sys.path.append(current_dir)
 
 from packSign import pack_sign
 from signInfo import sign_info
+from template import handle_template
 from toolConfig import ToolConfig
-from utils import printError, timeit
+from utils import get_python_command, printError, printSuccess, timeit
 from version import __version__
 
 
-def get_python_command():
-    # 检查系统中是否存在 python3
-    if shutil.which("python3"):
-        return "python3"
-    # 如果没有 python3，则使用 python
-    elif shutil.which("python"):
-        return "python"
-    else:
-        raise EnvironmentError("未找到可用的 Python 解释器，请确保已安装 Python。")
-        
 def init_command():
-    hpack_dir = os.path.join(ToolConfig.HpackDir)
+    """初始化 hpack 目录"""
+    hpack_dir = ToolConfig.HpackDir
     if os.path.exists(hpack_dir):
-        print("init 失败：hpack 目录已存在。")
+        printError("init 失败：hpack 目录已存在。")
         return
+
     try:
         os.makedirs(hpack_dir)
         absPath = os.path.dirname(os.path.abspath(__file__))
-        
+
         # 复制配置文件
-        template_file_path = os.path.join(absPath, 'config.py')
-        config_file_path = os.path.join(hpack_dir, 'config.py')
-        shutil.copy2(template_file_path, config_file_path)
+        shutil.copy2(os.path.join(absPath, 'config.py'), os.path.join(hpack_dir, 'config.py'))
 
         # 复制 sign 文件夹
-        sign_folder_path = os.path.join(absPath, 'sign')
-        target_sign_folder_path = os.path.join(hpack_dir, 'sign')
-        shutil.copytree(sign_folder_path, target_sign_folder_path)
+        shutil.copytree(os.path.join(absPath, 'sign'), os.path.join(hpack_dir, 'sign'))
 
-        # 复制 Packfile.py 文件
-        pack_file_path = os.path.join(absPath, 'Packfile.py')
-        target_pack_file_path = os.path.join(hpack_dir, 'Packfile.py')
-        shutil.copy2(pack_file_path, target_pack_file_path)
-        
-        
-        print("\033[34mhpack 初始化完成。请修改配置：\033[0m", end="")
+        # 复制 PackFile.py 文件
+        shutil.copy2(os.path.join(absPath, 'PackFile.py'), os.path.join(hpack_dir, 'PackFile.py'))
+
+        printSuccess("hpack 初始化完成。请修改配置：", end='')
         print("""
 hpack/
   config.py # 配置文件
   sign/  # 替换自己的签名证书文件
-  Packfile.py 打包完成后的回调文件""")
-    except OSError as e:
+  Packfile.py 打包完成后的回调文件
+""")
+    except Exception as e:
         printError(f"init 失败 - {e}")
-    except shutil.Error as e:
-        printError(f"init 失败- {e}")
 
 @timeit
 def pack_command(desc):
-    config = get_config()
-    if config is None:
+    """主打包逻辑"""
+    Config = get_config()
+    if Config is None:
         return
 
-    # 获取 Packfile.py 的路径
-    pack_file_path = os.path.join(ToolConfig.HpackDir, 'Packfile.py')
-
-    # 检查 Packfile.py 是否存在
-    if not os.path.exists(pack_file_path):
-        printError(f"Packfile.py 文件不存在: {pack_file_path}")
+    # 执行打包流程
+    willPack_output = execute_will_pack()
+    packInfo = execute_pack_sign_and_info(Config, desc)
+    if packInfo is None:
         return
+    
+    if willPack_output:
+        packInfo['willPack_output'] = willPack_output
 
-    # 获取 Python 命令
+    res = handle_template(Config, packInfo)
+    if not res:
+        return
+    
+    execute_did_pack(packInfo)
+
+
+def execute_will_pack():
+    """执行 PackFile.py 的 willPack 方法"""
+    pack_file_path = os.path.join(ToolConfig.HpackDir, 'PackFile.py')
     python_cmd = get_python_command()
 
-    # 执行 Packfile.py 的 willPack 函数
     try:
-        willPack_process = subprocess.run(
+        process = subprocess.run(
             [python_cmd, pack_file_path, '--will'],
-            capture_output=True,  # 捕获标准输出
-            text=True,  # 输出为文本格式
+            capture_output=True,
+            text=True,
             check=True
         )
-        willPack_output = willPack_process.stdout  # 获取 willPack 的输出
+        return process.stdout.strip()
     except subprocess.CalledProcessError as e:
-        printError(f"执行 willPack 时出错: {e}, 跳过处理")
-        return
-    except subprocess.CalledProcessError as e:
-        printError(f"执行 willPack 时出错: {e}, 跳过处理")
+        printError(f"执行 willPack 时出错: {e}")
+        return None
 
-    # 执行 packSign 和 signInfo
-    pack_sign(config)
-    result = sign_info(config, desc) 
 
-    # 执行 Packfile.py 的 didPack 函数，并传递 JSON 数据
+def execute_pack_sign_and_info(config, desc):
+    """执行打包签名和信息生成"""
     try:
-        if result:
-            if willPack_output:
-                result['willPack_output'] = willPack_output  # 将 willPack 的输出添加到结果中
+        pack_sign(config)
+        return sign_info(config, desc)
+    except Exception as e:
+        printError(f"执行打包签名或生成信息时出错: {e}")
+        return None
 
-            result_json = json.dumps(result, ensure_ascii=False, indent=4)  # 将字典转换为 JSON 字符串
-            process = subprocess.run(
-                [python_cmd, pack_file_path, '--did'], 
-                input=result_json,  # 将 JSON 数据通过标准输入传递
-                text=True,  # 指定输入为文本
-                check=True
-            )
-        else:
-            printError("signInfo 未返回有效的结果，跳过 didPack.")
+
+def execute_did_pack(packInfo):
+    """执行 PackFile.py 的 didPack 方法"""
+    pack_file_path = os.path.join(ToolConfig.HpackDir, 'PackFile.py')
+    python_cmd = get_python_command()
+
+    try:
+        packJson = json.dumps(packInfo, ensure_ascii=False, indent=4)
+        subprocess.run(
+            [python_cmd, pack_file_path, '--did'],
+            input=packJson,
+            text=True,
+            check=True
+        )
     except subprocess.CalledProcessError as e:
-        printError(f"执行 didPack 时出错: {e}, 跳过处理")
+        printError(f"执行 didPack 时出错: {e}")
+
 
 
 def template_command(tname="default"):
     names = get_template_filenames()
     if not tname in names:
-        print(f"该模板不存在，模板列表：{names}")
+        printError(f"该模板不存在，模板可选值：{names}")
         return
     
     hpack_dir = ToolConfig.HpackDir
     if not os.path.exists(hpack_dir):
-        print("请先初始化：hpack init")
+        printError("请先初始化：hpack init")
         return
     
     try:
         template_path = os.path.join(ToolConfig.TemplateDir, f"{tname}.html")
         target_template_path = os.path.join(hpack_dir, "index.html")
         if os.path.exists(target_template_path):
-            print(f"html模板文件已存在：{target_template_path}")
+            printError(f"html模板文件已存在：{target_template_path}")
             return
         shutil.copy2(template_path, target_template_path)
+        printSuccess(f"{tname} 风格模板已生成：{target_template_path}")
     except OSError as e:
         printError(f"html模板文件生成 失败 - {e}")
     
@@ -153,6 +153,7 @@ def get_template_filenames():
                 filenames.append(name)
     return filenames
     
+
 def get_config():
     config_file_path = os.path.join(ToolConfig.HpackDir, 'config.py')
     if os.path.exists(config_file_path):
@@ -187,9 +188,9 @@ def show_help():
   -h, --help     显示帮助信息
 
 命令:
-  init / i             初始化 hpack 目录并创建配置文件
-  pack / p [desc]      执行打包签名和上传, desc 可选
-  template / t [name]  生成 html 模板文件，name 可选，默认 default
+  init, i              初始化 hpack 目录并创建配置文件
+  pack, p [desc]       执行打包签名和上传, desc 可选
+  template, t [tname]  生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
 版本: {__version__}
 """
     print(help_text)

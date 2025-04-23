@@ -5,18 +5,11 @@ import os
 
 
 class Config: 
-    # 阿里云OSS配置 - 如果您不使用阿里云OSS，则不用修改
-    Access_key_id = 'your Access_key_id'
-    Access_key_secret = 'your Access_key_secret'
-    Endpoint = 'your Endpoint'
-    Bucket_name = 'your Bucket_name'
-    Bucket_dir = 'hpack'
-    
     # 安装包存放的服务器的域名 --- 必填项
     DeployDomain = 'static.hpack.com'
     
     # 安装包存放的服务器地址，必须是 https --- 必填项
-    BaseURL = f"https://{DeployDomain}/{Bucket_dir}"
+    BaseURL = f"https://{DeployDomain}/hpack"
 
     # 应用信息 
     AppIcon = f"{BaseURL}/AppIcon.png"  # --- 必填项
@@ -24,7 +17,8 @@ class Config:
     Badge = '鸿蒙版'
     
     # index模板选择, 可选值为 [default, tech, cartoon, tradition, custom]
-    # 如果是 custom，则表示自定义模板，需要自己在 hpack 目录写一个 index.html，
+    # 如果是 custom，则表示自定义模板，需要自己在 hpack/ 下目录写一个 index.html 
+    # 或者使用 hpack t [tname] 命令生成模板 index.html
     # 打包完成后进行内容填充，再写入 hpack/build 目录
     IndexTemplate = "default"  
 

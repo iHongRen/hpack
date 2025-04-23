@@ -3,6 +3,7 @@
  
 import hashlib
 import os
+import shutil
 import sys
 from datetime import datetime
 
@@ -12,12 +13,12 @@ BLUE = '\033[34m'
 ENDC = '\033[0m'
 
 
-def printError(message):
-    print(RED + message + ENDC)
+def printError(message, end='\n'):
+    print(RED + message + ENDC, end=end)
 
 
-def printSuccess(message):
-    print(BLUE + message + ENDC)
+def printSuccess(message, end='\n'):
+    print(BLUE + message + ENDC, end=end)
 
 
 def isWin():
@@ -73,3 +74,15 @@ def timeit(func):
         return result
 
     return wrapper
+
+
+def get_python_command():
+    # 检查系统中是否存在 python3
+    if shutil.which("python3"):
+        return "python3"
+    # 如果没有 python3，则使用 python
+    elif shutil.which("python"):
+        return "python"
+    else:
+        raise EnvironmentError("未找到可用的 Python 解释器，请确保已安装 Python。")
+   

@@ -5,7 +5,6 @@ import json
 import os
 import subprocess
 from datetime import datetime
-from string import Template
 
 import json5
 import segno  # 生成二维码
@@ -86,7 +85,7 @@ def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_c
 
     modules = get_module_infos(build_dir,remotePath)
     if not modules:
-        printError("无法获取打包模块信息，无法处理 manifest.json5 文件。")
+        printError("无法获取打包模块信息，hap、hsp 包签名失败，请检查你的签名文件配置。")
         return False
   
 
@@ -176,39 +175,6 @@ def create_sign_manifest(Config, build_dir):
     return True
 
 
-def handle_html(Config, packInfo):
-    if Config.IndexTemplate == "custom" or not Config.IndexTemplate:
-        print("您选择了自定义模板，请自行处理 index.html 文件。")
-        return
-    
-    # 读取 HTML 模板文件
-    template_path = os.path.join(ToolConfig.HpackDir, "index.html")
-    if not os.path.exists(template_path):
-        template_path = os.path.join(ToolConfig.TemplateDir, f"{Config.IndexTemplate}.html")
-
-    with open(template_path, "r", encoding="utf-8") as template_file:
-        html = template_file.read()
-
-    date = datetime.now().strftime("%Y-%m-%d %H:%M")
-    
-    template = Template(html)
-    html_template = template.safe_substitute(
-        app_icon=Config.AppIcon,
-        title=Config.AppName,
-        badge=Config.Badge,
-        date=date,
-        version_name=packInfo["version_name"],
-        version_code=packInfo["version_code"],
-        size=packInfo["size"],
-        desc=packInfo["desc"],
-        manifest_url=packInfo["manifest_url"],
-        qrcode=packInfo["qrcode"]
-    )
-
-    file_path = os.path.join(packInfo["build_dir"], "index.html")
-    with open(file_path, "w", encoding="utf-8") as f:
-        f.write(html_template)
-
 
 def sign_info(Config, desc=""):
 
@@ -251,6 +217,5 @@ def sign_info(Config, desc=""):
         "qrcode": qrcode,
     }
     
-    handle_html(Config, packInfo)
     return packInfo
 
