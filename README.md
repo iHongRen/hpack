@@ -1,6 +1,6 @@
 # hpack - HarmonyOS 内测打包分发工具
 
-![image](https://img.shields.io/badge/version-1.0.0-blue) - 待发布
+![image](https://img.shields.io/badge/version-1.0.0-blue)
 
 ## 简介
 
@@ -101,7 +101,7 @@ class Config:
     AppName = 'hpack'
     Badge = '鸿蒙版'
     
-    # index模板选择, 可选值为 [default, tech, cartoon, tradition, custom]
+    # index模板选择, 可选值为 [default, simple, tech, cartoon, tradition, custom]
     # 如果是 custom，则表示自定义模板，需要自己在 hpack 目录写一个 index.html，
     # 打包完成后进行内容填充，再写入 hpack/build 目录
     IndexTemplate = "default" 
@@ -119,7 +119,7 @@ class Config:
 
 
 
-替换 hapck/sign 目录下的证书文件
+替换 hapck/sign 目录下的**证书文件**
 
 ```shell
 .
@@ -132,35 +132,146 @@ class Config:
 
 #### 打包与上传
 
+如果使用阿里云OSS 作为存储服务，需要先安装 oss2：
+
+```sh
+pip3 install oss2
+```
+
+打开 `Packfile.py` 完成配置：
+
+```python
+class OSSConfig: 
+    # 如果您需要使用OSS, 需要先安装 pip3 install oss2
+    # 如果您不使用阿里云OSS，则不用修改
+    Access_key_id = 'your Access_key_id'
+    Access_key_secret = 'your Access_key_secret'
+    Endpoint = 'your Endpoint'
+    Bucket_name = 'your Bucket_name'
+    Bucket_dir = 'hpack'
+```
+
 执行以下命令进行打包、签名和上传操作，可选择性地添加更新说明：
 
 ```bash
 hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [desc]
 ```
 
+打包完成后，所有打包的文件到在 `hpack/build` 目录下。
 
-
-#### 示例图
-
+#### 运行示例图
+- 开始打包
 <img src="./screenshots/0.png">
+<br>
+- 打包完成
+<img src="./screenshots/1.png">
+<br>
+- 安装
+<img src="./screenshots/install.png" width=300>
 
 
 
 
 
+####模板图预览
+
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 20px; margin: 0;">
+  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
+    <img src="./screenshots/default.png" width="300" style="display: block; margin: 0 auto;">
+    <p style="margin: 5;">default 默认风格</p>
+  </div>
 
 
-### 自定义分发页 index.html
+  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
+    <img src="./screenshots/simple.png" width="300" style="display: block; margin: 0 auto;">
+    <p style="margin:5;">simple 简单</p>
+  </div>
 
-如果你想使用 hpack 提供的 HTML 模板来做进一步修改，可以执行以下命令：
+  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
+    <img src="./screenshots/tech.png" width="300" style="display: block; margin: 0 auto;">
+    <p style="margin:5;">tech 科技</p>
+  </div>
+
+  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
+    <img src="./screenshots/cartoon.png" width="300" style="display: block; margin: 0 auto;">
+    <p style="margin: 5;">cartoon 卡通</p>
+  </div>
+
+  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
+    <img src="./screenshots/tradition.png" width="300" style="display: block; margin: 0 auto;">
+    <p style="margin: 5;">tradition 传统</p>
+  </div>
+</div>
+
+
+
+
+
+## 如何自定义分发页 index.html
+
+1、修改 Config.py 文件的模板配置项为 `custom` 
+
+```python
+IndexTemplate = 'custom'  # 表面自定义模板
+```
+
+2、如果你想使用 hpack 提供的 HTML 模板来做进一步修改，可以执行以下命令：
 
 ```bash
 hpack template [tname] # 缩写 hpack t tech
 ```
 
-`tname` 可选值为 `default`, `tech`, `cartoon`, `tradition`，如果不指定，默认使用 `default` 模板。
+`tname` 可选值为 `default`, `simple`, `tech`, `cartoon`, `tradition`，如果不指定，默认使用 `default` 模板。
 
-这个命令会在 hpack/ 目录下生成对应的 index.html 模板文件，在打包完成以后，我们可以定义自己的变量来填充这个模板，然后得到真实的 index.html 文件并写入到 hpack/build 目录下，以方便上传。
+这个命令会在 `hpack/` 目录下生成对应的` index.html` 模板文件。
+
+如果不使用模板，则需要手动新建 index.html 文件到 hpack/ 目录。
+
+3、打开 Packfile.py 文件关于自定义模板的注释：
+
+```python
+def customTemplateHtml(templateInfo):
+    packInfo = templateInfo["packInfo"]
+    html = templateInfo["html"]
+
+    date = datetime.now().strftime("%Y-%m-%d %H:%M")
+    
+    # 请修改自定义的 hapck/index.html
+    # 完成对应 $变量的填充
+    template = Template(html)
+    html_template = template.safe_substitute(
+        app_icon=Config.AppIcon,
+        title=Config.AppName,
+        badge=Config.Badge,
+        date=date,
+        version_name=packInfo["version_name"],
+        version_code=packInfo["version_code"],
+        size=packInfo["size"],
+        desc=packInfo["desc"],
+        manifest_url=packInfo["manifest_url"],
+        qrcode=packInfo["qrcode"]
+    )
+    print(html_template)  # 打印到标准输出，用于传参，不可删除
+    
+
+    
+    
+if __name__ == "__main__":    
+    elif args.t:
+        # 从标准输入读取 JSON 数据
+        templateInfo = json.loads(sys.stdin.read())  
+        customTemplateHtml(templateInfo) 
+```
+
+4、执行打包命令 `hpack p '自定义index.html'`
+
+
+
+## QA
+
+
+
+
 
 ## 贡献
 
