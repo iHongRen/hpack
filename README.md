@@ -161,49 +161,25 @@ hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [des
 
 #### 运行示例图
 - 开始打包
-<img src="./screenshots/0.png">
-<br>
+<img src="./screenshots/0.png"><br>
+
 - 打包完成
-<img src="./screenshots/1.png">
-<br>
-- 安装
+<img src="./screenshots/1.png"><br>
+
+- 安装  
 <img src="./screenshots/install.png" width=300>
-
-
 
 
 
 ####模板图预览
 
-<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 20px; margin: 0;">
-  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
-    <img src="./screenshots/default.png" width="300" style="display: block; margin: 0 auto;">
-    <p style="margin: 5;">default 默认风格</p>
-  </div>
+| <img src="./screenshots/default.png" width="300"> | <img src="./screenshots/simple.png" width="300"> | <img src="./screenshots/tech.png" width="300"> |
+| :---: | :---: | :---: |
+| default 默认风格 | simple 简单 | tech 科技 |
 
-
-  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
-    <img src="./screenshots/simple.png" width="300" style="display: block; margin: 0 auto;">
-    <p style="margin:5;">simple 简单</p>
-  </div>
-
-  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
-    <img src="./screenshots/tech.png" width="300" style="display: block; margin: 0 auto;">
-    <p style="margin:5;">tech 科技</p>
-  </div>
-
-  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
-    <img src="./screenshots/cartoon.png" width="300" style="display: block; margin: 0 auto;">
-    <p style="margin: 5;">cartoon 卡通</p>
-  </div>
-
-  <div style="text-align: center; margin: 0; flex: 1 1 300px; max-width: 300px;">
-    <img src="./screenshots/tradition.png" width="300" style="display: block; margin: 0 auto;">
-    <p style="margin: 5;">tradition 传统</p>
-  </div>
-</div>
-
-
+| <img src="./screenshots/cartoon.png" width="300"> | <img src="./screenshots/tradition.png" width="300"> |
+| :---: | :---: |
+| cartoon 卡通 | tradition 传统 |
 
 
 
@@ -276,3 +252,5 @@ if __name__ == "__main__":
 ## 贡献
 
 如果你有任何建议或发现了 bug，欢迎提交 issues 或 pull requests，让 `hpack` 变得更好！
+
+
