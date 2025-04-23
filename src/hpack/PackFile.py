@@ -80,26 +80,28 @@ def didPack(packInfo):
     print(f"\033[0m请访问 {url}\033[0m")
 
 
-def customTemplateHtml(templateInfo):
-    packInfo = templateInfo["packInfo"]
-    html = templateInfo["html"]
+# def customTemplateHtml(templateInfo):
+#     packInfo = templateInfo["packInfo"]
+#     html = templateInfo["html"]
 
-    date = datetime.now().strftime("%Y-%m-%d %H:%M")
+#     date = datetime.now().strftime("%Y-%m-%d %H:%M")
     
-    template = Template(html)
-    html_template = template.safe_substitute(
-        app_icon=Config.AppIcon,
-        title=Config.AppName,
-        badge=Config.Badge,
-        date=date,
-        version_name=packInfo["version_name"],
-        version_code=packInfo["version_code"],
-        size=packInfo["size"],
-        desc=packInfo["desc"],
-        manifest_url=packInfo["manifest_url"],
-        qrcode=packInfo["qrcode"]
-    )
-    print(html_template)  # 打印到标准输出，方便后续处理
+#     # 请修改自定义的 hapck/index.html
+#     # 完成对应 $变量的填充
+#     template = Template(html)
+#     html_template = template.safe_substitute(
+#         app_icon=Config.AppIcon,
+#         title=Config.AppName,
+#         badge=Config.Badge,
+#         date=date,
+#         version_name=packInfo["version_name"],
+#         version_code=packInfo["version_code"],
+#         size=packInfo["size"],
+#         desc=packInfo["desc"],
+#         manifest_url=packInfo["manifest_url"],
+#         qrcode=packInfo["qrcode"]
+#     )
+#     print(html_template)  # 打印到标准输出，用于传参，不可删除
 
 
 if __name__ == "__main__":
@@ -118,6 +120,6 @@ if __name__ == "__main__":
     elif args.t:
         # 从标准输入读取 JSON 数据
         templateInfo = json.loads(sys.stdin.read())  
-        customTemplateHtml(templateInfo) 
+        # customTemplateHtml(templateInfo) 
     else:
         print("无效的参数，请使用 --will 或 --did。")

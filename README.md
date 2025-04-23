@@ -90,13 +90,6 @@ hpack init   # 支持缩写 hpack i
 
 ```python
 class Config: 
-    # 阿里云OSS配置 - 如果您不使用阿里云OSS，则不用修改
-    Access_key_id = 'your Access_key_id'
-    Access_key_secret = 'your Access_key_secret'
-    Endpoint = 'your Endpoint'
-    Bucket_name = 'your Bucket_name'
-    Bucket_dir = 'hpack'
-    
     # 安装包存放的服务器的域名 
     DeployDomain = 'static.hpack.com'
     

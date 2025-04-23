@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>$title</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: sans-serif;
+                background: #f5f7fa;
+                color: #333;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+            .card {
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 10px 30px rgba(0, 51, 204, 0.1);
+                width: 90%;
+                max-width: 380px;
+                padding: 20px;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .app-icon {
+                width: 64px;
+                height: 64px;
+                border-radius: 15px;
+                margin: 0 auto 20px;
+                border: 3px solid white;
+                box-shadow: 0 5px 15px rgba(0, 51, 204, 0.2);
+                transition: transform 0.3s;
+            }
+            .app-title {
+                font-size: 22px;
+                color: #333;
+                margin-bottom: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .version-badge {
+                background: #0066ff;
+                color: white;
+                font-size: 12px;
+                padding: 2px 8px;
+                border-radius: 10px;
+                margin-left: 8px;
+            }
+            .app-version {
+                color: #666;
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
+            .info-card {
+                background: #f8f9fa;
+                border-radius: 12px;
+                padding: 15px;
+                margin: 15px 0;
+                text-align: left;
+            }
+            .info-item {
+                display: flex;
+                margin-bottom: 10px;
+                font-size: 14px;
+                color: #555;
+            }
+            .qr-container {
+                margin: 20px 0;
+            }
+            .qr-label {
+                font-size: 13px;
+                color: #888;
+                margin-bottom: 8px;
+            }
+            .qr-code {
+                width: 140px;
+                height: 140px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                transition: transform 0.3s;
+            }
+            .download-btn {
+                background: #333;
+                color: white;
+                border: none;
+                border-radius: 30px;
+                padding: 14px 24px;
+                font-size: 16px;
+                width: 100%;
+                max-width: 220px;
+                margin: 10px auto;
+                cursor: pointer;
+            }
+
+            .link-wrap {
+                font-size: 12px;
+                color: #888;
+            }
+            .hpack-link {
+                color: #0066ff;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <img src="$app_icon" class="app-icon" alt="App Icon" />
+            <div class="app-title">$title<span class="version-badge">$badge</span></div>
+            <div class="app-version">(v$version_name $version_code) • $size</div>
+            <div class="info-card">
+                <div class="info-item">$date</div>
+                <div class="info-item">$desc</div>
+            </div>
+            <div class="qr-container">
+                <div class="qr-label">扫描二维码安装</div>
+                <img class="qr-code" src="$qrcode" alt="QR Code" />
+            </div>
+            <button class="download-btn" onclick="window.location.href='store://enterprise/manifest?url=$manifest_url'">安装</button>
+            <p class="link-wrap">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
+        </div>
+    </body>
+</html>
