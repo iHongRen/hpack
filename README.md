@@ -184,15 +184,17 @@ hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [des
 
 #### 运行示例图
 - 开始打包  
-<img src="./screenshots/0.png"><br>
+<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/0.png"><br>
 
 - 打包完成  
-<img src="./screenshots/1.png"><br>
+<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/1.png"><br>
 
 - 安装  
-<img src="./screenshots/install.png" width=300>
+<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/install.png" width=300>
 
 #### 模板图预览
+
+[hpack](https://github.com/iHongRen/hpack) 提供多种内置分发页模板，满足不同风格的需求
 
 ```python
 # config.py 
@@ -200,11 +202,11 @@ hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [des
 IndexTemplate = "default" 
 ```
 
-| <img src="./screenshots/default.png" width="300"> | <img src="./screenshots/simple.png" width="300"> | <img src="./screenshots/tech.png" width="300"> |
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/default.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/simple.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tech.png" width="300"> |
 | :---: | :---: | :---: |
 | default 默认风格 | simple 简单 | tech 科技 |
 
-| <img src="./screenshots/cartoon.png" width="300"> | <img src="./screenshots/tradition.png" width="300"> |
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/cartoon.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tradition.png" width="300"> |
 | :---: | :---: |
 | cartoon 卡通 | tradition 传统 |
 
