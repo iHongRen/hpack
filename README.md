@@ -4,14 +4,16 @@
 
 ## 简介
 
-**[hpack](https://github.com/iHongRen/hpack)** 是一个专为 HarmonyOS 打造的内测分发工具，借助它，你只需一行命令，就能轻松完成鸿蒙应用的构建、打包、签名，并将其上传至服务器进行内测分发。这大大简化了开发流程，提高了开发效率，让你能更专注于应用的开发和优化。
+**[hpack](https://github.com/iHongRen/hpack)** 是一个专为 HarmonyOS 打造的内测分发工具，借助它，你只需一行命令，就能轻松完成鸿蒙应用的构建、打包、签名，并将其上传至服务器进行内测分发。
+
+这大大简化了开发流程，提高了开发效率，让你能更专注于应用的开发和优化。
 
 
 
 ## 功能特性
 
 - **打包签名**：自动打出所有的 hap 和 hsp 包，并对它们进行签名。
-- **签名 Manifest.json5**：读取应用打包数据，自动生成已签名的 Manifest.json5 文件。
+- **签名 Manifest.json5**：读取应用打包数据，自动生成已签名的 `Manifest.json5` 文件。
 - **分发 index 页**：自动生成分发页，提供多种 HTML 模板，如 `default`, `tech`, `cartoon`, `tradition`，同时支持自定义模板，满足不同的展示需求。
 - **二维码生成**：自动生成应用的二维码，方便内测人员快速下载和安装。
 - **OSS 上传**：如果完成配置，可将打包好的所有文件上传到阿里云 OSS 。
@@ -38,11 +40,23 @@
 
 #### 预置环境：
 
-DevEco-Studio IDE，集成了各种命令工具
+DevEco-Studio ：鸿蒙开发 IDE， 同时集成了各种命令工具
 
-JDK 17+： 签名工具需要。 `java --version`
+JDK 17+： 签名工具需要。 
 
 python3.7+ ： hpack 由 python 编写，执行环境
+
+```sh
+# 在你使用的终端中，检查以下工具是否成功安装：
+
+java --version
+
+python3 --version   # 或 python
+
+pip3 --version      # 或 pip
+
+hvigorw -v   # DevEco-Studio 自带，其他终端使用需设置环境变量，请看下面 Tips
+```
 
 
 
@@ -71,7 +85,7 @@ hpack -v # hpack --version
 在**项目根目录**下执行以下命令，初始化 `hpack` 目录并创建配置文件：
 
 ```bash
-hpack init   # 支持缩写 hpack i
+hpack init   
 ```
 
 初始化完成后，会在项目根目录下生成 `hpack` 目录，包含以下文件和文件夹：
@@ -94,7 +108,7 @@ class Config:
     DeployDomain = 'static.hpack.com'
     
     # 安装包存放的服务器地址，必须是 https
-    BaseURL = f"https://{DeployDomain}/{Bucket_dir}"
+    BaseURL = f"https://{DeployDomain}/hpack"
 
     # 应用信息 
     AppIcon = f"{BaseURL}/AppIcon.png"
@@ -119,7 +133,7 @@ class Config:
 
 
 
-替换 hapck/sign 目录下的**证书文件**
+替换 `hapck/sign` 目录下的**证书文件**
 
 ```shell
 .
@@ -151,13 +165,22 @@ class OSSConfig:
     Bucket_dir = 'hpack'
 ```
 
+如果是使用的是其他服务器，则需要自己编写上传代码：
+
+```python
+def didPack(packInfo):
+    """_summary_: 打包后回调，通常在这里上传打包结果到服务器
+    """
+    # 打包结果在hapck/build，编写你的上传逻辑
+```
+
 执行以下命令进行打包、签名和上传操作，可选择性地添加更新说明：
 
 ```bash
 hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [desc]
 ```
 
-打包完成后，所有打包的文件到在 `hpack/build` 目录下。
+打包完成后，所有打包的文件都在 `hpack/build` 目录下。
 
 #### 运行示例图
 - 开始打包  
@@ -169,8 +192,13 @@ hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [des
 - 安装  
 <img src="./screenshots/install.png" width=300>
 
-
 #### 模板图预览
+
+```python
+# config.py 
+# index模板选择, 可选值为 [default, simple, tech, cartoon, tradition, custom]
+IndexTemplate = "default" 
+```
 
 | <img src="./screenshots/default.png" width="300"> | <img src="./screenshots/simple.png" width="300"> | <img src="./screenshots/tech.png" width="300"> |
 | :---: | :---: | :---: |
@@ -184,7 +212,7 @@ hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [des
 
 ## 如何自定义分发页 index.html
 
-1、修改 Config.py 文件的模板配置项为 `custom` 
+1、修改 `config.py` 文件的模板配置项为 `custom` 
 
 ```python
 IndexTemplate = 'custom'  # 表面自定义模板
@@ -200,9 +228,9 @@ hpack template [tname] # 缩写 hpack t tech
 
 这个命令会在 `hpack/` 目录下生成对应的` index.html` 模板文件。
 
-如果不使用模板，则需要手动新建 index.html 文件到 hpack/ 目录。
+如果不使用模板，则需要手动新建` index.html` 文件到 `hpack/` 目录。
 
-3、打开 Packfile.py 文件关于自定义模板的注释：
+3、在 `Packfile.py` 打开关于自定义模板的注释：
 
 ```python
 def customTemplateHtml(templateInfo):
@@ -229,8 +257,6 @@ def customTemplateHtml(templateInfo):
     print(html_template)  # 打印到标准输出，用于传参，不可删除
     
 
-    
-    
 if __name__ == "__main__":    
     elif args.t:
         # 从标准输入读取 JSON 数据
@@ -242,9 +268,9 @@ if __name__ == "__main__":
 
 
 
-## 提示
+## Tips:
 
-1、在非 DevEco-Studio 的终端执行命令时，需要配置 `hvigorw` 的环境变量
+1、在**非 DevEco-Studio** 的终端执行命令时，需要配置 `hvigorw` 的环境变量
 
 ```sh
 # Mac
