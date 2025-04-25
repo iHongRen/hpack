@@ -19,10 +19,25 @@ def clean():
 
 
 @timeit
-def buildHapHsp():
+def sync():
+    """执行同步操作"""
+    try:
+        subprocess.run(["hvigorw", " --sync", "--no-daemon"], check=True, shell=isWin())
+    except subprocess.CalledProcessError as e:
+        printError(f"同步操作出错: {e}")
+
+@timeit
+def buildHapHsp(product="default"):
     """构建 Hap & Hsp"""
     try:
-        subprocess.run(['hvigorw', 'assembleHap', 'assembleHsp', '--mode', 'module', '-p', 'product=default', '-p', 'debuggable=true','--no-daemon'], check=True, shell=isWin())
+        command = [
+            'hvigorw', 'assembleHap', 'assembleHsp', 
+            '--mode', 'module', 
+            '-p', f'product={product}', 
+            '-p', 'debuggable=true',
+            '--no-daemon'
+        ]
+        subprocess.run(command, check=True, shell=isWin())
         print("构建 Hap Hsp 完成")
         return True
     except subprocess.CalledProcessError as e:
@@ -45,7 +60,7 @@ def signHapHsp(Config):
     result = []
     source_dir = os.getcwd()
     for root, dirs, files in os.walk(source_dir):
-        # 排除 oh_modules 和 pack 目录
+        # 排除 oh_modules 和 hpack 目录
         dirs[:] = [d for d in dirs if d not in ToolConfig.ExcludeDirs]
         for file in files:
             if file.endswith(('-unsigned.hap', '-unsigned.hsp')):
@@ -85,6 +100,7 @@ def sign(Config, unsigned_file_path):
 
 def pack_sign(Config):
     clean()
+    sync()
     if not buildHapHsp():
         return
     mkBuildDir()

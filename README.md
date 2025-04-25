@@ -1,6 +1,8 @@
 # hpack - HarmonyOS 内测打包分发工具
 
-![image](https://img.shields.io/badge/version-1.0.0-blue) [官网](https://ihongren.github.io/hpack.html)
+![image](https://img.shields.io/badge/version-1.0.0-blue) 
+
+[官网](https://ihongren.github.io/hpack.html)
 
 ## 简介
 

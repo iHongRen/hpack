@@ -188,7 +188,7 @@ def show_help():
   -h, --help     显示帮助信息
 
 命令:
-  init, i              初始化 hpack 目录并创建配置文件
+  init              初始化 hpack 目录并创建配置文件
   pack, p [desc]       执行打包签名和上传, desc 可选
   template, t [tname]  生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
 版本: {__version__}
@@ -202,7 +202,7 @@ def main():
             show_version()
         elif sys.argv[1] in ['-h', '--help']:
             show_help()
-        elif sys.argv[1] in ['init', 'i']:
+        elif sys.argv[1] in ['init']:
             init_command()
         elif sys.argv[1] in ['pack', 'p']:
             if len(sys.argv) > 2:
