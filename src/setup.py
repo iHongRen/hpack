@@ -2,7 +2,8 @@
 #  @github : https://github.com/iHongRen/hpack
  
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 readme_path = os.path.join(current_dir, '..', 'README.md')
@@ -31,7 +32,8 @@ setup(
     install_requires=[
         # 列出项目依赖的库，如 'requests'
         'json5',
-        'segno'
+        'segno',
+        'prompt_toolkit'
     ],
     python_requires='>=3.7',  # 指定 Python 版本要求
 )

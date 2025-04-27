@@ -32,7 +32,21 @@ class Config:
     Profile = os.path.join(SignDir, 'test_release.p7b')  
     Keystore =  os.path.join(SignDir, 'harmony.p12') 
     
-   
+    # 设置默认打包 product
+    Product = ""   # 优先使用这个指定的product, 默认通过读build-prodile.json5获取
+
+    # 自定义构建配置  --- 存在多 product ,多 targets 时，自定义使用
+    # 用于完全自定义 hvigorw 构建命令，配置后product无效
+    # hvigorw 使用 https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-commandline
+    # 使用示例：
+    # [
+    #    'hvigorw', 'assembleHap', 'assembleHsp', 
+    #    '--mode', 'module', 
+    #    '-p', 'product=default', 
+    #    '-p', 'debuggable=true',
+    #    '--no-daemon'
+    # ]
+    HvigorwCommand = [] 
     
     
     

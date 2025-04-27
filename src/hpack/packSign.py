@@ -22,21 +22,24 @@ def clean():
 def sync():
     """执行同步操作"""
     try:
-        subprocess.run(["hvigorw", " --sync", "--no-daemon"], check=True, shell=isWin())
+        subprocess.run(["hvigorw", "--sync", "--no-daemon"], check=True, shell=isWin())
     except subprocess.CalledProcessError as e:
         printError(f"同步操作出错: {e}")
 
 @timeit
-def buildHapHsp(product="default"):
+def buildHapHsp(Config, product):
     """构建 Hap & Hsp"""
     try:
-        command = [
-            'hvigorw', 'assembleHap', 'assembleHsp', 
-            '--mode', 'module', 
-            '-p', f'product={product}', 
-            '-p', 'debuggable=true',
-            '--no-daemon'
-        ]
+        if hasattr(Config, 'HvigorwCommand') and len(Config.HvigorwCommand) > 0:
+            command = Config.HvigorwCommand
+        else:
+            command = [
+                'hvigorw', 'assembleHap', 'assembleHsp', 
+                '--mode', 'module', 
+                '-p', f'product={product['name']}', 
+                '-p', 'debuggable=true',
+                '--no-daemon'
+            ]
         subprocess.run(command, check=True, shell=isWin())
         print("构建 Hap Hsp 完成")
         return True
@@ -45,9 +48,9 @@ def buildHapHsp(product="default"):
         return False
 
 
-def mkBuildDir():
+def mkBuildDir(productName):
     """处理 hpack/build 目录，若存在则删除再创建"""
-    build_dir  = ToolConfig.BuildDir
+    build_dir  = os.path.join(ToolConfig.BuildDir, productName)
     if os.path.exists(build_dir) and os.path.isdir(build_dir):
         shutil.rmtree(build_dir)
         print(f"已删除 {build_dir} 目录。")
@@ -55,7 +58,7 @@ def mkBuildDir():
     print(f"已创建 {build_dir} 目录。")
 
 @timeit
-def signHapHsp(Config):
+def signHapHsp(Config, productName):
     """对 Hap&Hsp 文件进行签名"""
     result = []
     source_dir = os.getcwd()
@@ -67,15 +70,15 @@ def signHapHsp(Config):
                 result.append(os.path.join(root, file))
      
     for file in result:
-        sign(Config, file)
+        sign(Config, file, productName)
 
 
-def sign(Config, unsigned_file_path):
+def sign(Config, unsigned_file_path, productName):
     """对未签名文件进行签名"""
     print(f"路径: {unsigned_file_path}")
     file_name = os.path.basename(unsigned_file_path)
     build_dir  = ToolConfig.BuildDir
-    signed_file_path = os.path.join(build_dir, file_name.replace("unsigned", "signed"))
+    signed_file_path = os.path.join(build_dir,productName, file_name.replace("unsigned", "signed"))
     
     command = [
         'java', '-jar', ToolConfig.HapSignTool,
@@ -98,11 +101,12 @@ def sign(Config, unsigned_file_path):
         printError(f"签名 {unsigned_file_path} 出错: {e}")
 
 
-def pack_sign(Config):
+def pack_sign(Config, product):
     clean()
     sync()
-    if not buildHapHsp():
+    if not buildHapHsp(Config, product):
         return
-    mkBuildDir()
-    signHapHsp(Config)
+    productName = product['name']
+    mkBuildDir(productName)
+    signHapHsp(Config, productName)
 

@@ -76,12 +76,7 @@ def get_module_infos(build_dir, remotePath):
     return result
 
 
-def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name):
-    apiVersion = read_api_version()
-    if apiVersion is None:
-        printError("无法获取 sdk api version，无法处理 manifest.json5 文件。")
-        return False
-
+def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name, apiVersion):
 
     modules = get_module_infos(build_dir,remotePath)
     if not modules:
@@ -176,19 +171,31 @@ def create_sign_manifest(Config, build_dir):
 
 
 
-def sign_info(Config, desc=""):
+def sign_info(Config, selected_product, desc=""):
 
     bundle_name, version_code, version_name = read_app_info()
     if not bundle_name or not version_code or not version_name:
         printError("无法获取版本信息，无法处理 manifest.json5 文件。")
         return
     
+    if 'bundleName' in selected_product:
+        bundle_name = selected_product['bundleName']
+
     remote_dir = datetime.now().strftime("%Y%m%d%H%M%S")
     remotePath = f"{Config.BaseURL}/{remote_dir}"
 
-    build_dir = ToolConfig.BuildDir
+    productName = selected_product['name']
+    build_dir = os.path.join(ToolConfig.BuildDir, productName)
     
-    unsignRet = create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name)
+    if 'compatibleSdkVersion' in selected_product:
+        apiVersion = selected_product['compatibleSdkVersion']
+    else:
+        apiVersion = read_api_version()
+    if apiVersion is None:
+        printError("无法获取 compatibleSdkVersion")
+        return
+
+    unsignRet = create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name,apiVersion)
     if not unsignRet:
         return
 
@@ -215,6 +222,7 @@ def sign_info(Config, desc=""):
         "remote_dir": remote_dir,
         "manifest_url": manifest_url,
         "qrcode": qrcode,
+        "product": productName,
     }
     
     return packInfo

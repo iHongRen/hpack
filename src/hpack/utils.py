@@ -59,8 +59,9 @@ def calculate_sha256(file_path):
 
 
 
-def timeit(func):
+def timeit(func, printName=''):
     def wrapper(*args, **kwargs):
+        print(f"{func.__name__} 开始执行")
         start_time = datetime.now()
         result = func(*args, **kwargs)
         end_time = datetime.now()
@@ -69,7 +70,7 @@ def timeit(func):
         total_seconds = execution_time.total_seconds()
         minutes = int(total_seconds // 60)
         seconds = total_seconds % 60
-        print(f"{func.__name__} 执行耗时 {minutes} 分钟 {seconds:.2f} 秒")
+        print(f"{ printName if printName else func.__name__} 执行耗时 {minutes} 分钟 {seconds:.2f} 秒")
     
         return result
 
