@@ -27,7 +27,7 @@ def ossUpload(packInfo):
     build_dir = packInfo["build_dir"]
     remote_dir = packInfo["remote_dir"]
    
-    # 上传 hpack/build 目录里的打包文件到 OSS
+    # 上传 hpack/build/{product} 目录里的打包文件到 OSS
     if len(os.listdir(build_dir)) == 0:
         print(f"无法上传空的目录 {build_dir}")
         return False
@@ -60,7 +60,7 @@ def ossUpload(packInfo):
 
 def willPack():
     """_summary_: 打包前调用"""
-    print("============开始打包=============")
+    print("willPack 打包前传值，使用的 print")
 
 
 def didPack(packInfo):

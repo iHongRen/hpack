@@ -1,6 +1,6 @@
 # hpack - HarmonyOS 内测打包分发工具
 
-![image](https://img.shields.io/badge/version-1.0.0-blue) 
+![image](https://img.shields.io/badge/version-1.0.1-blue) 
 
 [官网](https://ihongren.github.io/hpack.html)
 
@@ -36,7 +36,7 @@
 
 **官方给出的内部测试流程大致如下：**
 
-![img](https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20250418171406.63401756682404619915246860518762:50001231000000:2800:4D37E444439A88F2D99579093B1ED656EC3F647E672C3B109F250D1D831518A1.jpg) 
+![img](https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/3.jpeg) 
 
 
 
@@ -65,7 +65,7 @@ hvigorw -v   # DevEco-Studio 自带，其他终端使用需设置环境变量，
 ####  安装 hpack
 
 ```sh
-pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.0
+pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.1
 ```
 
 ##### 查看帮助信息
@@ -119,7 +119,7 @@ class Config:
     
     # index模板选择, 可选值为 [default, simple, tech, cartoon, tradition, custom]
     # 如果是 custom，则表示自定义模板，需要自己在 hpack 目录写一个 index.html，
-    # 打包完成后进行内容填充，再写入 hpack/build 目录
+    # 打包完成后进行内容填充，再写入 hpack/build/{product} 目录
     IndexTemplate = "default" 
 
     # 打包签名配置 
@@ -131,6 +131,30 @@ class Config:
     Cert = os.path.join(SignDir, 'release.cer') 
     Profile = os.path.join(SignDir, 'test_release.p7b')  
     Keystore =  os.path.join(SignDir, 'harmony.p12')
+    
+    
+    # 以下是 v1.0.1 新增自定义构建配置 ===================
+    # 从v1.0.0升级上来的，如需要可选择加上
+    
+    # 设置默认打包 product
+    # 优先使用这个指定的 product。
+    # 不设置，则通过读 build-prodile.json5 获取，存在多个时，打包前会提示选择
+    Product = ""  
+
+    # 编译模式，默认是 debug 模式，release 模式需要设置为False
+    Debug = True  
+
+    # 用于完全自定义 hvigorw 构建命令，配置后 Product、Debug 无效
+    # hvigorw 使用 https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-commandline
+    # 使用示例：
+    # [
+    #    'hvigorw', 'assembleHap', 'assembleHsp', 
+    #    '--mode', 'module', 
+    #    '-p', 'product=default', 
+    #    '-p', 'debuggable=true',
+    #    '--no-daemon'
+    # ]
+    HvigorwCommand = []
 ```
 
 
@@ -173,7 +197,7 @@ class OSSConfig:
 def didPack(packInfo):
     """_summary_: 打包后回调，通常在这里上传打包结果到服务器
     """
-    # 打包结果在hapck/build，编写你的上传逻辑
+    # 打包结果在hapck/build/{product}，编写你的上传逻辑
 ```
 
 执行以下命令进行打包、签名和上传操作，可选择性地添加更新说明：
@@ -182,11 +206,14 @@ def didPack(packInfo):
 hpack pack "修复了一些已知问题，优化了性能" # 缩写 hpack p [desc]
 ```
 
-打包完成后，所有打包的文件都在 `hpack/build` 目录下。
+打包完成后，所有打包的文件都在 `hpack/build/{product}` 目录下。
 
 #### 运行示例图
 - 开始打包  
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/0.png"><br>
+
+- 多 product，可选择
+<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/2.png"><br>
 
 - 打包完成  
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/1.png"><br>

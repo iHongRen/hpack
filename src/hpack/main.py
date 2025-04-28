@@ -118,7 +118,7 @@ def pack_command(desc):
     do_pack(Config, selected_product, desc)
 
 
-@timeit(printName='总打包')
+@timeit(printName='打包')
 def do_pack(Config, selected_product, desc):
     willPack_output = execute_will_pack()
     packInfo = execute_pack_sign_and_info(Config, selected_product, desc)
@@ -134,8 +134,15 @@ def do_pack(Config, selected_product, desc):
 
 def execute_will_pack():
     try:
-        return subprocess.run([get_python_command(), os.path.join(ToolConfig.HpackDir, 'PackFile.py'), '--will'],
-                              capture_output=True, text=True, check=True).stdout.strip()
+        pack_file_path = os.path.join(ToolConfig.HpackDir, 'PackFile.py')
+        process = subprocess.run(
+            [get_python_command(), pack_file_path, '--will'],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        return process.stdout.strip()
+
     except subprocess.CalledProcessError as e:
         printError(f"执行 willPack 时出错: {e}")
 
@@ -150,8 +157,15 @@ def execute_pack_sign_and_info(config, selected_product, desc):
 
 def execute_did_pack(packInfo):
     try:
-        subprocess.run([get_python_command(), os.path.join(ToolConfig.HpackDir, 'PackFile.py'), '--did'],
-                       input=json.dumps(packInfo, ensure_ascii=False, indent=4), text=True, check=True)
+        pack_file_path = os.path.join(ToolConfig.HpackDir, 'PackFile.py')
+        packJson = json.dumps(packInfo, ensure_ascii=False, indent=4)
+        subprocess.run(
+            [get_python_command(), pack_file_path, '--did'],
+            input=packJson,
+            text=True,
+            check=True
+        )
+
     except subprocess.CalledProcessError as e:
         printError(f"执行 didPack 时出错: {e}")
 
