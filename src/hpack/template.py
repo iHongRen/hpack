@@ -36,7 +36,7 @@ def handle_custom_html(packInfo):
         )
 
         html = process.stdout.strip()
-        file_path = os.path.join(ToolConfig.BuildDir, "index.html")
+        file_path = os.path.join(packInfo["build_dir"], "index.html")
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(html)
             return True

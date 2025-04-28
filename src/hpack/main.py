@@ -77,7 +77,7 @@ hpack/
   config.py # 配置文件
   sign/  # 替换自己的签名证书文件
   Packfile.py 打包完成后的回调文件
-""")
+""", end='')
     except Exception as e:
         printError(f"init 失败 - {e}")
 
@@ -96,11 +96,11 @@ def get_selected_product(Config):
     if not products:
         return None
 
-    if Config.HvigorwCommand:
+    if hasattr(Config, 'HvigorwCommand') and Config.HvigorwCommand:
         name = next((item.split('=')[1] for item in Config.HvigorwCommand if item.startswith('product=')), None)
         return next((p for p in products if p['name'] == name), None)
 
-    if Config.Product:
+    if hasattr(Config, 'Product') and Config.Product:
         return next((p for p in products if p['name'] == Config.Product), None)
 
     return select_product(products) if len(products) > 1 else products[0]
@@ -176,7 +176,15 @@ def template_command(tname="default"):
 
 
 def get_template_filenames():
-    return [os.path.splitext(f)[0] for f in os.listdir(ToolConfig.TemplateDir) if os.path.isfile(os.path.join(ToolConfig.TemplateDir, f))]
+    template_dir = ToolConfig.TemplateDir
+    filenames = []
+    if os.path.exists(template_dir):
+        for filename in os.listdir(template_dir):
+            if os.path.isfile(os.path.join(template_dir, filename)):
+                name, _ = os.path.splitext(filename)
+                filenames.append(name)
+    return filenames
+
 
 
 def get_config():

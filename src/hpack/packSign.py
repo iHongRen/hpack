@@ -9,7 +9,7 @@ from toolConfig import ToolConfig
 from utils import isWin, printError, timeit
 
 
-@timeit
+@timeit()
 def clean():
     """执行清理操作"""
     try:
@@ -18,7 +18,7 @@ def clean():
         printError(f"清理操作出错: {e}")
 
 
-@timeit
+@timeit()
 def sync():
     """执行同步操作"""
     try:
@@ -26,18 +26,19 @@ def sync():
     except subprocess.CalledProcessError as e:
         printError(f"同步操作出错: {e}")
 
-@timeit
+@timeit()
 def buildHapHsp(Config, product):
     """构建 Hap & Hsp"""
     try:
         if hasattr(Config, 'HvigorwCommand') and len(Config.HvigorwCommand) > 0:
             command = Config.HvigorwCommand
         else:
+            debuggable = "true" if hasattr(Config, 'Debugger') and Config.Debugger else "false"
             command = [
                 'hvigorw', 'assembleHap', 'assembleHsp', 
                 '--mode', 'module', 
                 '-p', f'product={product['name']}', 
-                '-p', 'debuggable=true',
+                '-p', f'debuggable={debuggable}',
                 '--no-daemon'
             ]
         subprocess.run(command, check=True, shell=isWin())
@@ -57,7 +58,7 @@ def mkBuildDir(productName):
     os.makedirs(build_dir, exist_ok=True)
     print(f"已创建 {build_dir} 目录。")
 
-@timeit
+@timeit()
 def signHapHsp(Config, productName):
     """对 Hap&Hsp 文件进行签名"""
     result = []

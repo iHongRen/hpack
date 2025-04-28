@@ -33,10 +33,11 @@ class Config:
     Keystore =  os.path.join(SignDir, 'harmony.p12') 
     
     # 设置默认打包 product
-    Product = ""   # 优先使用这个指定的product, 默认通过读build-prodile.json5获取
+    Product = ""   # 优先使用这个指定的product。为空，则通过读build-prodile.json5获取
+    Debugger = True  # 是否开启调试模式，默认开启
 
     # 自定义构建配置  --- 存在多 product ,多 targets 时，自定义使用
-    # 用于完全自定义 hvigorw 构建命令，配置后product无效
+    # 用于完全自定义 hvigorw 构建命令，配置后 Product、Debugger无效
     # hvigorw 使用 https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-commandline
     # 使用示例：
     # [
