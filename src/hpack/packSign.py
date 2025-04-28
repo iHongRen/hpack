@@ -33,12 +33,12 @@ def buildHapHsp(Config, product):
         if hasattr(Config, 'HvigorwCommand') and len(Config.HvigorwCommand) > 0:
             command = Config.HvigorwCommand
         else:
-            debuggable = "true" if hasattr(Config, 'Debugger') and Config.Debugger else "false"
+            debug = "true" if hasattr(Config, 'Debug') and Config.Debug else "false"
             command = [
                 'hvigorw', 'assembleHap', 'assembleHsp', 
                 '--mode', 'module', 
                 '-p', f'product={product['name']}', 
-                '-p', f'debuggable={debuggable}',
+                '-p', f'debuggable={debug}',
                 '--no-daemon'
             ]
         subprocess.run(command, check=True, shell=isWin())

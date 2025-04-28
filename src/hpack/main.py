@@ -203,8 +203,7 @@ def show_version():
 
 def show_help():
     print(f"""
-使用方法: hpack [选项] [命令]
-
+使用方法: hpack [命令] [选项]
 选项:
   -v, --version  显示版本信息
   -h, --help     显示帮助信息
@@ -214,7 +213,7 @@ def show_help():
   pack, p [desc]       执行打包签名和上传, desc 可选
   template, t [tname]  生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
 版本: {__version__}
-""")
+""", end='')
 
 
 def main():

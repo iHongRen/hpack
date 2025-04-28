@@ -19,7 +19,7 @@ class Config:
     # index模板选择, 可选值为 [default, simple, tech, cartoon, tradition, custom]
     # 如果是 custom，则表示自定义模板，需要自己在 hpack/ 下目录写一个 index.html 
     # 或者使用 hpack t [tname] 命令生成模板 index.html
-    # 打包完成后进行内容填充，再写入 hpack/build 目录
+    # 打包完成后进行内容填充，再写入 hpack/build/{product} 目录
     IndexTemplate = "default"  
 
     # 打包签名配置 
@@ -34,10 +34,9 @@ class Config:
     
     # 设置默认打包 product
     Product = ""   # 优先使用这个指定的product。为空，则通过读build-prodile.json5获取
-    Debugger = True  # 是否开启调试模式，默认开启
+    Debug = True  # 编译模式，默认是debug模式，release模式需要设置为False
 
-    # 自定义构建配置  --- 存在多 product ,多 targets 时，自定义使用
-    # 用于完全自定义 hvigorw 构建命令，配置后 Product、Debugger无效
+    # 用于完全自定义 hvigorw 构建命令，配置后 Product、Debug 无效
     # hvigorw 使用 https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-commandline
     # 使用示例：
     # [
