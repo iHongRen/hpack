@@ -51,23 +51,26 @@ def install_command(product="default"):
     """执行安装操作
     hdc list targets
     hdc shell mkdir data/local/tmp/hpack
+    hdc file send "./hpack/build/default/hsp1-default-signed.hsp" "data/local/tmp/hpack"
+    hdc file send "./hpack/build/default/hsp2-default-signed.hsp" "data/local/tmp/hpack"
     hdc file send "./hpack/build/default/entry-default-signed.hap" "data/local/tmp/hpack"
     hdc shell bm install -p data/local/tmp/hpack      
     hdc shell rm -rf data/local/tmp/hpack 
     """
+
     try:
         targets = get_targets()
         if not targets:
             printError("没有找到可用的设备")
             return
         target = select_items(targets, "请选择要安装的设备:")
-        tmpPath = "data/local/tmp/hpack"
+        tmpPath = "data/local/tmp/tmp-hpack-install-dir"
         subprocess.run(["hdc", "-t", target, "shell", "rm", "-rf", tmpPath], check=True, shell=isWin())
         subprocess.run(["hdc", "-t", target, "shell", "mkdir", tmpPath], check=True, shell=isWin())
 
         productPath = os.path.join(ToolConfig.BuildDir, product)
         if not os.path.exists(productPath):
-            printError(f"产品目录 {productPath} 不存在")
+            printError(f"构建产物目录 {productPath} 不存在")
             return
         haphspFiles = []
         for root, dirs, files in os.walk(productPath):
@@ -76,7 +79,7 @@ def install_command(product="default"):
                     haphspFiles.append(os.path.join(root, file))
         
         if not haphspFiles:
-            printError(f"没有找到 Hap/Hsp 文件")
+            printError(f"没有找到 hap/hsp 文件")
             return
         for file in haphspFiles:
             subprocess.run(["hdc", "-t", target, "file", "send", file, tmpPath], check=True, shell=isWin())
