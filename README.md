@@ -2,11 +2,11 @@
 
 ![image](https://img.shields.io/badge/version-1.0.1-blue) 
 
-[官网](https://ihongren.github.io/hpack.html)
+[官网](https://ihongren.github.io/hpack.html) &nbsp;&nbsp; [更新日志](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md) &nbsp;&nbsp;[deepwiki](https://deepwiki.com/iHongRen/hpack)
 
 ## 简介
 
-**[hpack](https://github.com/iHongRen/hpack)** 是一个专为 HarmonyOS 打造的内测分发工具，借助它，你只需一行命令，就能轻松完成鸿蒙应用的构建、打包、签名，并将其上传至服务器进行内测分发。
+**[hpack](https://github.com/iHongRen/hpack)** `[h-pack]`是一个专为 HarmonyOS 打造的内测分发工具，借助它，你只需一行命令，就能轻松完成鸿蒙应用的构建、打包、签名，并将其上传至服务器进行内测分发。
 
 这大大简化了开发流程，提高了开发效率，让你能更专注于应用的开发和优化。
 
