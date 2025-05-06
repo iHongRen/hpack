@@ -14,6 +14,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
 import json5
+from hdc import install_command, show_targets, show_udid
 from packSign import pack_sign
 from prompt_toolkit import PromptSession
 from prompt_toolkit.key_binding import KeyBindings
@@ -214,6 +215,12 @@ def get_config():
 def show_version():
     print(f"hpack 版本: {__version__}")
 
+def get_build_product_dirs():
+    build_dir = ToolConfig.BuildDir
+    if not os.path.exists(build_dir):
+        return []
+    product_dirs = [d for d in os.listdir(build_dir) if os.path.isdir(os.path.join(build_dir, d))]
+    return product_dirs
 
 def show_help():
     print(f"""
@@ -221,11 +228,15 @@ def show_help():
 选项:
   -v, --version  显示版本信息
   -h, --help     显示帮助信息
+  -u, --udid     显示设备的 UDID
+  targets        显示连接的设备列表
 
 命令:
-  init              初始化 hpack 目录并创建配置文件
-  pack, p [desc]       执行打包签名和上传, desc 可选
-  template, t [tname]  生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
+  init                  初始化 hpack 目录并创建配置文件
+  pack, p [desc]        执行打包签名和上传, desc 可选
+  template, t [tname]   生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
+  install, i [product]  直接安装到设备，product 可选值：{get_build_product_dirs()}，默认为 default
+
 版本: {__version__}
 """, end='')
 
@@ -234,11 +245,15 @@ def main():
     commands = {
         '-v': show_version, '--version': show_version,
         '-h': show_help, '--help': show_help,
+        '-u': show_udid, '--udid': show_udid,
+        'targets': show_targets,
         'init': init_command,
         'pack': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
         'p': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
         'template': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
-        't': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default")
+        't': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
+        'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
+        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "default")
     }
     commands.get(sys.argv[1], lambda: print("无效的命令，请使用 'hpack -h' 查看帮助信息。"))()
 

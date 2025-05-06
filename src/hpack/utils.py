@@ -7,6 +7,10 @@ import shutil
 import sys
 from datetime import datetime
 
+from prompt_toolkit import PromptSession
+from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit.styles import Style
+
 # 定义颜色代码
 RED = '\033[31m'
 BLUE = '\033[34m'
@@ -87,3 +91,40 @@ def get_python_command():
     else:
         raise EnvironmentError("未找到可用的 Python 解释器，请确保已安装 Python。")
    
+
+def select_items(items, prompt_text="请选择:"):
+    if len(items) == 1:
+        return items[0]
+     
+    current_index = 0
+    kb = KeyBindings()
+
+    @kb.add("up")
+    def _(event):
+        nonlocal current_index
+        current_index = max(0, current_index - 1)
+
+    @kb.add("down")
+    def _(event):
+        nonlocal current_index
+        current_index = min(len(items) - 1, current_index + 1)
+
+    @kb.add("enter")
+    def _(event):
+        event.app.exit(result=items[current_index])
+
+    style = Style.from_dict({
+        'selected': 'fg:ansibrightblue',
+        'normal': 'fg:ansigray',
+        'prompt': 'fg:ansigreen'
+    })
+
+    session = PromptSession()
+
+    def get_display_text():
+        return [(('class:prompt', prompt_text + '\n'))] + [
+            (('class:selected' if i == current_index else 'class:normal'), f"{'❯' if i == current_index else ' '} {option}\n")
+            for i, option in enumerate(items)
+        ]
+
+    return session.prompt(get_display_text, key_bindings=kb, style=style)
