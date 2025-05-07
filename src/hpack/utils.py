@@ -92,9 +92,13 @@ def get_python_command():
         raise EnvironmentError("未找到可用的 Python 解释器，请确保已安装 Python。")
    
 
+
 def select_items(items, prompt_text="请选择:"):
+    if len(items) == 0:
+        return None
+    
     if len(items) == 1:
-        return items[0]
+        return 0
      
     current_index = 0
     kb = KeyBindings()
@@ -127,4 +131,9 @@ def select_items(items, prompt_text="请选择:"):
             for i, option in enumerate(items)
         ]
 
-    return session.prompt(get_display_text, key_bindings=kb, style=style)
+    session.prompt(get_display_text, key_bindings=kb, style=style)
+
+    # 清空 prompt_text 和选项区域
+    print("\033[F" * (len(items) + 2), end="")  # 回退光标到 prompt_text 开始位置并覆盖
+
+    return current_index

@@ -2,7 +2,11 @@ import os
 import subprocess
 
 from toolConfig import ToolConfig
-from utils import isWin, printError, select_items
+from utils import isWin, printError, printSuccess, select_items
+
+
+def runCommand(commands, capture_output=False):
+    return subprocess.run(commands, check=True, shell=isWin(), capture_output=capture_output)
 
 
 def show_targets():
@@ -10,7 +14,7 @@ def show_targets():
     hdc list targets
     """
     try:
-        subprocess.run(["hdc", "list", "targets"], check=True, shell=isWin())
+        runCommand(["hdc", "list", "targets"])
     except subprocess.CalledProcessError as e:
         printError(f"列出设备出错: {e}")
 
@@ -20,7 +24,7 @@ def get_targets():
     hdc list targets
     """
     try:
-        result = subprocess.run(["hdc", "list", "targets"], check=True, shell=isWin(), capture_output=True)
+        result = runCommand(["hdc", "list", "targets"], True)
         devices = result.stdout.decode().splitlines()
         return devices
     except subprocess.CalledProcessError as e:
@@ -42,7 +46,7 @@ def show_udid():
             return
         for target in targets:
             print(f"设备: {target}:")
-            subprocess.run(["hdc", "-t", target, "shell", "bm", "get", "--udid"], check=True, shell=isWin())
+            runCommand(["hdc", "-t", target, "shell", "bm", "get", "--udid"])
     except subprocess.CalledProcessError as e:
         printError(f"获取udid出错: {e}")
 
@@ -63,11 +67,14 @@ def install_command(product="default"):
         if not targets:
             printError("没有找到可用的设备")
             return
-        target = select_items(targets, "请选择要安装的设备:")
-        tmpPath = "data/local/tmp/tmp-hpack-install-dir"
-        subprocess.run(["hdc", "-t", target, "shell", "rm", "-rf", tmpPath], check=True, shell=isWin())
-        subprocess.run(["hdc", "-t", target, "shell", "mkdir", tmpPath], check=True, shell=isWin())
+        index = select_items(targets, "请选择要安装的设备:")
+        target = targets[index]
+        printSuccess(f"正在安装到设备: {target}")
+        tmpPath = "data/local/tmp/hpack-install-dir"
 
+        runCommand(["hdc", "-t", target, "shell", "rm", "-rf", tmpPath])
+        runCommand(["hdc", "-t", target, "shell", "mkdir", tmpPath])
+      
         productPath = os.path.join(ToolConfig.BuildDir, product)
         if not os.path.exists(productPath):
             printError(f"构建产物目录 {productPath} 不存在")
@@ -82,12 +89,12 @@ def install_command(product="default"):
             printError(f"没有找到 hap/hsp 文件")
             return
         for file in haphspFiles:
-            subprocess.run(["hdc", "-t", target, "file", "send", file, tmpPath], check=True, shell=isWin())
-
-        subprocess.run(["hdc", "-t", target, "shell", "bm", "install", "-p", tmpPath], check=True, shell=isWin())
-
-        subprocess.run(["hdc", "-t", target, "shell", "rm", "-rf", tmpPath], check=True, shell=isWin())
-
-        print(f"安装完成")
+            runCommand(["hdc", "-t", target, "file", "send", file, tmpPath])
+          
+        runCommand(["hdc", "-t", target, "shell", "bm", "install", "-p", tmpPath])
+        runCommand(["hdc", "-t", target, "shell", "rm", "-rf", tmpPath])
+        printSuccess(f"安装完成")
     except subprocess.CalledProcessError as e:
         printError(f"安装操作出错: {e}")
+
+

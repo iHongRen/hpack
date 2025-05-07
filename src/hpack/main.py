@@ -16,49 +16,12 @@ sys.path.append(current_dir)
 import json5
 from hdc import install_command, show_targets, show_udid
 from packSign import pack_sign
-from prompt_toolkit import PromptSession
-from prompt_toolkit.key_binding import KeyBindings
-from prompt_toolkit.styles import Style
 from signInfo import sign_info
 from template import handle_template
 from toolConfig import ToolConfig
-from utils import get_python_command, printError, printSuccess, timeit
+from utils import (get_python_command, printError, printSuccess, select_items,
+                   timeit)
 from version import __version__
-
-
-def select_product(products, prompt_text="请选择 product:"):
-    current_index = 0
-    kb = KeyBindings()
-
-    @kb.add("up")
-    def _(event):
-        nonlocal current_index
-        current_index = max(0, current_index - 1)
-
-    @kb.add("down")
-    def _(event):
-        nonlocal current_index
-        current_index = min(len(products) - 1, current_index + 1)
-
-    @kb.add("enter")
-    def _(event):
-        event.app.exit(result=products[current_index])
-
-    style = Style.from_dict({
-        'selected': 'fg:ansibrightblue',
-        'normal': 'fg:ansigray',
-        'prompt': 'fg:ansigreen'
-    })
-
-    session = PromptSession()
-
-    def get_display_text():
-        return [(('class:prompt', prompt_text + '\n'))] + [
-            (('class:selected' if i == current_index else 'class:normal'), f"{'❯' if i == current_index else ' '} {option['name']}\n")
-            for i, option in enumerate(products)
-        ]
-
-    return session.prompt(get_display_text, key_bindings=kb, style=style)
 
 
 def init_command():
@@ -104,7 +67,12 @@ def get_selected_product(Config):
     if hasattr(Config, 'Product') and Config.Product:
         return next((p for p in products if p['name'] == Config.Product), None)
 
-    return select_product(products) if len(products) > 1 else products[0]
+    items = [item['name'] for item in products]
+    index = select_items(items, prompt_text="请选择要打包的 product:")
+    if index is None:
+        return None
+    printSuccess(f"开始打包 product: {items[index]}")
+    return products[index]
 
 
 def pack_command(desc):
@@ -142,7 +110,10 @@ def execute_will_pack():
             text=True,
             check=True
         )
-        return process.stdout.strip()
+        ret = process.stdout.strip()
+        if ret:
+            print(ret)
+        return ret
 
     except subprocess.CalledProcessError as e:
         printError(f"执行 willPack 时出错: {e}")
@@ -235,9 +206,9 @@ def show_help():
   init                  初始化 hpack 目录并创建配置文件
   pack, p [desc]        执行打包签名和上传, desc 可选
   template, t [tname]   生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
-  install, i [product]  直接安装到设备，product 可选值：{get_build_product_dirs()}，默认为 default
+  install, i [product]  将 hap 和 hsp 包直接安装到设备，product 可选值： {get_build_product_dirs()}，默认为 default
 
-版本: {__version__}
+版本: v{__version__}
 """, end='')
 
 
