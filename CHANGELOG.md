@@ -1,6 +1,8 @@
 # 版本更新：
 
 
+v1.0.4](https://github.com/iHongRen/hpack/releases/tag/v1.0.4)  — 2025.05.09  
+1、单引号问题
 
 [v1.0.3](https://github.com/iHongRen/hpack/releases/tag/v1.0.3)  — 2025.05.09  
 1、调整源码目录名为 hpack -> harmony_hpack，以防与其他库冲突
