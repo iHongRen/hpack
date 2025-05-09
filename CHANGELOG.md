@@ -2,6 +2,10 @@
 
 
 
+[v1.0.3](https://github.com/iHongRen/hpack/releases/tag/v1.0.3)  -- 2025.05.09
+1、调整源码目录名为 hpack -> harmony_hpack，以防与其他库冲突
+
+
 [v1.0.2](https://github.com/iHongRen/hpack/releases/tag/v1.0.2)  -- 2025.05.07
 
 封装 hdc 命令，简化使用。先确保自己的终端能使用 `hdc -v`
