@@ -37,8 +37,8 @@ def buildHapHsp(Config, product):
             command = [
                 'hvigorw', 'assembleHap', 'assembleHsp', 
                 '--mode', 'module', 
-                '-p', f'product={product['name']}', 
-                '-p', f'debuggable={debug}',
+                '-p', f"product={product['name']}", 
+                '-p', f"debuggable={debug}",
                 '--no-daemon'
             ]
         subprocess.run(command, check=True, shell=isWin())
