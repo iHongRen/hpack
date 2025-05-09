@@ -26,7 +26,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'hpack = hpack.main:main',
+            'hpack = harmony_hpack.main:main',
         ],
     },
     install_requires=[
