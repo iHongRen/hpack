@@ -18,7 +18,9 @@ pip3 install harmony-hpack
 # 查看安装成功：
 # hpack -h
 
-# 如果安装失败，尝试使用：
+# 如果安装失败：Win 用户以管理员身份运行终端，再执行安装
+
+# Mac 开启超级用户权限
 # sudo -H pip3 install harmony-hpack
 
 # 指定源安装： 
