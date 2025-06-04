@@ -91,7 +91,8 @@ hdc -v # DevEco-Studio 自带，其他终端使用需设置环境变量
 ```sh
 pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.4
 
-# 如果安装失败，尝试使用 sudo 权限：
+# 如果安装失败，Win使用管理员权限，
+# Mac 尝试使用 sudo 权限：
 # sudo -H pip3 install harmony-hpack
 ```
 
