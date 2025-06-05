@@ -229,6 +229,7 @@ def sign_info(Config, selected_product, desc=""):
         "remote_dir": remote_dir,
         "manifest_url": manifest_url,
         "qrcode": qrcode,
+        "index_url": index_url,
         "product": productName,
     }
     

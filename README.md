@@ -1,6 +1,6 @@
 # hpack - 鸿蒙 HarmonyOS 内测打包分发工具
 
-![image](https://img.shields.io/badge/version-1.0.4-blue) 
+![image](https://img.shields.io/badge/version-1.0.5-blue) 
 
 [官网](https://ihongren.github.io/hpack.html) &nbsp;&nbsp; [更新日志](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md) &nbsp;&nbsp;[deepwiki](https://deepwiki.com/iHongRen/hpack)
 
@@ -89,7 +89,7 @@ hdc -v # DevEco-Studio 自带，其他终端使用需设置环境变量
 ####  安装 hpack
 
 ```sh
-pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.4
+pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.5
 
 # 如果安装失败，Win使用管理员权限，
 # Mac 尝试使用 sudo 权限：
@@ -248,20 +248,37 @@ def didPack(packInfo):
 
 **查看帮助**
 
-```bash
-hpack -h # hpack help
+```sh
+hpack -h # 或 hpack help
+
+hpack 命令帮助:  
+查看:
+  -v, --version  显示版本信息
+  -h, --help     显示帮助信息
+  -u, --udid     显示设备的 UDID
+  targets        显示连接的设备列表
+
+执行:
+  init                   初始化 hpack 目录并创建配置文件
+  pack, p [desc]         执行打包签名和上传, desc 打包描述，可选
+  template, t [tname]    生成 index.html 模板文件，tname 可选值：['default', 'cartoon', 'tech', 'tradition', 'simple']，默认为 default
+
+安装包:
+  install, i [-product]  将打包产物安装到设备，product 为你的产物名，默认为 default
+  install, i xx.app/xx.hap  将已签名的 xx.app 或者 xx.hap 包安装到设备
+  install, i haphspPath  将该目录下的所有 hap 和 hsp 包安装到设备
+
 ```
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/h.png">
 
 **查看版本**
 
 ```bash
-hpack -v # hpack --version
+hpack -v # 或 hpack --version
 ```
 **查看 UDID**
 
 ```sh
-hpack -u # hpack --udid
+hpack -u # 或 hpack --udid
 ```
 
 **查看连接设备**
@@ -270,15 +287,19 @@ hpack -u # hpack --udid
 hpack targets
 ```
 
-**安装命令**  
-
-直接将打好的包，安装到设备
+**安装本地包**  
 
   ```sh
-hpack install [product]  # 缩写 hpack i 
-# [product] 表示产物名，默认为 default。对应 hpack/build/{product} 
+# 1、将 hapck pack 打包产物安装到设备，product 为你的产物名，默认为 default。
+hpack i [-product]  # 示例： hpack i -myproduct
+
+# 2、将已签名的 xx.app 或者 xx.hap 包安装到设备。
+hpack i xx.app/xx.hap # 示例： hpack i ./build/default/xx.hap
+
+# 3、将指定目录下的所有 hap 和 hsp 包安装到设备。
+hpack i haphspPath # 示例：hpack i ./hpack/build/default
   ```
-  <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/4.png">
+
   <br>
 
 
@@ -349,7 +370,9 @@ def customTemplateHtml(templateInfo):
     print(html_template)  # 打印到标准输出，用于传参，不可删除
     
 
+# 调用 customTemplateHtml
 if __name__ == "__main__":    
+    ...省略的代码
     elif args.t:
         # 从标准输入读取 JSON 数据
         templateInfo = json.loads(sys.stdin.read())  
@@ -357,6 +380,33 @@ if __name__ == "__main__":
 ```
 
 4、执行打包命令 `hpack p '自定义index.html'`
+
+
+
+## 打包后信息说明
+
+```python
+# 在 PackFile.py 中，打包完成后会调用这个方法，通常在这里上传打包结果到服务器
+def didPack(packInfo):
+   print(json.dumps(packInfo, indent=4, ensure_ascii=False))
+    
+# 打印结果
+{
+    "bundle_name": "com.cxy.hpack",
+    "version_code": 1000000,
+    "version_name": "1.0.0",
+    "size": "281KB",
+    "desc": "打包说明",
+    "build_dir": "hpack/build/default",
+    "remote_dir": "20250605200049",
+    "manifest_url": "https://服务器域名/hpack/20250605200049/manifest.json5",
+    "qrcode": "data:image/svg+xml;charset=utf-8,xxx...", # 二维码base64
+    "index_url": "https://服务器域名/hpack/20250605200049/index.html",
+    "product": "default",  # 选择的product
+    "willPack_output": "willPack中打包前传入的参数"
+}
+```
+
 
 
 
@@ -395,5 +445,6 @@ __pycache__/
 ## 贡献
 
 如果你有任何建议或发现了 bug，欢迎提交 issues 或 pull requests，让 [hpack](https://github.com/iHongRen/hpack) 变得更好！
+
 
 
