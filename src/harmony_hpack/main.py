@@ -223,8 +223,8 @@ def main():
         'p': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
         'template': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
         't': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
-        'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
-        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "default")
+        'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
+        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default")
     }
     commands.get(sys.argv[1], lambda: print("无效的命令，请使用 'hpack -h' 查看帮助信息。"))()
 

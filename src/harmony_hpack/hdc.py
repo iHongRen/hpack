@@ -1,5 +1,7 @@
 import os
+import shutil
 import subprocess
+import zipfile
 
 from toolConfig import ToolConfig
 from utils import isWin, printError, printSuccess, select_items
@@ -51,7 +53,7 @@ def show_udid():
         printError(f"获取udid出错: {e}")
 
 
-def install_command(product="default"):
+def install_command(product="-default"):
     """执行安装操作
     hdc list targets
     hdc shell mkdir data/local/tmp/hpack
@@ -74,26 +76,50 @@ def install_command(product="default"):
 
         runCommand(["hdc", "-t", target, "shell", "rm", "-rf", tmpPath])
         runCommand(["hdc", "-t", target, "shell", "mkdir", tmpPath])
-      
-        productPath = os.path.join(ToolConfig.BuildDir, product)
+
+        if product.endswith('.app'):
+            # 解压缩
+            zip_ref = zipfile.ZipFile(product, 'r')
+            extract_dir = product[:-4]  # 去掉.app后缀
+            zip_ref.extractall(extract_dir)
+            zip_ref.close()
+            productPath = os.path.join(extract_dir)
+        elif product.startswith('-'):
+            productPath = os.path.join(ToolConfig.BuildDir, product[1:])
+        else:
+            productPath = os.path.join(product)
+
         if not os.path.exists(productPath):
             printError(f"构建产物目录 {productPath} 不存在")
             return
+        
         haphspFiles = []
-        for root, dirs, files in os.walk(productPath):
-            for file in files:
-                if file.endswith(('.hap', '.hsp')):
-                    haphspFiles.append(os.path.join(root, file))
+        if product.endswith('.hap'):
+            haphspFiles.append(productPath)
+        else:
+            # 直接获取第一层内容
+            with os.scandir(productPath) as entries:
+                for entry in entries:
+                    if entry.is_file() and entry.name.endswith(('.hap', '.hsp')):
+                        haphspFiles.append(entry.path)
         
         if not haphspFiles:
             printError(f"没有找到 hap/hsp 文件")
             return
+        
         for file in haphspFiles:
             runCommand(["hdc", "-t", target, "file", "send", file, tmpPath])
           
         runCommand(["hdc", "-t", target, "shell", "bm", "install", "-p", tmpPath])
         runCommand(["hdc", "-t", target, "shell", "rm", "-rf", tmpPath])
-        printSuccess(f"安装完成")
+
+        # print(ret.stdout.decode())
+
+
+        if product.endswith('.app'):
+            # 删除解压目录
+            shutil.rmtree(extract_dir, ignore_errors=True)
+
     except subprocess.CalledProcessError as e:
         printError(f"安装操作出错: {e}")
 

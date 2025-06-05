@@ -173,7 +173,7 @@ def create_sign_manifest(Config, build_dir):
 
 def sign_info(Config, selected_product, desc=""):
 
-    bundle_name, version_code, version_name = read_app_info(selected_product)
+    bundle_name, version_code, version_name = read_app_info()
  
     if 'bundleName' in selected_product:
         bundle_name = selected_product['bundleName']

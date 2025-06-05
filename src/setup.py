@@ -5,6 +5,8 @@ import os
 
 from setuptools import find_packages, setup
 
+from harmony_hpack.version import __version__
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 readme_path = os.path.join(current_dir, '..', 'README.md')
 
@@ -17,7 +19,7 @@ except FileNotFoundError:
 
 setup(
     name='harmony-hpack',
-    version='1.0.4',
+    version=__version__,
     long_description=long_description,
     long_description_content_type='text/markdown',
     packages=find_packages(),
