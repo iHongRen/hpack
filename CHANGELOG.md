@@ -1,5 +1,13 @@
 # 版本更新：
 
+[v1.0.5](https://github.com/iHongRen/hpack/releases/tag/v1.0.5)  — 2025.06.06  
+
+1. version_code、version_name 优先从选择的 product 配置里获取  
+2.  安装命令支持直接安装 app 或者 hap 包 `hpack install xx.app / xx.hap` 
+3.  安装命令支持指定目录安装 `hpack install 安装包所在目录` 
+4. 原安装命令 hpack install [product] 改为 `hpack install [-product]`，多加了个横杠 -   
+
+
 [v1.0.4](https://github.com/iHongRen/hpack/releases/tag/v1.0.4)  — 2025.05.09  
 1、单引号问题
 
