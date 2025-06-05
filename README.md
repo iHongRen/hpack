@@ -39,7 +39,7 @@ pip3 install harmony-hpack
 - **OSS 上传**：如果完成配置，可将打包好的所有文件上传到阿里云 OSS 。
 - **查看连接的设备**：显示所有正在连接的设备名 `hpack targets`。
 - **查看UDID**:  显示所有正在连接的设备 UDID `hapck -u`。
-- **命令安装**：直接使用命令本地安装打好的包 `hpack install`。
+- **命令安装**：直接使用命令安装本地包 `hpack install xxx`。
 
 
 
@@ -91,7 +91,7 @@ hdc -v # DevEco-Studio 自带，其他终端使用需设置环境变量
 ```sh
 pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.5
 
-# 如果安装失败，Win使用管理员权限，
+# 如果安装失败，Win 使用管理员权限
 # Mac 尝试使用 sudo 权限：
 # sudo -H pip3 install harmony-hpack
 ```
@@ -439,6 +439,8 @@ hvigorw -v
 # 忽略 __pycache__ 目录
 __pycache__/
 ```
+
+6、使用调试.p7b，打出来的包只能本地命令安装，不能通过 DeepLink 形式安装。需使用**内部测试 Profile.p7b**。
 
 
 
