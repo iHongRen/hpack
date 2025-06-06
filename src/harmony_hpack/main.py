@@ -195,18 +195,22 @@ def get_build_product_dirs():
 
 def show_help():
     print(f"""
-使用方法: hpack [命令] [选项]
-选项:
+hpack 命令帮助:  
+查看:
   -v, --version  显示版本信息
   -h, --help     显示帮助信息
   -u, --udid     显示设备的 UDID
   targets        显示连接的设备列表
 
-命令:
-  init                  初始化 hpack 目录并创建配置文件
-  pack, p [desc]        执行打包签名和上传, desc 可选
-  template, t [tname]   生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
-  install, i [product]  将 hap 和 hsp 包直接安装到设备，product 可选值： {get_build_product_dirs()}，默认为 default
+执行:
+  init                   初始化 hpack 目录并创建配置文件
+  pack, p [desc]         执行打包签名和上传, desc 打包描述，可选
+  template, t [tname]    用于自定义模板时，生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
+
+安装包:
+  install, i [-product]     将打包产物安装到设备，product 为你的产物名，默认为 default，需要先 hapck pack 打包。示例： hpack i -myproduct
+  install, i xx.app/xx.hap  将已签名的 xx.app 或者 xx.hap 包安装到设备。示例：hpack i ./build/default/xx.hap
+  install, i haphspPath     将该目录下的所有 hap 和 hsp 包安装到设备. 示例：hpack i ./hpack/build/default
 
 版本: v{__version__}
 """, end='')
@@ -223,8 +227,8 @@ def main():
         'p': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
         'template': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
         't': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
-        'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
-        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "default")
+        'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
+        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default")
     }
     commands.get(sys.argv[1], lambda: print("无效的命令，请使用 'hpack -h' 查看帮助信息。"))()
 

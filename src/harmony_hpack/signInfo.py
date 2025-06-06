@@ -174,13 +174,20 @@ def create_sign_manifest(Config, build_dir):
 def sign_info(Config, selected_product, desc=""):
 
     bundle_name, version_code, version_name = read_app_info()
-    if not bundle_name or not version_code or not version_name:
-        printError("无法获取版本信息，无法处理 manifest.json5 文件。")
-        return
-    
+ 
     if 'bundleName' in selected_product:
         bundle_name = selected_product['bundleName']
 
+    if 'versionCode' in selected_product:
+        version_code = selected_product['versionCode']
+
+    if 'versionName' in selected_product:
+        version_name = selected_product['versionName']
+
+    if not bundle_name or not version_code or not version_name:
+        printError("无法获取 bundleName、versionCode 或 versionName，无法处理 manifest.json5 文件。")
+        return
+    
     remote_dir = datetime.now().strftime("%Y%m%d%H%M%S")
     remotePath = f"{Config.BaseURL}/{remote_dir}"
 
@@ -222,6 +229,7 @@ def sign_info(Config, selected_product, desc=""):
         "remote_dir": remote_dir,
         "manifest_url": manifest_url,
         "qrcode": qrcode,
+        "index_url": index_url,
         "product": productName,
     }
     

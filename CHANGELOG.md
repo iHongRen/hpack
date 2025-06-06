@@ -1,19 +1,28 @@
 # 版本更新：
 
+[v1.0.5](https://github.com/iHongRen/hpack/releases/tag/v1.0.5)  — 2025.06.06  
+
+1. 修改 version_code、version_name 优先从选择的 product 配置里获取  
+
+2. 修改命令 hpack install [product] 改为 `hpack install [-product]`，多加了个横杠 -   
+
+3.  新增命令支持安装已签名的 app 或者 hap 包 `hpack install xx.app / xx.hap` 
+
+4.  新增命令支持指定目录安装 `hpack install 安装包所在目录` 
+
 [v1.0.4](https://github.com/iHongRen/hpack/releases/tag/v1.0.4)  — 2025.05.09  
-1、单引号问题
+
+- 单引号问题
 
 [v1.0.3](https://github.com/iHongRen/hpack/releases/tag/v1.0.3)  — 2025.05.09  
-1、调整源码目录名为 hpack -> harmony_hpack，以防与其他库冲突
-
+-  调整源码目录名为 hpack -> harmony_hpack，以防与其他库冲突
 
 [v1.0.2](https://github.com/iHongRen/hpack/releases/tag/v1.0.2)  -- 2025.05.07
 
-封装 hdc 命令，简化使用。先确保自己的终端能使用 `hdc -v`
-
-1. 新增查看连接设备 `hpack targets`
-2. 新增查看 UDID `hpack -u`
-3. 新增直接安装构建包 `hpack install [product]` 
+1. 新增封装 hdc 命令，简化使用。先确保自己的终端能使用 `hdc -v`
+2. 新增查看连接设备 `hpack targets`
+3. 新增查看 UDID `hpack -u`
+4. 新增直接安装构建包 `hpack install [product]` 
 
 [v1.0.1](https://github.com/iHongRen/hpack/releases/tag/v1.0.1)  -- 2025.04.28
 
