@@ -16,6 +16,7 @@ sys.path.append(current_dir)
 import json5
 from hdc import install_command, show_targets, show_udid
 from packSign import pack_sign
+from sign import sign_command
 from signInfo import sign_info
 from template import handle_template
 from toolConfig import ToolConfig
@@ -212,6 +213,22 @@ hpack 命令帮助:
   install, i xx.app/xx.hap  将已签名的 xx.app 或者 xx.hap 包安装到设备。示例：hpack i ./build/default/xx.hap
   install, i haphspPath     将该目录下的所有 hap 和 hsp 包安装到设备. 示例：hpack i ./hpack/build/default
 
+签名:
+  sign, s unsignedPath certPath
+  unsignedPath 为待签名的目录或文件路径，支持 .app、.hap、.hsp 文件或目录。
+  certPath 为签名证书配置文件路径。
+  示例：hpack s ./xx.app ./cert.py
+
+  cert.py 是你的签名证书配置文件，内容如下：
+  # -*- coding: utf-8 -*-
+  class CertConfig: 
+    Alias = 'key alias' 
+    KeyPwd = 'key password' 
+    KeystorePwd = 'store password' 
+    Cert ='./cert.cer'  
+    Profile = './profile.p7b' 
+    Keystore =  './keystore.p12'
+
 版本: v{__version__}
 """, end='')
 
@@ -228,7 +245,9 @@ def main():
         'template': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
         't': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
         'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
-        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default")
+        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
+        'sign': lambda: sign_command(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else ""),
+        's': lambda: sign_command(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else ""),
     }
     commands.get(sys.argv[1], lambda: print("无效的命令，请使用 'hpack -h' 查看帮助信息。"))()
 
