@@ -225,14 +225,20 @@ hpack: v{__version__} - 鸿蒙应用打包、签名、安装和上传工具
   示例2：hpack s ./xx.hap ./sign/cert.py
   示例3：hpack s ./build/default ./sign/cert.py
 
+  /sign 目录的结构如下：
+    ├── cert.py
+    ├── certFile.cer
+    ├── keystore.p12
+    └── profile.p7b
+
   cert.py 签名证书配置文件示例如下：
   # -*- coding: utf-8 -*-
   Alias = 'key alias' 
   KeyPwd = 'key password' 
   KeystorePwd = 'store password' 
-  Cert ='./cert.cer'  # 相对于证书配置文件的路径
-  Profile = './profile.p7b' # 相对于证书配置文件的路径
-  Keystore =  './keystore.p12' # 相对于证书配置文件的路径
+  Cert ='./certFile.cer'  # 相对于cert.py的路径
+  Profile = './profile.p7b' # 相对于cert.py的路径
+  Keystore =  './keystore.p12' # 相对于cert.py的路径
 
   github: {BLUE}https://github.com/iHongRen/hpack{ENDC}
 """, end='')

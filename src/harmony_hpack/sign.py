@@ -108,7 +108,7 @@ def zip_app(signed_app_dir):
                 arcname = os.path.relpath(file_path, signed_app_dir)
                 zipf.write(file_path, arcname)
 
-    print(f"压缩完成: {zip_file_path}")
+    print(f"签名完成: {zip_file_path}")
 
 
 
@@ -132,7 +132,8 @@ def sign_file(unsigned_file_path, signed_dir, CertConfig):
     """签名单个文件"""
     file_name = os.path.basename(unsigned_file_path)
     signed_file_path = os.path.join(signed_dir, 'hpack-signed-' + file_name)
-    os.makedirs(signed_dir, exist_ok=True)
+    if signed_dir:
+        os.makedirs(signed_dir, exist_ok=True)
     command = [
         'java', '-jar', ToolConfig.HapSignTool,
         'sign-app',
