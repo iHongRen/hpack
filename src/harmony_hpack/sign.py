@@ -9,33 +9,44 @@ import zipfile
 
 from toolConfig import ToolConfig
 
-
-class CertConfig: 
-    Alias = 'key alias' 
-    KeyPwd = 'key password' 
-    KeystorePwd = 'store password' 
-    Cert ='./cert.cer'  
-    Profile = './profile.p7b' 
-    Keystore =  './keystore.p12'
+# 证书配置文件示例 cert.py
+# Alias = 'key alias' 
+# KeyPwd = 'key password' 
+# KeystorePwd = 'store password' 
+# Cert ='./cert.cer'  # 相对于证书配置文件的路径
+# Profile = './profile.p7b' # 相对于证书配置文件的路径
+# Keystore =  './keystore.p12' # 相对于证书配置文件的路径
   
-
 
 def sign_command(unsignedPath, certPath):
     """签名指定路径的文件或目录"""
-    CConfig = read_cert_config(certPath)
-    if not CConfig:
+    CertConfig = read_cert_config(certPath)
+    if not CertConfig:
         return
+
+    certDir = os.path.dirname(certPath)
+    Cert = CertConfig['Cert']
+    if not Cert.startswith(('/', '\\')):
+        CertConfig['Cert'] = os.path.join(certDir,Cert)
+
+    Profile = CertConfig['Profile']
+    if not Profile.startswith(('/', '\\')):
+        CertConfig['Profile'] = os.path.join(certDir,Profile)
+
+    Keystore = CertConfig['Keystore']
+    if not Keystore.startswith(('/', '\\')):
+        CertConfig['Keystore'] = os.path.join(certDir,Keystore)
 
     if os.path.isdir(unsignedPath):
         dirname = os.path.dirname(unsignedPath)
         basename = 'hpack-signed-' + os.path.basename(unsignedPath)
         signed_dir = os.path.join(dirname, basename)
-        sign_dir(unsignedPath, signed_dir, CConfig)
+        sign_dir(unsignedPath, signed_dir, CertConfig)
     elif unsignedPath.endswith('.app'):
-        sign_app(unsignedPath, CConfig)
+        sign_app(unsignedPath, CertConfig)
     elif unsignedPath.endswith(('.hap', '.hsp')):
         signed_dir = os.path.dirname(unsignedPath)
-        sign_file(unsignedPath, signed_dir, CConfig)
+        sign_file(unsignedPath, signed_dir, CertConfig)
     else:
         print(f"无效的路径: {unsignedPath}，请提供一个目录或 .app、.hap、.hsp 文件。")
 
@@ -48,13 +59,20 @@ def read_cert_config(certPath):
         spec = importlib.util.spec_from_file_location(name, os.path.join(certPath))
         config_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(config_module)
-        return getattr(config_module, 'CertConfig', None)
+        variables = dir(config_module)
+        variables = [var for var in variables if not var.startswith('__')]
+        
+        config = {}
+        for var in variables:
+            config[var] = getattr(config_module, var)
+        
+        return config
     except Exception as e:
         print(f"读取 {certPath} 证书文件时出错 - {e}")
 
 
 
-def sign_app(app_path, CConfig):
+def sign_app(app_path, CertConfig):
     """解压 app 文件夹"""
     with zipfile.ZipFile(app_path, 'r') as zip_ref:
         file_name = os.path.basename(app_path)
@@ -70,9 +88,10 @@ def sign_app(app_path, CConfig):
 
         signed_dir_name = 'hpack-signed-' + dir_name
         signed_dir = os.path.join(os.path.dirname(app_path), signed_dir_name)
-        sign_dir(unzip_dir, signed_dir, CConfig)
+        ret = sign_dir(unzip_dir, signed_dir, CertConfig)
         shutil.rmtree(unzip_dir)
-        zip_app(signed_dir)
+        if ret is True:
+            zip_app(signed_dir)
         shutil.rmtree(signed_dir)
 
 
@@ -93,7 +112,7 @@ def zip_app(signed_app_dir):
 
 
 
-def sign_dir(unsign_dir, signed_dir, CConfig):
+def sign_dir(unsign_dir, signed_dir, CertConfig):
     """签名文件夹"""
     result = []
     with os.scandir(unsign_dir) as entries:
@@ -102,11 +121,14 @@ def sign_dir(unsign_dir, signed_dir, CConfig):
                 result.append(entry.path)
 
     for file in result:
-        sign_file(file, signed_dir, CConfig)
+       ret = sign_file(file, signed_dir, CertConfig)
+       if ret is None:
+           return False
+           
+    return True
 
 
-
-def sign_file(unsigned_file_path, signed_dir, CConfig):
+def sign_file(unsigned_file_path, signed_dir, CertConfig):
     """签名单个文件"""
     file_name = os.path.basename(unsigned_file_path)
     signed_file_path = os.path.join(signed_dir, 'hpack-signed-' + file_name)
@@ -114,21 +136,23 @@ def sign_file(unsigned_file_path, signed_dir, CConfig):
     command = [
         'java', '-jar', ToolConfig.HapSignTool,
         'sign-app',
-        '-keyAlias', CConfig.Alias,
+        '-keyAlias', CertConfig['Alias'],
         '-signAlg', 'SHA256withECDSA',
         '-mode', 'localSign',
-        '-appCertFile', CConfig.Cert,
-        '-profileFile', CConfig.Profile,
+        '-appCertFile', CertConfig['Cert'],
+        '-profileFile', CertConfig['Profile'],
         '-inFile', unsigned_file_path,
-        '-keystoreFile', CConfig.Keystore,
+        '-keystoreFile', CertConfig['Keystore'],
         '-outFile', signed_file_path,
-        '-keyPwd', CConfig.KeyPwd,
-        '-keystorePwd', CConfig.KeystorePwd,
+        '-keyPwd', CertConfig['KeyPwd'],
+        '-keystorePwd', CertConfig['KeystorePwd'],
         '-signCode', '1'
     ]
     try:
         subprocess.run(command, check=True)
+        return signed_file_path
     except subprocess.CalledProcessError as e:
         print(f"签名 {unsigned_file_path} 出错: {e}")
+        return None
 
 

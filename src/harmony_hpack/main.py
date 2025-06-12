@@ -196,7 +196,7 @@ def get_build_product_dirs():
 
 def show_help():
     print(f"""
-hpack 命令帮助:  
+hpack: v{__version__} - 鸿蒙应用打包、签名、安装和上传工具
 查看:
   -v, --version  显示版本信息
   -h, --help     显示帮助信息
@@ -209,27 +209,32 @@ hpack 命令帮助:
   template, t [tname]    用于自定义模板时，生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
 
 安装包:
-  install, i [-product]     将打包产物安装到设备，product 为你的产物名，默认为 default，需要先 hapck pack 打包。示例： hpack i -myproduct
-  install, i xx.app/xx.hap  将已签名的 xx.app 或者 xx.hap 包安装到设备。示例：hpack i ./build/default/xx.hap
-  install, i haphspPath     将该目录下的所有 hap 和 hsp 包安装到设备. 示例：hpack i ./hpack/build/default
+  install, i [-product]   将打包后的产物安装到设备，product 为你的产物名，默认为 default，需要先 hapck pack 打包。
+  示例： hpack i -myproduct   # 安装 myproduct 产物，注意加上横杠(-）
+
+  install, i signedPath   为已签名包的目录或文件路径，支持 .app、.hap文件或目录。
+  示例1：hpack i ./xx.app
+  示例2：hpack i ./xx.hap
+  示例3：hpack i ./build/default
 
 签名:
   sign, s unsignedPath certPath
   unsignedPath 为待签名的目录或文件路径，支持 .app、.hap、.hsp 文件或目录。
   certPath 为签名证书配置文件路径。
-  示例：hpack s ./xx.app ./cert.py
+  示例1：hpack s ./xx.app ./sign/cert.py
+  示例2：hpack s ./xx.hap ./sign/cert.py
+  示例3：hpack s ./build/default ./sign/cert.py
 
-  cert.py 是你的签名证书配置文件，内容如下：
+  cert.py 签名证书配置文件示例如下：
   # -*- coding: utf-8 -*-
-  class CertConfig: 
-    Alias = 'key alias' 
-    KeyPwd = 'key password' 
-    KeystorePwd = 'store password' 
-    Cert ='./cert.cer'  
-    Profile = './profile.p7b' 
-    Keystore =  './keystore.p12'
+  Alias = 'key alias' 
+  KeyPwd = 'key password' 
+  KeystorePwd = 'store password' 
+  Cert ='./cert.cer'  # 相对于证书配置文件的路径
+  Profile = './profile.p7b' # 相对于证书配置文件的路径
+  Keystore =  './keystore.p12' # 相对于证书配置文件的路径
 
-版本: v{__version__}
+  github: https://github.com/iHongRen/hpack
 """, end='')
 
 
