@@ -16,11 +16,12 @@ sys.path.append(current_dir)
 import json5
 from hdc import install_command, show_targets, show_udid
 from packSign import pack_sign
+from sign import sign_command
 from signInfo import sign_info
 from template import handle_template
 from toolConfig import ToolConfig
-from utils import (get_python_command, printError, printSuccess, select_items,
-                   timeit)
+from utils import (BLUE, ENDC, get_python_command, printError, printSuccess,
+                   select_items, timeit)
 from version import __version__
 
 
@@ -195,24 +196,51 @@ def get_build_product_dirs():
 
 def show_help():
     print(f"""
-hpack 命令帮助:  
-查看:
+hpack: v{__version__} - 鸿蒙应用打包、签名、安装和上传工具
+{BLUE}查看:{ENDC}
   -v, --version  显示版本信息
   -h, --help     显示帮助信息
   -u, --udid     显示设备的 UDID
   targets        显示连接的设备列表
 
-执行:
+{BLUE}执行:{ENDC}
   init                   初始化 hpack 目录并创建配置文件
   pack, p [desc]         执行打包签名和上传, desc 打包描述，可选
   template, t [tname]    用于自定义模板时，生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
 
-安装包:
-  install, i [-product]     将打包产物安装到设备，product 为你的产物名，默认为 default，需要先 hapck pack 打包。示例： hpack i -myproduct
-  install, i xx.app/xx.hap  将已签名的 xx.app 或者 xx.hap 包安装到设备。示例：hpack i ./build/default/xx.hap
-  install, i haphspPath     将该目录下的所有 hap 和 hsp 包安装到设备. 示例：hpack i ./hpack/build/default
+{BLUE}安装包:{ENDC}
+  install, i [-product]   将打包后的产物安装到设备，product 为你的产物名，默认为 default，需要先 hapck pack 打包。
+  示例： hpack i -myproduct   # 安装 myproduct 产物，注意加上横杠(-）
 
-版本: v{__version__}
+  install, i signedPath   为已签名包的目录或文件路径，支持 .app、.hap文件或目录。
+  示例1：hpack i ./xx.app
+  示例2：hpack i ./xx.hap
+  示例3：hpack i ./build/default
+
+{BLUE}签名:{ENDC}
+  sign, s unsignedPath certPath
+  unsignedPath 为待签名的目录或文件路径，支持 .app、.hap、.hsp 文件或目录。
+  certPath 为签名证书配置文件路径。
+  示例1：hpack s ./xx.app ./sign/cert.py
+  示例2：hpack s ./xx.hap ./sign/cert.py
+  示例3：hpack s ./build/default ./sign/cert.py
+
+  /sign 目录的结构如下：
+    ├── cert.py
+    ├── certFile.cer
+    ├── keystore.p12
+    └── profile.p7b
+
+  cert.py 签名证书配置文件示例如下：
+  # -*- coding: utf-8 -*-
+  Alias = 'key alias' 
+  KeyPwd = 'key password' 
+  KeystorePwd = 'store password' 
+  Cert ='./certFile.cer'  # 相对于cert.py的路径
+  Profile = './profile.p7b' # 相对于cert.py的路径
+  Keystore =  './keystore.p12' # 相对于cert.py的路径
+
+  github: {BLUE}https://github.com/iHongRen/hpack{ENDC}
 """, end='')
 
 
@@ -228,7 +256,9 @@ def main():
         'template': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
         't': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
         'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
-        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default")
+        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
+        'sign': lambda: sign_command(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else ""),
+        's': lambda: sign_command(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else ""),
     }
     commands.get(sys.argv[1], lambda: print("无效的命令，请使用 'hpack -h' 查看帮助信息。"))()
 

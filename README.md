@@ -11,6 +11,23 @@
 这大大简化了开发流程，提高了开发效率，让你能更专注于应用的开发和优化。
 
 
+## 功能特性
+
+- **打包签名**：自动打出所有的 hap 和 hsp 包，并对它们进行签名。
+- **签名 manifest.json5**：读取应用打包数据，自动生成已签名的 `manifest.json5` 文件。
+- **分发 index 页**：自动生成分发页，提供多种 HTML 模板，同时支持自定义模板，满足不同的展示需求。
+- **二维码生成**：自动生成应用的二维码，方便内测人员快速下载和安装。
+- **OSS 上传**：如果完成配置，可将打包好的所有文件上传到阿里云 OSS 。
+- **查看连接的设备**：显示所有正在连接的设备名 `hpack targets`。
+- **查看UDID**:  显示所有正在连接的设备 UDID `hapck -u`。
+- **命令安装**：支持命令安装已签名的 .app、.hap 和包目录。示例： `hpack install xx.app`。
+- **签名**：支持对未签名的 .app、.hap、.hsp 和包目录签名。示例:  `hpack s ./xx.app ./sign/cert.py`
+
+
+
+
+## 安装使用
+
 
 ```sh
 pip3 install harmony-hpack
@@ -30,23 +47,6 @@ pip3 install harmony-hpack
 # pip3 uninstall harmony-hpack
 ```
 
-
-
-## 功能特性
-
-- **打包签名**：自动打出所有的 hap 和 hsp 包，并对它们进行签名。
-- **签名 manifest.json5**：读取应用打包数据，自动生成已签名的 `manifest.json5` 文件。
-- **分发 index 页**：自动生成分发页，提供多种 HTML 模板，同时支持自定义模板，满足不同的展示需求。
-- **二维码生成**：自动生成应用的二维码，方便内测人员快速下载和安装。
-- **OSS 上传**：如果完成配置，可将打包好的所有文件上传到阿里云 OSS 。
-- **查看连接的设备**：显示所有正在连接的设备名 `hpack targets`。
-- **查看UDID**:  显示所有正在连接的设备 UDID `hapck -u`。
-- **命令安装**：直接使用命令安装本地包 `hpack install xxx`。
-
-
-
-
-## 安装使用
 
 在阅读以下内容之前，我们建议你先详细阅读鸿蒙官方文档 [HarmonyOS 应用内部测试](https://developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-internaltest-0000001937800101#section042515172197)。
 
@@ -266,10 +266,36 @@ hpack 命令帮助:
   template, t [tname]    生成 index.html 模板文件，tname 可选值：['default', 'cartoon', 'tech', 'tradition', 'simple']，默认为 default
 
 安装包:
-  install, i [-product]  将打包产物安装到设备，product 为你的产物名，默认为 default
-  install, i xx.app/xx.hap  将已签名的 xx.app 或者 xx.hap 包安装到设备
-  install, i haphspPath  将该目录下的所有 hap 和 hsp 包安装到设备
+  install, i [-product]   将打包后的产物安装到设备，需要先 hapck pack 打包。
+  示例： hpack i -myproduct   # 安装 myproduct 产物，注意加上横杠(-）
 
+  install, i signedPath   为已签名包的目录或文件路径，支持 .app、.hap文件或目录。
+  示例1：hpack i ./xx.app
+  示例2：hpack i ./xx.hap
+  示例3：hpack i ./build/default
+
+签名：
+  sign, s unsignedPath certPath
+  unsignedPath 为待签名的目录或文件路径，支持 .app、.hap、.hsp 文件或目录。
+  certPath 为签名证书配置文件路径。
+  示例1：hpack s ./xx.app ./sign/cert.py
+  示例2：hpack s ./xx.hap ./sign/cert.py
+  示例3：hpack s ./build/default ./sign/cert.py
+
+  /sign 目录的结构如下：
+    ├── cert.py
+    ├── certFile.cer
+    ├── keystore.p12
+    └── profile.p7b
+
+  cert.py 签名证书配置文件示例如下：
+  # -*- coding: utf-8 -*-
+  Alias = 'key alias' 
+  KeyPwd = 'key password' 
+  KeystorePwd = 'store password' 
+  Cert ='./certFile.cer'  # 相对于cert.py的路径
+  Profile = './profile.p7b' # 相对于cert.py的路径
+  Keystore =  './keystore.p12' # 相对于cert.py的路径
 ```
 
 **查看版本**
@@ -289,6 +315,32 @@ hpack -u # 或 hpack --udid
 hpack targets
 ```
 
+**对包签名**  
+
+  ```sh
+hpack sign,s unsignedPath certPath
+# unsignedPath 为待签名的目录或文件路径，支持 .app、.hap、.hsp 文件或目录。
+# certPath 为签名证书配置文件路径。
+  
+示例1：hpack s ./xx.app ./sign/cert.py
+示例2：hpack s ./xx.hap ./sign/cert.py
+示例3：hpack s ./build/default ./sign/cert.py
+
+/sign 目录的结构如下：
+  ├── cert.py
+  ├── certFile.cer
+  ├── keystore.p12
+  └── profile.p7b
+
+cert.py 签名证书配置文件示例如下：
+# -*- coding: utf-8 -*-
+Alias = 'key alias' 
+KeyPwd = 'key password' 
+KeystorePwd = 'store password' 
+Cert ='./certFile.cer'  # 相对于cert.py的路径
+Profile = './profile.p7b' # 相对于cert.py的路径
+Keystore =  './keystore.p12' # 相对于cert.py的路径
+  ```
 **安装本地包**  
 
   ```sh
@@ -296,13 +348,13 @@ hpack targets
 hpack i [-product]  # 示例： hpack i -myproduct
 
 # 2、将已签名的 xx.app 或者 xx.hap 包安装到设备。
-hpack i xx.app/xx.hap # 示例： hpack i ./build/default/xx.hap
+hpack i xx.app或xx.hap # 示例： hpack i ./build/default/xx.hap
 
 # 3、将指定目录下的所有 hap 和 hsp 包安装到设备。
 hpack i haphspPath # 示例：hpack i ./hpack/build/default
   ```
 
-  <br>
+<br>
 
 
 #### 模板图预览
