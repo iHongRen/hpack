@@ -58,18 +58,22 @@ def sign_app(app_path, CConfig):
     """解压 app 文件夹"""
     with zipfile.ZipFile(app_path, 'r') as zip_ref:
         file_name = os.path.basename(app_path)
-        name = 'hpack-signed-' + os.path.splitext(file_name)[0]
-        unzip_app_dir = os.path.join(os.path.dirname(app_path), name)
-        zip_ref.extractall(unzip_app_dir)
+        dir_name = os.path.splitext(file_name)[0]
+        unzip_dir_name = 'hpack-unzip-' + dir_name
+        unzip_dir = os.path.join(os.path.dirname(app_path), unzip_dir_name)
+        zip_ref.extractall(unzip_dir)
 
          # 删除 __MACOSX 文件夹（如果存在）
-        macosx_dir = os.path.join(unzip_app_dir, '__MACOSX')
+        macosx_dir = os.path.join(unzip_dir, '__MACOSX')
         if os.path.exists(macosx_dir):
             shutil.rmtree(macosx_dir)
 
-        sign_dir(unzip_app_dir, unzip_app_dir, CConfig)
-        zip_app(unzip_app_dir)
-        shutil.rmtree(unzip_app_dir)
+        signed_dir_name = 'hpack-signed-' + dir_name
+        signed_dir = os.path.join(os.path.dirname(app_path), signed_dir_name)
+        sign_dir(unzip_dir, signed_dir, CConfig)
+        shutil.rmtree(unzip_dir)
+        zip_app(signed_dir)
+        shutil.rmtree(signed_dir)
 
 
 
