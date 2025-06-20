@@ -1,6 +1,6 @@
 # hpack - 鸿蒙 HarmonyOS 内测打包分发工具
 
-![image](https://img.shields.io/badge/version-1.0.5-blue) 
+![image](https://img.shields.io/badge/version-1.0.6-blue) 
 
 [官网](https://ihongren.github.io/hpack.html) &nbsp;&nbsp; [更新日志](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md) &nbsp;&nbsp;[deepwiki](https://deepwiki.com/iHongRen/hpack)
 
@@ -89,7 +89,7 @@ hdc -v # DevEco-Studio 自带，其他终端使用需设置环境变量
 ####  安装 hpack
 
 ```sh
-pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.5
+pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.6
 
 # 如果安装失败，Win 使用管理员权限
 # Mac 尝试使用 sudo 权限：
