@@ -109,8 +109,7 @@ def execute_will_pack():
             [get_python_command(), pack_file_path, '--will'],
             capture_output=True,
             text=True,
-            check=True,
-            encoding='utf-8'
+            check=True
         )
         ret = process.stdout.strip()
         if ret:
@@ -137,8 +136,7 @@ def execute_did_pack(packInfo):
             [get_python_command(), pack_file_path, '--did'],
             input=packJson,
             text=True,
-            check=True,
-            encoding='utf-8'
+            check=True
         )
 
     except subprocess.CalledProcessError as e:

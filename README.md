@@ -39,10 +39,10 @@ pip3 install harmony-hpack
 # sudo -H pip3 install harmony-hpack
 
 # 指定源安装： 
-# pip3 install -i  https://pypi.org/simple/ harmony-hpack
-# pip3 install -i  https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/ harmony-hpack
-# pip3 install -i  https://mirrors.aliyun.com/pypi/simple/ harmony-hpack
-# pip3 install -i  https://mirrors.cloud.tencent.com/pypi/simple/ harmony-hpack
+# pip3 install -i  https://pypi.org/simple harmony-hpack
+# pip3 install -i  https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple harmony-hpack
+# pip3 install -i  https://mirrors.aliyun.com/pypi/simple harmony-hpack
+# pip3 install -i  https://mirrors.cloud.tencent.com/pypi/simple harmony-hpack
 
 # 卸载： 
 # pip3 uninstall harmony-hpack
