@@ -37,7 +37,7 @@ def buildHapHsp(Config, product):
             command = [
                 'hvigorw', 'assembleHap', 'assembleHsp', 
                 '--mode', 'module', 
-                '-p', f"product={product['name']}", 
+                '-p', f"product={product.get('name')}", 
                 '-p', f"debuggable={debug}",
                 '--no-daemon'
             ]
@@ -107,7 +107,7 @@ def pack_sign(Config, product):
     sync()
     if not buildHapHsp(Config, product):
         return
-    productName = product['name']
+    productName = product.get('name')
     mkBuildDir(productName)
     signHapHsp(Config, productName)
 

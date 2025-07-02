@@ -24,8 +24,8 @@ class OSSConfig:
 def ossUpload(packInfo):
     """_summary_: 上传打包结果到 OSS"""
     
-    build_dir = packInfo["build_dir"]
-    remote_dir = packInfo["remote_dir"]
+    build_dir = packInfo.get("build_dir")
+    remote_dir = packInfo.get("remote_dir")
    
     # 上传 hpack/build/{product} 目录里的打包文件到 OSS
     if len(os.listdir(build_dir)) == 0:
@@ -76,13 +76,13 @@ def didPack(packInfo):
     # print(json.dumps(packInfo, indent=4, ensure_ascii=False))
     # print("================================")
 
-    url = f"{Config.BaseURL}/{packInfo['remote_dir']}/index.html" 
+    url = f"{Config.BaseURL}/{packInfo.get('remote_dir')}/index.html" 
     print(f"\033[0m请访问 {url}\033[0m")
 
 
 # def customTemplateHtml(templateInfo):
-#     packInfo = templateInfo["packInfo"]
-#     html = templateInfo["html"]
+#     packInfo = templateInfo.get("packInfo")
+#     html = templateInfo.get("html")
 
 #     date = datetime.now().strftime("%Y-%m-%d %H:%M")
     
@@ -94,12 +94,12 @@ def didPack(packInfo):
 #         title=Config.AppName,
 #         badge=Config.Badge,
 #         date=date,
-#         version_name=packInfo["version_name"],
-#         version_code=packInfo["version_code"],
-#         size=packInfo["size"],
-#         desc=packInfo["desc"],
-#         manifest_url=packInfo["manifest_url"],
-#         qrcode=packInfo["qrcode"]
+#         version_name=packInfo.get("version_name"),
+#         version_code=packInfo.get("version_code"),
+#         size=packInfo.get("size"),
+#         desc=packInfo.get("desc"),
+#         manifest_url=packInfo.get("manifest_url"),
+#         qrcode=packInfo.get("qrcode")
 #     )
 #     print(html_template)  # 打印到标准输出，用于传参，不可删除
 
