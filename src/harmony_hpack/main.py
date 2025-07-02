@@ -63,12 +63,12 @@ def get_selected_product(Config):
 
     if hasattr(Config, 'HvigorwCommand') and Config.HvigorwCommand:
         name = next((item.split('=')[1] for item in Config.HvigorwCommand if item.startswith('product=')), None)
-        return next((p for p in products if p['name'] == name), None)
+        return next((p for p in products if p.get('name') == name), None)
 
     if hasattr(Config, 'Product') and Config.Product:
-        return next((p for p in products if p['name'] == Config.Product), None)
+        return next((p for p in products if p.get('name') == Config.Product), None)
 
-    items = [item['name'] for item in products]
+    items = [item.get('name') for item in products]
     index = select_items(items, prompt_text="请选择要打包的 product:")
     if index is None:
         return None
