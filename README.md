@@ -1,6 +1,6 @@
 # hpack - 鸿蒙 HarmonyOS 内测打包分发工具
 
-![image](https://img.shields.io/badge/version-1.0.6-blue) 
+![image](https://img.shields.io/badge/version-1.0.7-blue) 
 
 [官网](https://ihongren.github.io/hpack.html) &nbsp;&nbsp; [更新日志](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md) &nbsp;&nbsp;[deepwiki](https://deepwiki.com/iHongRen/hpack)
 
@@ -32,17 +32,14 @@
 ```sh
 pip3 install harmony-hpack
 
-# 查看安装成功：
-# hpack -h
-
-# 如果安装失败，尝试使用：
-# sudo -H pip3 install harmony-hpack
-
 # 指定源安装： 
 # pip3 install -i  https://pypi.org/simple harmony-hpack
 # pip3 install -i  https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple harmony-hpack
 # pip3 install -i  https://mirrors.aliyun.com/pypi/simple harmony-hpack
 # pip3 install -i  https://mirrors.cloud.tencent.com/pypi/simple harmony-hpack
+
+# 查看安装成功：
+# hpack -h
 
 # 卸载： 
 # pip3 uninstall harmony-hpack
@@ -92,7 +89,7 @@ hdc -v # DevEco-Studio 自带，其他终端使用需设置环境变量
 ####  安装 hpack
 
 ```sh
-pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.6
+pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.7
 
 # 如果安装失败，Win 使用管理员权限
 # Mac 尝试使用 sudo 权限：
@@ -476,7 +473,6 @@ export DEVECO_SDK_HOME=/Applications/DevEco-Studio.app/Contents/sdk
 # win
 https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-commandline
 
-
 # 查看是否成功
 hvigorw -v
 ```
@@ -495,7 +491,13 @@ hvigorw -v
 __pycache__/
 ```
 
-6、使用调试.p7b，打出来的包只能本地命令安装，不能通过 DeepLink 形式安装。需使用**内部测试 Profile.p7b**。
+6、使用**调试.p7b**，打出来的包只能本地命令安装。**内部测试 Profile.p7b** 才能通过 **DeepLink** (链接)形式安装。
+
+7、Mac 如果安装失败，请尝试：
+
+```sh
+sudo -H pip3 install harmony-hpack
+```
 
 
 
