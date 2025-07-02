@@ -1,5 +1,21 @@
 # 版本更新：
 
+
+[v1.0.7](https://github.com/iHongRen/hpack/releases/tag/v1.0.7)  — 2025.07.02  
+
+1. 兼容 Windows
+
+   ```python
+   # 修改 PackFile.py 中 willPack 和 customTemplateHtml 方法传参方式。
+   # 将 print 改为下面：
+   sys.stdout.buffer.write(willParams.encode('utf-8'))
+   sys.stdout.flush()
+   ```
+
+   
+
+
+
 [v1.0.6](https://github.com/iHongRen/hpack/releases/tag/v1.0.6)  — 2025.06.12  
 
 1. 新增对.app、.hap、.hsp文件和包目录进行签名

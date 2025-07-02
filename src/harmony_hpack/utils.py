@@ -11,10 +11,14 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.styles import Style
 
+
+def isWin():
+    return sys.platform.startswith('win')
+
 # 定义颜色代码
-RED = '\033[31m'
-BLUE = '\033[34m'
-ENDC = '\033[0m'
+RED = '\033[31m' if isWin() else ''
+BLUE = '\033[34m' if isWin() else ''
+ENDC = '\033[0m' if isWin() else ''
 
 
 def printError(message, end='\n'):
@@ -23,10 +27,6 @@ def printError(message, end='\n'):
 
 def printSuccess(message, end='\n'):
     print(BLUE + message + ENDC, end=end)
-
-
-def isWin():
-    return sys.platform.startswith('win')
 
 
 def format_size(size):
@@ -82,14 +82,10 @@ def timeit(printName=''):
 
 
 def get_python_command():
-    # 检查系统中是否存在 python3
-    if shutil.which("python3"):
-        return "python3"
-    # 如果没有 python3，则使用 python
-    elif shutil.which("python"):
-        return "python"
-    else:
-        raise EnvironmentError("未找到可用的 Python 解释器，请确保已安装 Python。")
+    # 返回当前正在运行的 Python 解释器的绝对路径。
+    # 这是最可靠的方式，可以确保子进程使用与当前脚本相同的解释器，
+    # 无论是在全局环境、虚拟环境，还是在 Windows/Linux/macOS。
+    return sys.executable
    
 
 

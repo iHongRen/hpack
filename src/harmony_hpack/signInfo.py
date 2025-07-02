@@ -41,7 +41,7 @@ def read_api_version():
         with open(json_path, "r", encoding="utf-8") as f:
             data = json5.load(f)
             try:
-                api_version = data["app"]["products"][0]["compatibleSdkVersion"]
+                api_version = data.get("app").get("products")[0].get("compatibleSdkVersion")
                 print(f"compatibleSdkVersion 的值为: {api_version}")
             except (KeyError, IndexError):
                 print("未找到 compatibleSdkVersion 的值。")
@@ -176,13 +176,13 @@ def sign_info(Config, selected_product, desc=""):
     bundle_name, version_code, version_name = read_app_info()
  
     if 'bundleName' in selected_product:
-        bundle_name = selected_product['bundleName']
+        bundle_name = selected_product.get('bundleName')
 
     if 'versionCode' in selected_product:
-        version_code = selected_product['versionCode']
+        version_code = selected_product.get('versionCode')
 
     if 'versionName' in selected_product:
-        version_name = selected_product['versionName']
+        version_name = selected_product.get('versionName')
 
     if not bundle_name or not version_code or not version_name:
         printError("无法获取 bundleName、versionCode 或 versionName，无法处理 manifest.json5 文件。")
@@ -191,11 +191,11 @@ def sign_info(Config, selected_product, desc=""):
     remote_dir = datetime.now().strftime("%Y%m%d%H%M%S")
     remotePath = f"{Config.BaseURL}/{remote_dir}"
 
-    productName = selected_product['name']
+    productName = selected_product.get('name')
     build_dir = os.path.join(ToolConfig.BuildDir, productName)
     
     if 'compatibleSdkVersion' in selected_product:
-        apiVersion = selected_product['compatibleSdkVersion']
+        apiVersion = selected_product.get('compatibleSdkVersion')
     else:
         apiVersion = read_api_version()
     if apiVersion is None:

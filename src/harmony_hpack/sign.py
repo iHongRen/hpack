@@ -25,15 +25,15 @@ def sign_command(unsignedPath, certPath):
         return
 
     certDir = os.path.dirname(certPath)
-    Cert = CertConfig['Cert']
+    Cert = CertConfig.get('Cert')
     if not Cert.startswith(('/', '\\')):
         CertConfig['Cert'] = os.path.join(certDir,Cert)
 
-    Profile = CertConfig['Profile']
+    Profile = CertConfig.get('Profile')
     if not Profile.startswith(('/', '\\')):
         CertConfig['Profile'] = os.path.join(certDir,Profile)
 
-    Keystore = CertConfig['Keystore']
+    Keystore = CertConfig.get('Keystore')
     if not Keystore.startswith(('/', '\\')):
         CertConfig['Keystore'] = os.path.join(certDir,Keystore)
 
@@ -137,16 +137,16 @@ def sign_file(unsigned_file_path, signed_dir, CertConfig):
     command = [
         'java', '-jar', ToolConfig.HapSignTool,
         'sign-app',
-        '-keyAlias', CertConfig['Alias'],
+        '-keyAlias', CertConfig.get('Alias'),
         '-signAlg', 'SHA256withECDSA',
         '-mode', 'localSign',
-        '-appCertFile', CertConfig['Cert'],
-        '-profileFile', CertConfig['Profile'],
+        '-appCertFile', CertConfig.get('Cert'),
+        '-profileFile', CertConfig.get('Profile'),
         '-inFile', unsigned_file_path,
-        '-keystoreFile', CertConfig['Keystore'],
+        '-keystoreFile', CertConfig.get('Keystore'),
         '-outFile', signed_file_path,
-        '-keyPwd', CertConfig['KeyPwd'],
-        '-keystorePwd', CertConfig['KeystorePwd'],
+        '-keyPwd', CertConfig.get('KeyPwd'),
+        '-keystorePwd', CertConfig.get('KeystorePwd'),
         '-signCode', '1'
     ]
     try:
