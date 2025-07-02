@@ -11,10 +11,14 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.styles import Style
 
+
+def isWin():
+    return sys.platform.startswith('win')
+
 # 定义颜色代码
-RED = '\033[31m'
-BLUE = '\033[34m'
-ENDC = '\033[0m'
+RED = '\033[31m' if isWin() else ''
+BLUE = '\033[34m' if isWin() else ''
+ENDC = '\033[0m' if isWin() else ''
 
 
 def printError(message, end='\n'):
@@ -23,10 +27,6 @@ def printError(message, end='\n'):
 
 def printSuccess(message, end='\n'):
     print(BLUE + message + ENDC, end=end)
-
-
-def isWin():
-    return sys.platform.startswith('win')
 
 
 def format_size(size):
