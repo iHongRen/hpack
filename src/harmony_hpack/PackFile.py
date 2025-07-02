@@ -54,14 +54,16 @@ def ossUpload(packInfo):
                 print(f"文件 {file} 上传到 OSS 时出现异常: {e}。")
                 return False
 
-    print("\033[34m所有文件上传到 OSS 成功。\033[0m")
+    print("所有文件上传到 OSS 成功。")
     return True
 
 
 def willPack():
     """_summary_: 打包前调用"""
-    print("willPack 打包前传值，使用的 print")
-
+    willParams = json.dumps({"data": "打包前传值"},ensure_ascii=False)
+    # 打包前传值，可以在这里读取一些工程配置，再传递给打包脚本
+    sys.stdout.buffer.write(willParams.encode('utf-8'))
+    sys.stdout.flush()
 
 def didPack(packInfo):
     """_summary_: 打包后回调，通常在这里上传打包结果到服务器
@@ -76,8 +78,10 @@ def didPack(packInfo):
     # print(json.dumps(packInfo, indent=4, ensure_ascii=False))
     # print("================================")
 
+    # 获取打包结果的远程目录
     url = f"{Config.BaseURL}/{packInfo.get('remote_dir')}/index.html" 
-    print(f"\033[0m请访问 {url}\033[0m")
+    # 打印访问链接
+    print(f"请访问 {url}")
 
 
 # def customTemplateHtml(templateInfo):
@@ -101,7 +105,9 @@ def didPack(packInfo):
 #         manifest_url=packInfo.get("manifest_url"),
 #         qrcode=packInfo.get("qrcode")
 #     )
-#     print(html_template)  # 打印到标准输出，用于传参，不可删除
+#     sys.stdout.buffer.write(html_template.encode('utf-8'))
+#     sys.stdout.flush()
+
 
 
 if __name__ == "__main__":
@@ -118,8 +124,10 @@ if __name__ == "__main__":
         packInfo = json.loads(sys.stdin.read())  
         didPack(packInfo)
     elif args.t:
-        # 从标准输入读取 JSON 数据
         templateInfo = json.loads(sys.stdin.read())  
+        # 从标准输入读取 JSON 数据，使用自定义 index.html，
+        # 修改 config.py 中的 IndexTemplate，执行 hpack t [模板名]
+        # 打开下面注释
         # customTemplateHtml(templateInfo) 
     else:
-        print("无效的参数，请使用 --will 或 --did。")
+        print("无效的参数，请使用 --will 、--did、--t")

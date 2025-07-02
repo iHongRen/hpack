@@ -109,11 +109,10 @@ def execute_will_pack():
             [get_python_command(), pack_file_path, '--will'],
             capture_output=True,
             text=True,
-            check=True
+            check=True,
+            encoding='utf-8'
         )
         ret = process.stdout.strip()
-        if ret:
-            print(ret)
         return ret
 
     except subprocess.CalledProcessError as e:

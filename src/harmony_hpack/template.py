@@ -35,9 +35,9 @@ def handle_custom_html(packInfo):
             input=dataJson,
             text=True,
             capture_output=True,
-            check=True
+            check=True,
+            encoding='utf-8'
         )
-        
         html = process.stdout.strip()
         
         file_path = os.path.join(packInfo.get("build_dir"), "index.html")
