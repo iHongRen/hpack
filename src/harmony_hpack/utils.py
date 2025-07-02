@@ -16,9 +16,9 @@ def isWin():
     return sys.platform.startswith('win')
 
 # 定义颜色代码
-RED = '\033[31m' if isWin() else ''
-BLUE = '\033[34m' if isWin() else ''
-ENDC = '\033[0m' if isWin() else ''
+RED = '\033[31m' if not isWin() else ''
+BLUE = '\033[34m' if not isWin() else ''
+ENDC = '\033[0m' if not isWin() else ''
 
 
 def printError(message, end='\n'):
