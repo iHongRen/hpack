@@ -69,7 +69,10 @@ def signHapHsp(Config, productName):
         for file in files:
             if file.endswith(('-unsigned.hap', '-unsigned.hsp')):
                 result.append(os.path.join(root, file))
-     
+            elif '_hsp' in root and file.endswith('.hsp') and not file.endswith('-signed.hsp'):
+                # 未签名的 集成态hsp 文件
+                result.append(os.path.join(root, file))
+
     for file in result:
         sign(Config, file, productName)
 

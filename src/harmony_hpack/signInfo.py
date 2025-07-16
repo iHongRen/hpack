@@ -5,6 +5,7 @@ import json
 import os
 import subprocess
 from datetime import datetime
+from urllib.parse import quote
 
 import json5
 import segno  # 生成二维码
@@ -56,7 +57,7 @@ def get_module_infos(build_dir, remotePath):
     result = []
     for root, dirs, files in os.walk(build_dir):
         for file in files:
-            if file.endswith(("-signed.hsp", "-signed.hap")):
+            if file.endswith((".hsp", ".hap")):
                 file_path = os.path.join(root, file)
                 sha256 = calculate_sha256(file_path)
                 name = file.split("-")[0]
@@ -64,7 +65,7 @@ def get_module_infos(build_dir, remotePath):
                     _type = "entry"
                 else:
                     _type = "share"
-                package_url = f"{remotePath}/{file}"
+                package_url = f"{remotePath}/{quote(file)}"
                 file_info = {
                     "name": name,
                     "type": _type,
