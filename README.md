@@ -1,6 +1,6 @@
 # hpack - 鸿蒙 HarmonyOS 内测打包分发工具
 
-![image](https://img.shields.io/badge/version-1.0.7-blue) 
+![image](https://img.shields.io/badge/version-1.0.8-blue) 
 
 [官网](https://ihongren.github.io/hpack.html) &nbsp;&nbsp; [更新日志](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md) &nbsp;&nbsp;[deepwiki](https://deepwiki.com/iHongRen/hpack)
 
@@ -9,7 +9,6 @@
 **[hpack](https://github.com/iHongRen/hpack)** `[h-pack]`是一个专为鸿蒙 HarmonyOS 打造的内测分发工具，借助它，你只需一行命令，就能轻松完成鸿蒙应用的构建、打包、签名，并将其上传至服务器进行内测分发。
 
 这大大简化了开发流程，提高了开发效率，让你能更专注于应用的开发和优化。
-
 
 ## 功能特性
 
@@ -25,26 +24,27 @@
 
 
 
-
 ## 安装使用
 
-
 ```sh
-pip3 install harmony-hpack
+pip3 install harmony-hpack   # 国内推荐使用下面的指定源安装
 
 # 指定源安装： 
-# pip3 install -i  https://pypi.org/simple harmony-hpack
 # pip3 install -i  https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple harmony-hpack
 # pip3 install -i  https://mirrors.aliyun.com/pypi/simple harmony-hpack
 # pip3 install -i  https://mirrors.cloud.tencent.com/pypi/simple harmony-hpack
+# pip3 install -i  https://pypi.org/simple harmony-hpack
 
 # 查看安装成功：
 # hpack -h
 
 # 卸载： 
 # pip3 uninstall harmony-hpack
-```
 
+# 如果安装失败，Win 使用管理员权限
+# Mac 尝试使用 sudo 权限：
+# sudo -H pip3 install harmony-hpack
+```
 
 在阅读以下内容之前，我们建议你先详细阅读鸿蒙官方文档 [HarmonyOS 应用内部测试](https://developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-internaltest-0000001937800101#section042515172197)。
 
@@ -68,7 +68,7 @@ DevEco-Studio ：鸿蒙开发 IDE， 同时集成了各种命令工具
 
 JDK 17+： 签名工具需要。 
 
-python3.7+ ： hpack 由 python 编写，执行环境
+python3.10+ ： hpack 由 python 编写，执行环境
 
 ```sh
 # 在你使用的终端中，检查以下工具是否成功安装：
@@ -82,18 +82,6 @@ pip3 --version      # 或 pip
 hvigorw -v   # DevEco-Studio 自带，其他终端使用需设置环境变量，请看下面 Tips
 
 hdc -v # DevEco-Studio 自带，其他终端使用需设置环境变量
-```
-
-
-
-####  安装 hpack
-
-```sh
-pip3 install harmony-hpack # 最新版本 pip3 install harmony-hpack==1.0.7
-
-# 如果安装失败，Win 使用管理员权限
-# Mac 尝试使用 sudo 权限：
-# sudo -H pip3 install harmony-hpack
 ```
 
 #### 初始化
@@ -215,6 +203,7 @@ class OSSConfig:
     Endpoint = 'your Endpoint'
     Bucket_name = 'your Bucket_name'
     Bucket_dir = 'hpack'
+
 ```
 
 如果是使用的是其他服务器，则需要自己编写上传代码：
@@ -224,20 +213,19 @@ def didPack(packInfo):
     """_summary_: 打包后回调，通常在这里上传打包结果到服务器
     """
     # 打包结果在hapck/build/{product}，编写你的上传逻辑
+
 ```
 
 
 
 #### 运行示例图
+
 - 开始打包  
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/0.png"><br>
-
+  <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/0.png"><br>
 - 多 product，可选择
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/2.png"><br>
-
+  <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/2.png"><br>
 - 打包完成  
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/1.png"><br>
-
+  <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/1.png"><br>
 - 扫码安装  
   <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/install.png" width=300>
   <br>
@@ -294,28 +282,33 @@ hpack 命令帮助:
   Cert ='./certFile.cer'  # 相对于cert.py的路径
   Profile = './profile.p7b' # 相对于cert.py的路径
   Keystore =  './keystore.p12' # 相对于cert.py的路径
+
 ```
 
 **查看版本**
 
 ```bash
 hpack -v # 或 hpack --version
+
 ```
+
 **查看 UDID**
 
 ```sh
 hpack -u # 或 hpack --udid
+
 ```
 
 **查看连接设备**
 
 ```sh
 hpack targets
+
 ```
 
 **对包签名**  
 
-  ```sh
+```sh
 hpack sign,s unsignedPath certPath
 # unsignedPath 为待签名的目录或文件路径，支持 .app、.hap、.hsp 文件或目录。
 # certPath 为签名证书配置文件路径。
@@ -338,10 +331,12 @@ KeystorePwd = 'store password'
 Cert ='./certFile.cer'  # 相对于cert.py的路径
 Profile = './profile.p7b' # 相对于cert.py的路径
 Keystore =  './keystore.p12' # 相对于cert.py的路径
-  ```
+
+```
+
 **安装本地包**  
 
-  ```sh
+```sh
 # 1、将 hapck pack 打包产物安装到设备，product 为你的产物名，默认为 default。
 hpack i [-product]  # 示例： hpack i -myproduct
 
@@ -350,10 +345,10 @@ hpack i xx.app或xx.hap # 示例： hpack i ./build/default/xx.hap
 
 # 3、将指定目录下的所有 hap 和 hsp 包安装到设备。
 hpack i haphspPath # 示例：hpack i ./hpack/build/default
-  ```
+
+```
 
 <br>
-
 
 #### 模板图预览
 
@@ -363,15 +358,16 @@ hpack i haphspPath # 示例：hpack i ./hpack/build/default
 # config.py 
 # index模板选择, 可选值为 [default, simple, tech, cartoon, tradition, custom]
 IndexTemplate = "default" 
+
 ```
 
 | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/default.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/simple.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tech.png" width="300"> |
-| :---: | :---: | :---: |
-| default 默认风格 | simple 简单 | tech 科技 |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                       default 默认风格                       |                         simple 简单                          |                          tech 科技                           |
 
 | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/cartoon.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tradition.png" width="300"> |
-| :---: | :---: |
-| cartoon 卡通 | tradition 传统 |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                         cartoon 卡通                         |                        tradition 传统                        |
 
 
 
@@ -381,12 +377,14 @@ IndexTemplate = "default"
 
 ```python
 IndexTemplate = 'custom'  # 表面自定义模板
+
 ```
 
 2、如果你想使用 [hpack](https://github.com/iHongRen/hpack) 提供的 HTML 模板来做进一步修改，可以执行以下命令：
 
 ```bash
 hpack template [tname] # 缩写 hpack t tech
+
 ```
 
 `tname` 可选值为 `default`, `simple`, `tech`, `cartoon`, `tradition`，如果不指定，默认使用 `default` 模板。
@@ -429,6 +427,7 @@ if __name__ == "__main__":
         # 从标准输入读取 JSON 数据
         templateInfo = json.loads(sys.stdin.read())  
         customTemplateHtml(templateInfo) 
+
 ```
 
 4、执行打包命令 `hpack p '自定义index.html'`
@@ -457,8 +456,8 @@ def didPack(packInfo):
     "product": "default",  # 选择的product
     "willPack_output": "willPack中打包前传入的参数"
 }
-```
 
+```
 
 
 
@@ -475,6 +474,7 @@ https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-command
 
 # 查看是否成功
 hvigorw -v
+
 ```
 
 2、如果已安装的 App 和准备要安装的 App 打包证书不一致，需先卸载已安装的 App 。
@@ -489,6 +489,7 @@ hvigorw -v
 .gitigore 文件
 # 忽略 __pycache__ 目录
 __pycache__/
+
 ```
 
 6、使用**调试.p7b**，打出来的包只能本地命令安装。**内部测试 Profile.p7b** 才能通过 **DeepLink** (链接)形式安装。
@@ -497,6 +498,7 @@ __pycache__/
 
 ```sh
 sudo -H pip3 install harmony-hpack
+
 ```
 
 

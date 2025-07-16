@@ -1,5 +1,14 @@
 # 版本更新：
 
+[v1.0.8](https://github.com/iHongRen/hpack/releases/tag/v1.0.8)  — 2025.07.16  
+
+1. 新增对集成态 hsp 包的支持
+
+2. 非 url 编码路径问题修复  
+
+  
+
+
 
 [v1.0.7](https://github.com/iHongRen/hpack/releases/tag/v1.0.7)  — 2025.07.02  
 
