@@ -4,7 +4,8 @@
 <div align="center">  
 
 ![Version](https://img.shields.io/badge/version-1.0.8-blue?style=flat-square)
-![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)
+![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)  
+<br>
 [🌐 **官网**](https://ihongren.github.io/hpack.html)   •   [📋 **更新日志**](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md)   •   [📚 **deepwiki**](https://deepwiki.com/iHongRen/hpack)  
 
 </div>
@@ -138,16 +139,18 @@ hpack/
 
 ### 2、修改配置
 
-打开 `hpack/config.py` 文件，根据实际情况修改配置信息：
+打开 `hpack/config.py` 文件，根据实际情况：
+<details>
+<summary>📝 修改配置信息</summary> 
 
 ```python
 class Config: 
     # 安装包存放的服务器的域名 
     DeployDomain = 'static.hpack.com'
-    
+
     # 安装包存放的服务器地址，必须是 https
     BaseURL = f"https://{DeployDomain}/hpack"
-
+    
     # 应用信息 
     AppIcon = f"{BaseURL}/AppIcon.png"
     AppName = 'hpack'
@@ -157,7 +160,7 @@ class Config:
     # 如果是 custom，则表示自定义模板，需要自己在 hpack 目录写一个 index.html，
     # 打包完成后进行内容填充，再写入 hpack/build/{product} 目录
     IndexTemplate = "default" 
-
+    
     # 打包签名配置 
     Alias = 'your key alias'
     KeyPwd = 'your key password'
@@ -167,8 +170,7 @@ class Config:
     Cert = os.path.join(SignDir, 'release.cer') 
     Profile = os.path.join(SignDir, 'test_release.p7b')  
     Keystore =  os.path.join(SignDir, 'harmony.p12')
-    
-    
+  
     # 以下是 v1.0.1 新增自定义构建配置 ===================
     # 从v1.0.0升级上来的，可自行加上
     
@@ -176,10 +178,10 @@ class Config:
     # 优先使用这个指定的 product。
     # 不设置，则通过读 build-prodile.json5 获取，存在多个时，打包前会提示选择
     Product = ""  
-
+    
     # 编译模式，默认是 debug 模式，release 模式需要设置为False
     Debug = True  
-
+    
     # 用于完全自定义 hvigorw 构建命令，配置后 Product、Debug 无效
     # hvigorw 使用 https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-commandline
     # 使用示例：
@@ -192,6 +194,7 @@ class Config:
     # ]
     HvigorwCommand = []
 ```
+</details>
 
 
 
@@ -230,14 +233,14 @@ hpack p "更新说明"
 <summary>☁️ 阿里云 OSS 上传配置</summary>
 
 **安装依赖：**
-```bash
+​```bash
 pip3 install oss2
 ```
 
 **配置 OSS：**
 打开 `Packfile.py` 完成配置：
 
-```python
+​```python
 class OSSConfig: 
     # OSS 配置信息
     Access_key_id = 'your_access_key_id'
@@ -465,23 +468,6 @@ def didPack(packInfo):
     print(json.dumps(packInfo, indent=4, ensure_ascii=False))
 ```
 
-### 信息字段说明
-
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `bundle_name` | String | 应用包名 |
-| `version_code` | Number | 版本号 |
-| `version_name` | String | 版本名称 |
-| `size` | String | 包大小 |
-| `desc` | String | 打包说明 |
-| `build_dir` | String | 本地构建目录 |
-| `remote_dir` | String | 远程目录名（时间戳） |
-| `manifest_url` | String | manifest.json5 文件 URL |
-| `qrcode` | String | 二维码 base64 数据 |
-| `index_url` | String | 分发页面 URL |
-| `product` | String | 选择的 product |
-| `willPack_output` | String | 打包前传入的参数 |
-
 ### 示例输出
 ```json
 {
@@ -499,6 +485,25 @@ def didPack(packInfo):
     "willPack_output": "willPack中打包前传入的参数"
 }
 ```
+
+
+### 信息字段说明
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `bundle_name` | String | 应用包名 |
+| `version_code` | Number | 版本号 |
+| `version_name` | String | 版本名称 |
+| `size` | String | 包大小 |
+| `desc` | String | 打包说明 |
+| `build_dir` | String | 本地构建目录 |
+| `remote_dir` | String | 远程目录名（时间戳） |
+| `manifest_url` | String | manifest.json5 文件 URL |
+| `qrcode` | String | 二维码 base64 数据 |
+| `index_url` | String | 分发页面 URL |
+| `product` | String | 选择的 product |
+| `willPack_output` | String | 打包前传入的参数 |
+
 
 
 
