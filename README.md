@@ -1,91 +1,81 @@
 # 🚀 hpack - 鸿蒙 HarmonyOS 内测签名打包分发工具
 
 
-<div align="center">
+<div align="center">  
+
 ![Version](https://img.shields.io/badge/version-1.0.8-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)
-[🌐 **官网**](https://ihongren.github.io/hpack.html)   •   [📋 **更新日志**](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md)   •   [📚 **deepwiki**](https://deepwiki.com/iHongRen/hpack)
+[🌐 **官网**](https://ihongren.github.io/hpack.html)   •   [📋 **更新日志**](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md)   •   [📚 **deepwiki**](https://deepwiki.com/iHongRen/hpack)  
+
 </div>
 
-## 📖 简介
+## 简介
 
-**[hpack](https://github.com/iHongRen/hpack)** `[h-pack]` 是一个专为鸿蒙 HarmonyOS 打造的内测分发工具，完成配置后，你只需一行命令，就能轻松完成鸿蒙应用的构建、打包、签名，并将其上传至服务器进行内测分发。
+**[hpack](https://github.com/iHongRen/hpack)** `[h-pack]` 是一个专为鸿蒙 HarmonyOS 打造的内测分发工具，完成配置后，你只需一行命令，就能轻松完成鸿蒙应用的构建、签名，上传、分发、安装。
 
 
 
-## ✨ 功能特性
+## 功能特性
 
-<table>
-<tr>
-<td width="50%">
-
-### 🔧 核心功能
 - 📦 **打包签名**：自动打出所有的 `hap` 和 `hsp` 包，并对它们进行签名
-- 📝 **签名 manifest.json5**：读取应用打包数据，自动生成已签名的 `manifest.json5` 文件
-- 🌐 **分发 index 页**：自动生成分发页，提供多种 HTML 模板，同时支持自定义模板
+- 📝 **签名 manifest.json5**：读取应用打包数据，自动生成已签名 `manifest.json5` 文件
+- 🌐 **分发 index 页**：自动生成分发页，提供多种 HTML 模板，支持自定义模板
 - 📱 **二维码生成**：自动生成应用的二维码，方便内测人员快速下载和安装
-
-</td>
-<td width="50%">
-
-### 🚀 扩展功能
-- ☁️ **OSS 上传**：支持将打包好的所有文件上传到阿里云 OSS，以及自定义上传
-- 📱 **显示设备**：显示所有正在连接的设备 `hpack targets`
-- 🆔 **查看UDID**：显示所有正在连接的设备 UDID `hpack -u`
-- 💾 **命令安装**：支持命令安装已签名的 `.app`、`.hap` 和包目录
+- ☁️ **OSS 上传**：支持将打包文件上传到阿里云 OSS，以及自定义上传
+- 📱 **显示设备**：显示正在连接的设备 `hpack targets`
+- 🆔 **查看UDID**：显示正在连接设备的 UDID `hpack -u`
 - ✍️ **签名工具**：支持对未签名的 `.app`、`.hap`、`.hsp` 和包目录签名
-
-</td>
-</tr>
-</table>
+- 💾 **命令安装**：支持通过命令安装已签名的 `.app`、`.hap` 和包目录
 
 
 
-## 📥 安装使用
+## 安装使用
 
 ### 快速安装
 
 ```bash
-# 基础安装
-pip3 install harmony-hpack
+pip install harmony-hpack
 ```
 
 <details>
-<summary>🌏 国内镜像源安装（推荐）</summary>
+<summary>🔥 国内镜像源安装（推荐）</summary>
 
 ```bash
 # 清华源
-pip3 install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple harmony-hpack
+pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple harmony-hpack
 
 # 阿里源
-pip3 install -i https://mirrors.aliyun.com/pypi/simple harmony-hpack
+pip install -i https://mirrors.aliyun.com/pypi/simple harmony-hpack
 
 # 腾讯源
-pip3 install -i https://mirrors.cloud.tencent.com/pypi/simple harmony-hpack
+pip install -i https://mirrors.cloud.tencent.com/pypi/simple harmony-hpack
 
 # 官方源
-pip3 install -i https://pypi.org/simple harmony-hpack
+pip install -i https://pypi.org/simple harmony-hpack
 ```
 
 </details>
 
 <details>
-<summary>🔧 其他操作</summary>
+<summary>🔨 其他操作</summary>
 
 ```bash
 # 验证安装
 hpack -h
 
 # 升级
-pip3 install --upgrade harmony-hpack
+pip install --upgrade harmony-hpack
 
 # 卸载
-pip3 uninstall harmony-hpack
+pip uninstall harmony-hpack
+
+# 配置镜像源
+pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 ```
 
 </details>
 
-### 📋 准备工作
+### 准备工作
 
 > 💡 **重要提示**：在开始之前，建议先阅读鸿蒙官方文档 [HarmonyOS 应用内部测试](https://developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-internaltest-0000001937800101#section042515172197)
 
@@ -105,7 +95,7 @@ pip3 uninstall harmony-hpack
 
 
 
-### 🛠️ 环境要求
+### 环境要求
 
 | 工具 | 版本要求 | 说明 |
 |------|----------|------|
@@ -118,7 +108,7 @@ pip3 uninstall harmony-hpack
 ```bash
 # 检查各工具是否正确安装
 java --version          # 检查 JDK 版本
-python3 --version       # 检查 Python 版本
+python --version       # 检查 Python 版本
 hvigorw -v              # 检查 hvigorw（需配置环境变量）
 hdc -v                  # 检查 hdc（需配置环境变量）
 ```
@@ -127,9 +117,9 @@ hdc -v                  # 检查 hdc（需配置环境变量）
 
 
 
-## 🚀 快速开始
+## 快速开始
 
-### 1️⃣ 初始化项目
+### 1、初始化项目
 
 在**项目根目录**下执行初始化命令：
 
@@ -146,7 +136,7 @@ hpack/
 └── sign/          # 证书目录：存放签名证书文件
 ```
 
-### 2️⃣ 修改配置
+### 2、修改配置
 
 打开 `hpack/config.py` 文件，根据实际情况修改配置信息：
 
@@ -218,7 +208,7 @@ sign/
 
 
 
-### 3️⃣ 开始打包
+### 3、开始打包
 
 执行打包命令，可选择性地添加更新说明：
 
@@ -234,7 +224,7 @@ hpack p "更新说明"
 
 
 
-### 4️⃣ 配置上传（可选）
+### 4、配置上传（可选）
 
 <details>
 <summary>☁️ 阿里云 OSS 上传配置</summary>
@@ -260,7 +250,7 @@ class OSSConfig:
 </details>
 
 <details>
-<summary>🌐 自定义服务器上传</summary>
+<summary>⚒️ 自定义服务器上传</summary>
 
 如果使用其他服务器，需要在`didPack`中编写上传代码：
 
@@ -275,35 +265,23 @@ def didPack(packInfo):
 
 
 
-## 📸 运行示例
-
-<table>
-<tr>
-<td width="50%">
+## 运行示例
 
 ### 🚀 开始打包
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/0.png" alt="开始打包" style="max-width: 100%; height: auto;">
 
-### ✅ 打包完成
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/1.png" alt="打包完成" style="max-width: 100%; height: auto;">
-
-</td>
-<td width="50%">
-
 ### 🎯 选择 Product
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/2.png" alt="选择Product" style="max-width: 100%; height: auto;">
 
+### ✅ 打包完成
+<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/1.png" alt="打包完成" style="max-width: 100%; height: auto;">
+
+
 ### 📱 扫码安装
-<div align="center">
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/install.png" alt="扫码安装" width="300" style="max-width: 100%; height: auto;">
-</div>
-</td>
-</tr>
-</table>
 
 
-
-## 📋 命令参考
+## 命令参考
 
 <details>
 <summary>📖 查看帮助</summary>
@@ -314,7 +292,7 @@ hpack -h  # 或 hpack help
 
 **命令分类：**
 
-### 🔍 查看命令
+### 查看命令
 | 命令 | 说明 |
 |------|------|
 | `hpack -v, --version` | 显示版本信息 |
@@ -322,7 +300,7 @@ hpack -h  # 或 hpack help
 | `hpack -u, --udid` | 显示设备的 UDID |
 | `hpack targets` | 显示连接的设备列表 |
 
-### ⚡ 执行命令
+### 执行命令
 | 命令 | 说明 |
 |------|------|
 | `hpack init` | 初始化 hpack 目录并创建配置文件 |
@@ -398,7 +376,7 @@ Keystore = './keystore.p12'  # 相对于cert.py的路径
 
 <br>
 
-## 🎨 模板预览
+## 模板预览
 
 hpack 提供多种内置分发页模板，满足不同风格的需求：
 
@@ -407,50 +385,25 @@ hpack 提供多种内置分发页模板，满足不同风格的需求：
 IndexTemplate = "default"  # 可选值：[default, simple, tech, cartoon, tradition, custom]
 ```
 
-<div align="center">
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/default.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/simple.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tech.png" width="300"> |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                       default 默认风格                       |                         simple 简单                          |                          tech 科技                           |
 
-### 🖼️ 模板展示
-
-<table>
-<tr>
-<td align="center" width="33%">
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/default.png" width="250" alt="默认模板">
-<br><strong>🎯 default</strong><br>默认风格
-</td>
-<td align="center" width="33%">
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/simple.png" width="250" alt="简单模板">
-<br><strong>✨ simple</strong><br>简约风格
-</td>
-<td align="center" width="33%">
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tech.png" width="250" alt="科技模板">
-<br><strong>🚀 tech</strong><br>科技风格
-</td>
-</tr>
-<tr>
-<td align="center" width="50%">
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/cartoon.png" width="250" alt="卡通模板">
-<br><strong>🎪 cartoon</strong><br>卡通风格
-</td>
-<td align="center" width="50%">
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tradition.png" width="250" alt="传统模板">
-<br><strong>🏛️ tradition</strong><br>传统风格
-</td>
-</tr>
-</table>
-
-</div>
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/cartoon.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tradition.png" width="300"> |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                         cartoon 卡通                         |                        tradition 传统                        |
 
 
 
-## 🛠️ 自定义分发页
+## 自定义分发页
 
-#### 1️⃣ 启用自定义模板
+#### 1、启用自定义模板
 修改 `config.py` 文件：
 ```python
 IndexTemplate = 'custom'  # 启用自定义模板
 ```
 
-#### 2️⃣ 生成模板文件
+#### 2、生成模板文件
 使用内置模板作为基础：
 ```bash
 # 生成指定模板
@@ -462,7 +415,7 @@ hpack template [tname]  # 简写：hpack t tech
 
 > 💡 **提示**：命令会在 `hpack/` 目录下生成对应的 `index.html` 模板文件
 
-#### 3️⃣ 配置模板处理
+#### 3、配置模板处理
 在 `Packfile.py` 中启用自定义模板处理：
 
 ```python
@@ -495,7 +448,7 @@ if __name__ == "__main__":
         customTemplateHtml(templateInfo) 
 ```
 
-#### 4️⃣ 执行打包
+#### 4、执行打包
 ```bash
 hpack p '自定义index.html'
 ```
@@ -512,7 +465,7 @@ def didPack(packInfo):
     print(json.dumps(packInfo, indent=4, ensure_ascii=False))
 ```
 
-### 📋 信息字段说明
+### 信息字段说明
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
@@ -529,7 +482,7 @@ def didPack(packInfo):
 | `product` | String | 选择的 product |
 | `willPack_output` | String | 打包前传入的参数 |
 
-### 📝 示例输出
+### 示例输出
 ```json
 {
     "bundle_name": "com.cxy.hpack",
@@ -582,13 +535,13 @@ __pycache__/
 <details>
 <summary>⚠️ 常见问题</summary>
 
-### 🔐 证书相关
+### 证书相关
 - **证书不一致**：如果已安装的 App 和准备安装的 App 打包证书不一致，需先卸载已安装的 App
 - **Profile 类型**：
   - 使用**调试.p7b**：只能本地命令安装
   - 使用**内部测试 Profile.p7b**：才能通过 **DeepLink** (链接) 形式安装
 
-### 🌐 网络相关
+### 网络相关
 - **联网校验**：安装时鸿蒙会进行联网校验，如果验证失败，尝试关闭代理
 - **错误码**：安装出错时会有提示，可根据 [错误码说明](https://developer.huawei.com/consumer/cn/doc/app/agc-help-internal-test-errorcode-0000002295325157) 查找原因
 
@@ -602,5 +555,3 @@ __pycache__/
 - ⭐ 给项目点个 Star
 - 🔄 分享给更多开发者
 - 💬 在社区中推荐使用
-
-
