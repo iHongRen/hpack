@@ -3,8 +3,8 @@
 
 <div align="center">  
 ![Version](https://img.shields.io/badge/version-1.0.8-blue)
-![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)  
-<br>
+![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)    
+
 [🌐 **官网**](https://ihongren.github.io/hpack.html)   •   [📋 **更新日志**](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md)   •   [📚 **deepwiki**](https://deepwiki.com/iHongRen/hpack)  
 
 </div>
@@ -18,7 +18,7 @@
 ## 功能特性
 
 - 📦 **打包签名**：自动打出所有的 `hap` 和 `hsp` 包，并对它们进行签名
-- 🎯**多 Product** 支持：如果配置了多目标产物，支持选择指定的 `product` 打包
+- 🎯**多 Product 支持**：如果配置了多目标产物，支持选择指定的 `product` 打包
 - 📝 **签名 manifest.json5**：读取应用打包数据，自动生成已签名 `manifest.json5` 文件
 - 🌐 **分发 index 页**：自动生成分发页，提供多种 HTML 模板，支持自定义模板
 - 📱 **二维码生成**：自动生成应用的二维码，方便内测人员快速下载和安装
