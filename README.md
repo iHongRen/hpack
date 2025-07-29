@@ -18,16 +18,16 @@
 
 ## 功能特性
 
-- 📦 **打包签名**：自动打出所有的 `hap` 和 `hsp` 包，并对它们进行签名
-- 🎯**多 Product 支持**：如果配置了多目标产物，支持选择指定的 `product` 打包
-- 📝 **签名 manifest.json5**：读取应用打包数据，自动生成已签名 `manifest.json5` 文件
-- 🌐 **分发 index 页**：自动生成分发页，提供多种 HTML 模板，支持自定义模板
-- 📱 **二维码生成**：自动生成应用的二维码，方便内测人员快速下载和安装
-- ☁️ **OSS 上传**：支持将打包文件上传到阿里云 OSS，以及自定义上传
-- 📱 **显示设备**：显示正在连接的设备 `hpack targets`
-- 🆔 **查看UDID**：显示正在连接设备的 UDID `hpack -u`
-- ✍️ **签名工具**：支持对未签名的 `.app`、`.hap`、`.hsp` 和包目录签名
-- 💾 **命令安装**：支持通过命令安装已签名的 `.app`、`.hap` 和包目录
+-  **打包签名**：自动打出所有的 `hap` 和 `hsp` 包，并对它们进行签名
+- **多 Product 支持**：如果配置了多目标产物，支持选择指定的 `product` 打包
+-  **签名 manifest.json5**：读取应用打包数据，自动生成已签名 `manifest.json5` 文件
+-  **分发 index 页**：自动生成分发页，提供多种 HTML 模板，支持自定义模板
+-  **二维码生成**：自动生成应用的二维码，方便内测人员快速下载和安装
+-  **OSS 上传**：支持将打包文件上传到阿里云 OSS，以及自定义上传
+-  **显示设备**：显示正在连接的设备 `hpack targets`
+-  **查看UDID**：显示正在连接设备的 UDID `hpack -u`
+-  **签名工具**：支持对未签名的 `.app`、`.hap`、`.hsp` 和包目录签名
+-  **命令安装**：支持通过命令安装已签名的 `.app`、`.hap` 和包目录
 
 
 
@@ -38,9 +38,7 @@
 ```bash
 pip install harmony-hpack
 ```
-
-<details>
-<summary>🔥 国内镜像源安装（推荐）</summary>
+国内镜像源安装（推荐)
 
 ```bash
 # 清华源
@@ -56,10 +54,7 @@ pip install -i https://mirrors.cloud.tencent.com/pypi/simple harmony-hpack
 pip install -i https://pypi.org/simple harmony-hpack
 ```
 
-</details>
-
-<details>
-<summary>🔨 其他操作</summary>
+其他操作
 
 ```bash
 # 验证安装
@@ -75,7 +70,7 @@ pip uninstall harmony-hpack
 pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 ```
 
-</details>
+
 
 ### 准备工作
 
@@ -101,7 +96,7 @@ pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/si
 
 | 工具 | 版本要求 | 说明 |
 |------|----------|------|
-| **hvigorw**、**hdc** (可选) | 最新版 | DevEco Studio 自带集成，可单独安装 |
+| **hvigorw**、**hdc** (可选) | 最新版 | DevEco Studio 自带集成，也可单独安装 |
 | **JDK** | 17+ | 签名工具依赖 |
 | **Python** | 3.10+ | hpack 运行环境 |
 
@@ -110,7 +105,7 @@ pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/si
 ```bash
 # 检查各工具是否正确安装
 java --version          # 检查 JDK 版本
-python --version       # 检查 Python 版本
+python --version        # 检查 Python 版本
 hvigorw -v              # 检查 hvigorw（需配置环境变量）
 hdc -v                  # 检查 hdc（需配置环境变量）
 ```
@@ -119,9 +114,9 @@ hdc -v                  # 检查 hdc（需配置环境变量）
 
 
 
-## 快速开始
+### 快速开始
 
-### 1、初始化项目
+#### 1、初始化项目
 
 在**项目根目录**下执行初始化命令：
 
@@ -138,11 +133,9 @@ hpack/
 └── sign/          # 证书目录：存放签名证书文件
 ```
 
-### 2、修改配置
+#### 2、修改配置
 
-打开 `hpack/config.py` 文件，根据实际情况：
-<details>
-<summary>📝 修改配置信息</summary> 
+打开 `hpack/config.py` 文件，根据实际情况，修改配置信息：
 
 ```python
 class Config: 
@@ -195,11 +188,6 @@ class Config:
     # ]
     HvigorwCommand = []
 ```
-</details>
-
-
-
-**替换证书文件**
 
 将你的证书文件放入 `hpack/sign/` 目录：
 
@@ -212,36 +200,34 @@ sign/
 
 
 
-### 3、开始打包
-
-执行打包命令，可选择性地添加更新说明：
+#### 3、开始打包
 
 ```bash
-# 完整命令
-hpack pack "修复了一些已知问题，优化了性能"
-
-# 简写形式
-hpack p "更新说明"
+hpack p "修复了一些已知问题，优化了性能"  # 更新说明可选
 ```
 
-✅ **打包完成后**，所有文件将保存在 `hpack/build/{product}/` 目录下。  
+✅ **打包完成后**，所有打包文件将保存在 `hpack/build/{product}/` 目录下。  
 
+可执行命令安装到当前连接的设备：
 
-
-### 4、配置上传（可选）
-
-<details>
-<summary>☁️ 阿里云 OSS 上传配置</summary>
-
-**安装依赖：**
-​```bash
-pip3 install oss2
+```sh
+hpack i -[product]
 ```
 
-**配置 OSS：**
-打开 `Packfile.py` 完成配置：
 
-​```python
+
+#### 4、配置上传（可选）
+
+##### 阿里云 OSS 上传配置
+
+安装依赖包 oss2
+
+```bash
+pip install oss2
+```
+打开 `Packfile.py` 完成配置 OSS
+
+```python
 class OSSConfig: 
     # OSS 配置信息
     Access_key_id = 'your_access_key_id'
@@ -251,10 +237,7 @@ class OSSConfig:
     Bucket_dir = 'hpack'
 ```
 
-</details>
-
-<details>
-<summary>⚒️ 自定义服务器上传</summary>
+#### 自定义服务器上传
 
 如果使用其他服务器，需要在`didPack`中编写上传代码：
 
@@ -265,38 +248,27 @@ def didPack(packInfo):
     pass
 ```
 
-</details>
-
 
 
 ## 运行示例
 
-### 🚀 开始打包
+#### 🚀 开始打包
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/0.png" alt="开始打包" style="max-width: 100%; height: auto;">
 
-### 🎯 选择 Product (多目标产物情况)
+####  选择 Product (多目标产物情况)
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/2.png" alt="选择Product" style="max-width: 100%; height: auto;">
 
-### ✅ 打包完成
+####  ✅ 打包完成
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/1.png" alt="打包完成" style="max-width: 100%; height: auto;">
 
 
-### 📱 扫码安装
+#### 扫码安装
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/install.png" alt="扫码安装" width="300" style="max-width: 100%; height: auto;">
 
 
 ## 命令参考
 
-<details>
-<summary>📖 查看帮助</summary>
-
-```bash
-hpack -h  # 或 hpack help
-```
-
-**命令分类：**
-
-### 查看命令
+#### 查看命令
 | 命令 | 说明 |
 |------|------|
 | `hpack -v, --version` | 显示版本信息 |
@@ -304,25 +276,20 @@ hpack -h  # 或 hpack help
 | `hpack -u, --udid` | 显示设备的 UDID |
 | `hpack targets` | 显示连接的设备列表 |
 
-### 执行命令
+#### 执行命令
 | 命令 | 说明 |
 |------|------|
 | `hpack init` | 初始化 hpack 目录并创建配置文件 |
 | `hpack pack, p [desc]` | 执行打包签名和上传，desc 为打包描述（可选） |
 | `hpack template, t [tname]` | 生成 index.html 模板文件 |
 
-</details>
-
-<details>
-<summary>📱 安装命令</summary>
-
-### 安装打包产物
+#### 安装打包产物
 ```bash
 # 安装指定 product 的产物
 hpack i -myproduct  # 注意加上横杠(-)
 ```
 
-### 安装已签名包
+#### 安装已签名包
 ```bash
 # 安装 .app 文件
 hpack i ./xx.app
@@ -334,17 +301,13 @@ hpack i ./xx.hap
 hpack i ./build/default
 ```
 
-</details>
+#### 签名命令
 
-<details>
-<summary>✍️ 签名命令</summary>
-
-### 基本语法
 ```bash
 hpack sign,s <unsignedPath> <certPath>
 ```
 
-### 使用示例
+使用示例
 ```bash
 # 签名 .app 文件
 hpack s ./xx.app ./sign/cert.py
@@ -356,7 +319,7 @@ hpack s ./xx.hap ./sign/cert.py
 hpack s ./build/default ./sign/cert.py
 ```
 
-### 证书目录结构
+证书目录结构
 ```
 sign/
 ├── cert.py          # 签名配置文件
@@ -365,7 +328,7 @@ sign/
 └── profile.p7b      # Profile 文件
 ```
 
-### cert.py 配置示例
+cert.py 配置示例
 ```python
 # -*- coding: utf-8 -*-
 Alias = 'key alias' 
@@ -375,8 +338,6 @@ Cert = './certFile.cer'      # 相对于cert.py的路径
 Profile = './profile.p7b'    # 相对于cert.py的路径
 Keystore = './keystore.p12'  # 相对于cert.py的路径
 ```
-
-</details>
 
 <br>
 
@@ -510,10 +471,7 @@ def didPack(packInfo):
 
 ## 💡 Tips
 
-<details>
-<summary>🔧 环境配置</summary>
-
-### 配置环境变量
+#### 配置环境变量
 在**非 DevEco-Studio** 终端中使用时需要配置：
 
 ```bash
@@ -521,43 +479,38 @@ def didPack(packInfo):
 # .zshrc 文件
 export DEVECO_SDK_HOME=/Applications/DevEco-Studio.app/Contents/sdk
 
-# 验证配置
-hvigorw -v
-
-
 # Windows
 # 参考官方文档：https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-commandline
 ```
 
-### Git 忽略配置
+#### Git 忽略配置
 在 `.gitignore` 文件中添加：
 ```gitignore
 # 忽略 Python 临时文件
 __pycache__/
 ```
 
-</details>
+####  ⚠️ 常见问题
 
-<details>
-<summary>⚠️ 常见问题</summary>
+**证书相关**
 
-### 证书相关
-- **证书不一致**：如果已安装的 App 和准备安装的 App 打包证书不一致，需先卸载已安装的 App
-- **Profile 类型**：
+- 证书不一致：如果已安装的 App 和准备安装的 App 打包证书不一致，需先卸载已安装的 App
+- Profile 类型：
   - 使用**调试.p7b**：只能本地命令安装
   - 使用**内部测试 Profile.p7b**：才能通过 **DeepLink** (链接) 形式安装
 
-### 网络相关
-- **联网校验**：安装时鸿蒙会进行联网校验，如果验证失败，尝试关闭代理
-- **错误码**：安装出错时会有提示，可根据 [错误码说明](https://developer.huawei.com/consumer/cn/doc/app/agc-help-internal-test-errorcode-0000002295325157) 查找原因
+**网络相关**
 
-</details>
+- 联网校验：安装时鸿蒙会进行联网校验，如果验证失败，尝试关闭代理
 
+- 错误码：安装出错时会有提示，可根据 [错误码说明](https://developer.huawei.com/consumer/cn/doc/app/agc-help-internal-test-errorcode-0000002295325157) 查找原因
+
+  
 
 
 ## 支持项目
 
 如果 hpack 对你有帮助，请考虑：
-- ⭐ 给项目点个 Star
+- ⭐ 给项目点个 [Star](https://github.com/iHongRen/hpack)
 - 🔄 分享给更多开发者
 - 💬 在社区中推荐使用
