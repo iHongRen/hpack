@@ -96,9 +96,9 @@ pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/si
 
 | 工具 | 版本要求 | 说明 |
 |------|----------|------|
-| **hvigorw**、**hdc** (可选) | 最新版 | DevEco Studio 自带集成，也可单独安装 |
-| **JDK** | 17+ | 签名工具依赖 |
-| **Python** | 3.10+ | hpack 运行环境 |
+| hvigorw、hdc | 最新版 | DevEco Studio 自带集成，也可单独安装 |
+| JDK | 17+ | 签名工具依赖 |
+| Python | 3.10+ | hpack 运行环境 |
 
 **环境检查命令：**
 
@@ -266,6 +266,135 @@ def didPack(packInfo):
 <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/install.png" alt="扫码安装" width="300" style="max-width: 100%; height: auto;">
 
 
+
+
+## 📊 打包信息说明
+
+打包完成后，`PackFile.py` 中的 `didPack` 方法会接收到详细的打包信息：
+
+```python
+def didPack(packInfo):
+    """打包完成回调，通常在这里上传打包结果到服务器"""
+    print(json.dumps(packInfo, indent=4, ensure_ascii=False))
+```
+
+### 示例输出
+```json
+{
+    "bundle_name": "com.cxy.hpack",
+    "version_code": 1000000,
+    "version_name": "1.0.0",
+    "size": "281KB",
+    "desc": "打包说明",
+    "build_dir": "hpack/build/default",
+    "remote_dir": "20250605200049",
+    "manifest_url": "https://服务器域名/hpack/20250605200049/manifest.json5",
+    "qrcode": "data:image/svg+xml;charset=utf-8,xxx...",
+    "index_url": "https://服务器域名/hpack/20250605200049/index.html",
+    "product": "default",
+    "willPack_output": "willPack中打包前传入的参数"
+}
+```
+
+
+### 信息字段说明
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `bundle_name` | String | 应用包名 |
+| `version_code` | Number | 版本号 |
+| `version_name` | String | 版本名称 |
+| `size` | String | 包大小 |
+| `desc` | String | 打包说明 |
+| `build_dir` | String | 本地构建目录 |
+| `remote_dir` | String | 远程目录名（时间戳） |
+| `manifest_url` | String | manifest.json5 文件 URL |
+| `qrcode` | String | 二维码 base64 数据 |
+| `index_url` | String | 分发页面 URL |
+| `product` | String | 选择的 product |
+| `willPack_output` | String | 打包前传入的参数 |
+
+
+
+## 自定义分发页
+
+#### 1、启用自定义模板
+修改 `config.py` 文件：
+```python
+IndexTemplate = 'custom'  # 启用自定义模板
+```
+
+#### 2、生成模板文件
+使用内置模板作为基础：
+```bash
+# 生成指定模板
+hpack template [tname]  # 简写：hpack t tech
+
+# 可选模板：default, simple, tech, cartoon, tradition
+# 不指定则默认使用 default 模板
+```
+
+> 💡 **提示**：命令会在 `hpack/` 目录下生成对应的 `index.html` 模板文件
+
+#### 3、配置模板处理
+在 `Packfile.py` 中启用自定义模板处理：
+
+```python
+def customTemplateHtml(templateInfo):
+    packInfo = templateInfo["packInfo"]
+    html = templateInfo["html"]
+    date = datetime.now().strftime("%Y-%m-%d %H:%M")
+    
+    # 填充模板变量
+    template = Template(html)
+    html_template = template.safe_substitute(
+        app_icon=Config.AppIcon,
+        title=Config.AppName,
+        badge=Config.Badge,
+        date=date,
+        version_name=packInfo["version_name"],
+        version_code=packInfo["version_code"],
+        size=packInfo["size"],
+        desc=packInfo["desc"],
+        manifest_url=packInfo["manifest_url"],
+        qrcode=packInfo["qrcode"]
+    )
+    print(html_template)  # ⚠️ 不可删除，用于传参
+
+# 调用处理函数
+if __name__ == "__main__":    
+    # ...省略的代码
+    elif args.t:
+        templateInfo = json.loads(sys.stdin.read())  
+        customTemplateHtml(templateInfo) 
+```
+
+#### 4、执行打包
+```bash
+hpack p '自定义index.html'
+```
+
+
+
+## 模板预览
+
+hpack 提供多种内置分发页模板，满足不同风格的需求：
+
+```python
+# config.py 中配置模板
+IndexTemplate = "default"  # 可选值：[default, simple, tech, cartoon, tradition, custom]
+```
+
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/default.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/simple.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tech.png" width="300"> |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                       default 默认风格                       |                         simple 简单                          |                          tech 科技                           |
+
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/cartoon.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tradition.png" width="300"> |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                         cartoon 卡通                         |                        tradition 传统                        |
+
+
+
 ## 命令参考
 
 #### 查看命令
@@ -340,132 +469,6 @@ Keystore = './keystore.p12'  # 相对于cert.py的路径
 ```
 
 <br>
-
-## 模板预览
-
-hpack 提供多种内置分发页模板，满足不同风格的需求：
-
-```python
-# config.py 中配置模板
-IndexTemplate = "default"  # 可选值：[default, simple, tech, cartoon, tradition, custom]
-```
-
-| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/default.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/simple.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tech.png" width="300"> |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                       default 默认风格                       |                         simple 简单                          |                          tech 科技                           |
-
-| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/cartoon.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tradition.png" width="300"> |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                         cartoon 卡通                         |                        tradition 传统                        |
-
-
-
-## 自定义分发页
-
-#### 1、启用自定义模板
-修改 `config.py` 文件：
-```python
-IndexTemplate = 'custom'  # 启用自定义模板
-```
-
-#### 2、生成模板文件
-使用内置模板作为基础：
-```bash
-# 生成指定模板
-hpack template [tname]  # 简写：hpack t tech
-
-# 可选模板：default, simple, tech, cartoon, tradition
-# 不指定则默认使用 default 模板
-```
-
-> 💡 **提示**：命令会在 `hpack/` 目录下生成对应的 `index.html` 模板文件
-
-#### 3、配置模板处理
-在 `Packfile.py` 中启用自定义模板处理：
-
-```python
-def customTemplateHtml(templateInfo):
-    packInfo = templateInfo["packInfo"]
-    html = templateInfo["html"]
-    date = datetime.now().strftime("%Y-%m-%d %H:%M")
-    
-    # 填充模板变量
-    template = Template(html)
-    html_template = template.safe_substitute(
-        app_icon=Config.AppIcon,
-        title=Config.AppName,
-        badge=Config.Badge,
-        date=date,
-        version_name=packInfo["version_name"],
-        version_code=packInfo["version_code"],
-        size=packInfo["size"],
-        desc=packInfo["desc"],
-        manifest_url=packInfo["manifest_url"],
-        qrcode=packInfo["qrcode"]
-    )
-    print(html_template)  # ⚠️ 不可删除，用于传参
-
-# 调用处理函数
-if __name__ == "__main__":    
-    # ...省略的代码
-    elif args.t:
-        templateInfo = json.loads(sys.stdin.read())  
-        customTemplateHtml(templateInfo) 
-```
-
-#### 4、执行打包
-```bash
-hpack p '自定义index.html'
-```
-
-
-
-## 📊 打包信息说明
-
-打包完成后，`PackFile.py` 中的 `didPack` 方法会接收到详细的打包信息：
-
-```python
-def didPack(packInfo):
-    """打包完成回调，通常在这里上传打包结果到服务器"""
-    print(json.dumps(packInfo, indent=4, ensure_ascii=False))
-```
-
-### 示例输出
-```json
-{
-    "bundle_name": "com.cxy.hpack",
-    "version_code": 1000000,
-    "version_name": "1.0.0",
-    "size": "281KB",
-    "desc": "打包说明",
-    "build_dir": "hpack/build/default",
-    "remote_dir": "20250605200049",
-    "manifest_url": "https://服务器域名/hpack/20250605200049/manifest.json5",
-    "qrcode": "data:image/svg+xml;charset=utf-8,xxx...",
-    "index_url": "https://服务器域名/hpack/20250605200049/index.html",
-    "product": "default",
-    "willPack_output": "willPack中打包前传入的参数"
-}
-```
-
-
-### 信息字段说明
-
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `bundle_name` | String | 应用包名 |
-| `version_code` | Number | 版本号 |
-| `version_name` | String | 版本名称 |
-| `size` | String | 包大小 |
-| `desc` | String | 打包说明 |
-| `build_dir` | String | 本地构建目录 |
-| `remote_dir` | String | 远程目录名（时间戳） |
-| `manifest_url` | String | manifest.json5 文件 URL |
-| `qrcode` | String | 二维码 base64 数据 |
-| `index_url` | String | 分发页面 URL |
-| `product` | String | 选择的 product |
-| `willPack_output` | String | 打包前传入的参数 |
-
 
 
 
