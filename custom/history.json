@@ -1,0 +1,832 @@
+[
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "146MB",
+        "desc": "代理问题",
+        "index_url": "20250608180808/index.html",
+        "date": "2025-06-08 18:08",
+        "packText": "验收包",
+        "manifest_url": "20250608180808/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "108MB",
+        "desc": "已学课程",
+        "date": "2025-06-09 09:20",
+        "packText": "测试包",
+        "index_url": "20250609092054/index.html",
+        "manifest_url": "20250609092054/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "146MB",
+        "desc": "资讯详情分享调整",
+        "index_url": "20250609192338/index.html",
+        "date": "2025-06-09 19:23",
+        "packText": "验收包",
+        "manifest_url": "20250609192338/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "146MB",
+        "desc": "资讯详情分享修改",
+        "index_url": "20250609193115/index.html",
+        "date": "2025-06-09 19:31",
+        "packText": "验收包",
+        "manifest_url": "20250609193115/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "146MB",
+        "desc": "改版正式",
+        "index_url": "20250610091800/index.html",
+        "date": "2025-06-10 09:18",
+        "packText": "正式包",
+        "manifest_url": "20250610091800/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "146MB",
+        "desc": "改版正式",
+        "index_url": "20250610093659/index.html",
+        "date": "2025-06-10 09:37",
+        "packText": "正式包",
+        "manifest_url": "20250610093659/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "课程列表sp、tn6",
+        "date": "2025-06-10 13:52",
+        "packText": "测试包",
+        "index_url": "20250610135245/index.html",
+        "manifest_url": "20250610135245/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "我的课程",
+        "date": "2025-06-10 14:29",
+        "packText": "测试包",
+        "index_url": "20250610142901/index.html",
+        "manifest_url": "20250610142901/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "分享",
+        "date": "2025-06-11 11:16",
+        "packText": "测试包",
+        "index_url": "20250611111639/index.html",
+        "manifest_url": "20250611111639/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "分享",
+        "date": "2025-06-11 13:10",
+        "packText": "测试包",
+        "index_url": "20250611131039/index.html",
+        "manifest_url": "20250611131039/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "147MB",
+        "desc": "和过期提醒",
+        "index_url": "20250612091630/index.html",
+        "date": "2025-06-12 09:16",
+        "packText": "测试包",
+        "manifest_url": "20250612091630/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "直播",
+        "date": "2025-06-12 18:13",
+        "packText": "测试包",
+        "index_url": "20250612181343/index.html",
+        "manifest_url": "20250612181343/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "107MB",
+        "desc": "直播优化",
+        "date": "2025-06-15 14:36",
+        "packText": "测试包",
+        "index_url": "20250615143618/index.html",
+        "manifest_url": "20250615143618/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "107MB",
+        "desc": "直播优化",
+        "date": "2025-06-16 10:10",
+        "packText": "测试包",
+        "index_url": "20250616101009/index.html",
+        "manifest_url": "20250616101009/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "107MB",
+        "desc": "跳转",
+        "date": "2025-06-16 14:33",
+        "packText": "测试包",
+        "index_url": "20250616143349/index.html",
+        "manifest_url": "20250616143349/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "升级播放器",
+        "date": "2025-06-16 19:50",
+        "packText": "测试包",
+        "index_url": "20250616195033/index.html",
+        "manifest_url": "20250616195033/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "1.2.4验收",
+        "date": "2025-06-17 09:16",
+        "packText": "验收包",
+        "index_url": "20250617091559/index.html",
+        "manifest_url": "20250617091559/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "视频播放专项测试包",
+        "date": "2025-06-17 09:22",
+        "packText": "正式包",
+        "index_url": "20250617092222/index.html",
+        "manifest_url": "20250617092222/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "改版",
+        "index_url": "20250617093458/index.html",
+        "date": "2025-06-17 09:35",
+        "packText": "测试包",
+        "manifest_url": "20250617093458/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "bug修改",
+        "date": "2025-06-17 14:41",
+        "packText": "验收包",
+        "index_url": "20250617111153/index.html",
+        "manifest_url": "20250617111153/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "已学课程老师搜索",
+        "date": "2025-06-17 17:48",
+        "packText": "验收包",
+        "index_url": "20250617174840/index.html",
+        "manifest_url": "20250617174840/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "改版",
+        "index_url": "20250618094718/index.html",
+        "date": "2025-06-18 09:47",
+        "packText": "测试包",
+        "manifest_url": "20250618094718/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "改版",
+        "index_url": "20250618101036/index.html",
+        "date": "2025-06-18 10:10",
+        "packText": "测试包",
+        "manifest_url": "20250618101036/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "41MB",
+        "desc": "去掉截图学员id水印",
+        "date": "2025-06-18 11:11",
+        "packText": "验收包",
+        "index_url": "20250618111140/index.html",
+        "manifest_url": "20250618111140/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "去掉截图学员id水印",
+        "date": "2025-06-18 11:18",
+        "packText": "验收包",
+        "index_url": "20250618111812/index.html",
+        "manifest_url": "20250618111812/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 112,
+        "size": "108MB",
+        "desc": "1.2.3正式",
+        "date": "2025-06-18 14:30",
+        "packText": "正式包",
+        "index_url": "20250618142958/index.html",
+        "manifest_url": "20250618142958/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 113,
+        "size": "108MB",
+        "desc": "1.2.3修复bug",
+        "date": "2025-06-18 20:19",
+        "packText": "正式包",
+        "index_url": "20250618201911/index.html",
+        "manifest_url": "20250618201911/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "认证",
+        "index_url": "20250620091651/index.html",
+        "date": "2025-06-20 09:16",
+        "packText": "测试包",
+        "manifest_url": "20250620091651/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 113,
+        "size": "147MB",
+        "desc": "处理消息",
+        "index_url": "20250622161911/index.html",
+        "date": "2025-06-22 16:19",
+        "packText": "测试包",
+        "manifest_url": "20250622161911/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "bugfix",
+        "index_url": "20250623143624/index.html",
+        "date": "2025-06-23 14:36",
+        "packText": "测试包",
+        "manifest_url": "20250623143624/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "bugfix",
+        "index_url": "20250623161902/index.html",
+        "date": "2025-06-23 16:19",
+        "packText": "测试包",
+        "manifest_url": "20250623161902/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "bugfix",
+        "index_url": "20250623161106/index.html",
+        "date": "2025-06-23 16:11",
+        "packText": "测试包",
+        "manifest_url": "20250623161106/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 113,
+        "size": "147MB",
+        "desc": "审核消息",
+        "index_url": "20250623193038/index.html",
+        "date": "2025-06-23 19:30",
+        "packText": "测试包",
+        "manifest_url": "20250623193038/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 113,
+        "size": "147MB",
+        "desc": "审核消息",
+        "index_url": "20250623203322/index.html",
+        "manifest_url": "20250623203322/manifest.json5",
+        "date": "2025-06-23 20:33",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "重新打包",
+        "index_url": "20250624092814/index.html",
+        "date": "2025-06-24 09:28",
+        "packText": "测试包",
+        "manifest_url": "20250624092814/manifest.json5"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "及时更新状态",
+        "index_url": "20250624100535/index.html",
+        "date": "2025-06-24 10:05",
+        "packText": "测试包",
+        "manifest_url": "20250624100535/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 115,
+        "size": "147MB",
+        "desc": "审核消息",
+        "index_url": "20250624101121/index.html",
+        "manifest_url": "20250624101121/manifest.json5",
+        "date": "2025-06-24 10:11",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.3",
+        "build": 115,
+        "size": "147MB",
+        "desc": "审核消息更新",
+        "index_url": "20250624112638/index.html",
+        "manifest_url": "20250624112638/manifest.json5",
+        "date": "2025-06-24 11:26",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.2",
+        "build": 111,
+        "size": "147MB",
+        "desc": "bugfix",
+        "index_url": "20250624134723/index.html",
+        "date": "2025-06-24 13:47",
+        "packText": "测试包",
+        "manifest_url": "20250624134723/manifest.json5"
+    },
+    {
+        "version": "1.2.3",
+        "build": 115,
+        "size": "147MB",
+        "desc": "审核",
+        "index_url": "20250624143039/index.html",
+        "manifest_url": "20250624143039/manifest.json5",
+        "date": "2025-06-24 14:30",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.3",
+        "build": 115,
+        "size": "147MB",
+        "desc": "审核",
+        "index_url": "20250624145114/index.html",
+        "manifest_url": "20250624145114/manifest.json5",
+        "date": "2025-06-24 14:51",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.3",
+        "build": 115,
+        "size": "147MB",
+        "desc": "监管",
+        "index_url": "/20250625140040/index.html",
+        "manifest_url": "/20250625140040/manifest.json5",
+        "date": "2025-06-25 14:00",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.3",
+        "build": 115,
+        "size": "147MB",
+        "desc": "监管验收",
+        "index_url": "/20250626094612/index.html",
+        "manifest_url": "/20250626094612/manifest.json5",
+        "date": "2025-06-26 09:46",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "正式监管",
+        "index_url": "/20250629150925/index.html",
+        "manifest_url": "/20250629150925/manifest.json5",
+        "date": "2025-06-29 15:09",
+        "packText": "正式包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "zip文件支持",
+        "index_url": "/20250630111842/index.html",
+        "manifest_url": "/20250630111842/manifest.json5",
+        "date": "2025-06-30 11:18",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "验收",
+        "index_url": "/20250630171032/index.html",
+        "manifest_url": "/20250630171032/manifest.json5",
+        "date": "2025-06-30 17:10",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "调整",
+        "index_url": "/20250701173114/index.html",
+        "manifest_url": "/20250701173114/manifest.json5",
+        "date": "2025-07-01 17:31",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "问题修复",
+        "index_url": "/20250702092914/index.html",
+        "manifest_url": "/20250702092914/manifest.json5",
+        "date": "2025-07-02 09:29",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "认证审核中",
+        "index_url": "/20250702111421/index.html",
+        "manifest_url": "/20250702111421/manifest.json5",
+        "date": "2025-07-02 11:14",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "认证审核中",
+        "index_url": "/20250702142136/index.html",
+        "manifest_url": "/20250702142136/manifest.json5",
+        "date": "2025-07-02 14:21",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "升级弹窗边距",
+        "index_url": "/20250702160226/index.html",
+        "manifest_url": "/20250702160226/manifest.json5",
+        "date": "2025-07-02 16:02",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "升级弹窗边距",
+        "index_url": "/20250702160955/index.html",
+        "manifest_url": "/20250702160955/manifest.json5",
+        "date": "2025-07-02 16:10",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "电话号码蓝色",
+        "index_url": "/20250702182111/index.html",
+        "manifest_url": "/20250702182111/manifest.json5",
+        "date": "2025-07-02 18:21",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "电话号码蓝色",
+        "index_url": "/20250702200604/index.html",
+        "manifest_url": "/20250702200604/manifest.json5",
+        "date": "2025-07-02 20:06",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.3",
+        "build": 115,
+        "size": "147MB",
+        "desc": "test",
+        "index_url": "/20250702202945/index.html",
+        "manifest_url": "/20250702202945/manifest.json5",
+        "date": "2025-07-02 20:29",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "接口升级",
+        "index_url": "/20250703145903/index.html",
+        "manifest_url": "/20250703145903/manifest.json5",
+        "date": "2025-07-03 14:59",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "接口升级1100",
+        "index_url": "/20250703170120/index.html",
+        "manifest_url": "/20250703170120/manifest.json5",
+        "date": "2025-07-03 17:01",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "新接口",
+        "index_url": "/20250703194656/index.html",
+        "manifest_url": "/20250703194656/manifest.json5",
+        "date": "2025-07-03 19:47",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "接口升级1100",
+        "index_url": "/20250704103323/index.html",
+        "manifest_url": "/20250704103323/manifest.json5",
+        "date": "2025-07-04 10:33",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "接口升级1100",
+        "index_url": "/20250704104609/index.html",
+        "manifest_url": "/20250704104609/manifest.json5",
+        "date": "2025-07-04 10:46",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "推荐",
+        "index_url": "/20250704141751/index.html",
+        "manifest_url": "/20250704141751/manifest.json5",
+        "date": "2025-07-04 14:17",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "推荐",
+        "index_url": "/20250704142348/index.html",
+        "manifest_url": "/20250704142348/manifest.json5",
+        "date": "2025-07-04 14:23",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "认证正式环境",
+        "index_url": "/20250707092225/index.html",
+        "manifest_url": "/20250707092225/manifest.json5",
+        "date": "2025-07-07 09:22",
+        "packText": "正式包"
+    },
+    {
+        "version": "1.2.4",
+        "build": 116,
+        "size": "147MB",
+        "desc": "认证正式环境",
+        "index_url": "/20250707105208/index.html",
+        "manifest_url": "/20250707105208/manifest.json5",
+        "date": "2025-07-07 10:52",
+        "packText": "正式包"
+    },
+    {
+        "version": "1.2.5",
+        "build": 118,
+        "size": "147MB",
+        "desc": "验收测试",
+        "index_url": "/20250715131112/index.html",
+        "manifest_url": "/20250715131112/manifest.json5",
+        "date": "2025-07-15 13:11",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.5",
+        "build": 118,
+        "size": "147MB",
+        "desc": "验收测试",
+        "index_url": "/20250715145116/index.html",
+        "manifest_url": "/20250715145116/manifest.json5",
+        "date": "2025-07-15 14:54",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.5",
+        "build": 118,
+        "size": "147MB",
+        "desc": "埋点",
+        "index_url": "/20250715153125/index.html",
+        "manifest_url": "/20250715153125/manifest.json5",
+        "date": "2025-07-15 15:31",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "退款",
+        "index_url": "/20250716084716/index.html",
+        "manifest_url": "/20250716084716/manifest.json5",
+        "date": "2025-07-16 08:47",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "优化退款",
+        "index_url": "/20250716103818/index.html",
+        "manifest_url": "/20250716103818/manifest.json5",
+        "date": "2025-07-16 10:38",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "埋点30s或30条提交一次",
+        "index_url": "/20250716134645/index.html",
+        "manifest_url": "/20250716134645/manifest.json5",
+        "date": "2025-07-16 13:46",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "退款查看协议",
+        "index_url": "/20250717094958/index.html",
+        "manifest_url": "/20250717094958/manifest.json5",
+        "date": "2025-07-17 09:50",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "添加退款弹窗",
+        "index_url": "/20250717104832/index.html",
+        "manifest_url": "/20250717104832/manifest.json5",
+        "date": "2025-07-17 10:48",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "添加退款弹窗",
+        "index_url": "/20250717105850/index.html",
+        "manifest_url": "/20250717105850/manifest.json5",
+        "date": "2025-07-17 10:58",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "白名单人员不看消息",
+        "index_url": "/20250721101007/index.html",
+        "manifest_url": "/20250721101007/manifest.json5",
+        "date": "2025-07-21 10:10",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "退款",
+        "index_url": "/20250722091553/index.html",
+        "manifest_url": "/20250722091553/manifest.json5",
+        "date": "2025-07-22 09:15",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "修改埋点",
+        "index_url": "/20250722150743/index.html",
+        "manifest_url": "/20250722150743/manifest.json5",
+        "date": "2025-07-22 15:07",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "Cdou_Record",
+        "index_url": "/20250722154751/index.html",
+        "manifest_url": "/20250722154751/manifest.json5",
+        "date": "2025-07-22 15:47",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "Clear_cache_confirm",
+        "index_url": "/20250722160005/index.html",
+        "manifest_url": "/20250722160005/manifest.json5",
+        "date": "2025-07-22 16:00",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "漏斗事件修改",
+        "index_url": "/20250723161911/index.html",
+        "manifest_url": "/20250723161911/manifest.json5",
+        "date": "2025-07-23 16:19",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "白名单人员不看消息",
+        "index_url": "/20250723170705/index.html",
+        "manifest_url": "/20250723170705/manifest.json5",
+        "date": "2025-07-23 17:07",
+        "packText": "验收包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "埋点-直播状态",
+        "index_url": "/20250724103219/index.html",
+        "manifest_url": "/20250724103219/manifest.json5",
+        "date": "2025-07-24 10:32",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "埋点-直播状态",
+        "index_url": "/20250724111306/index.html",
+        "manifest_url": "/20250724111306/manifest.json5",
+        "date": "2025-07-24 11:13",
+        "packText": "测试包"
+    },
+    {
+        "version": "1.2.6",
+        "build": 119,
+        "size": "147MB",
+        "desc": "退款",
+        "index_url": "/20250724141053/index.html",
+        "manifest_url": "/20250724141053/manifest.json5",
+        "date": "2025-07-24 14:10",
+        "packText": "正式包"
+    }
+]

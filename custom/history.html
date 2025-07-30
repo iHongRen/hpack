@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>鸿蒙历史安装包</title>
+        <style>
+            :root {
+                --primary-color: #165dff;
+                --success-color: #00b42a;
+                --warning-color: #ff7d00;
+                --secondary-color: #6b7280;
+                --border-color: #e5e7eb;
+                --background-color: #f2f3f5;
+                --card-background-color: #fff;
+                --text-color: #1d2129;
+                --text-secondary-color: #4b5563;
+                --text-light-color: #999;
+            }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+                background: var(--background-color);
+                color: var(--text-color);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                line-height: 1.5;
+            }
+            header,
+            footer {
+                background: var(--card-background-color);
+                width: 100%;
+            }
+            header {
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                position: sticky;
+                top: 0;
+                z-index: 50;
+            }
+            .container {
+                max-width: 1280px;
+                margin: 0 auto;
+                padding: 1rem;
+                width: 100%;
+            }
+            header .container {
+                display: flex;
+                align-items: center;
+            }
+            main.container {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+            footer .container {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+            .logo {
+                height: 2rem;
+                border-radius: 0.25rem;
+            }
+            .title {
+                font-size: 1.25rem;
+                font-weight: 500;
+                margin-left: 0.75rem;
+            }
+            main {
+                flex-grow: 1;
+            }
+            .center-content {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 3rem 0;
+            }
+            .loading-icon {
+                height: 1.5rem;
+                width: 1.5rem;
+                border: 4px solid var(--border-color);
+                border-top-color: var(--primary-color);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+            .loading-text {
+                margin-left: 0.75rem;
+                color: var(--text-secondary-color);
+            }
+            .error-message {
+                display: none;
+                background: #fef2f2;
+                border-left: 4px solid #f87171;
+                padding: 1rem;
+                border-radius: 0.25rem;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+            }
+            .error-message svg {
+                color: #b91c1c;
+                flex-shrink: 0;
+            }
+            .error-text {
+                color: #b91c1c;
+                margin-left: 0.75rem;
+            }
+            #version-list {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            @media (min-width: 768px) {
+                #version-list {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media (min-width: 1024px) {
+                #version-list {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+            .card {
+                background: var(--card-background-color);
+                border-radius: 0.75rem;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                transition: all 0.2s ease-in-out;
+                padding: 1.25rem;
+                cursor: pointer;
+            }
+            .card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            }
+            .card-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.5rem;
+            }
+            .card-title {
+                font-size: 1.125rem;
+                font-weight: 500;
+            }
+            .text-primary {
+                color: var(--primary-color);
+            }
+            .text-success {
+                color: var(--success-color);
+            }
+            .text-warning {
+                color: var(--warning-color);
+            }
+            .text-secondary {
+                color: var(--secondary-color);
+            }
+            .card-version {
+                font-size: 0.875rem;
+                color: var(--secondary-color);
+                margin-left: 0.75rem;
+            }
+            .card-info {
+                font-size: 0.75rem;
+                color: var(--secondary-color);
+                margin-bottom: 1rem;
+            }
+            .card-desc {
+                background: #f8fafc;
+                border-radius: 0.5rem;
+                padding: 0.75rem;
+                font-size: 0.875rem;
+                color: var(--text-secondary-color);
+                margin-bottom: 1.25rem;
+                word-break: break-all;
+            }
+            .btn {
+                width: 100%;
+                padding: 0.6rem;
+                color: #fff;
+                border: none;
+                border-radius: 0.5rem;
+                text-decoration: none;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: opacity 0.2s;
+            }
+            .btn:hover {
+                opacity: 0.85;
+            }
+            .btn.primary {
+                background: var(--primary-color);
+            }
+            .btn.success {
+                background: var(--success-color);
+            }
+            .btn.warning {
+                background: var(--warning-color);
+            }
+            .btn.secondary {
+                background: var(--secondary-color);
+            }
+            .no-more {
+                display: none;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 2rem 0;
+            }
+            .no-more svg {
+                color: #d1d5db;
+            }
+            .no-more-text {
+                color: var(--text-light-color);
+            }
+            .footer-text {
+                text-align: center;
+                color: var(--secondary-color);
+                font-size: 0.875rem;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <img src="" class="logo" alt="App Logo" />
+                <span class="title">鸿蒙历史安装包</span>
+            </div>
+        </header>
+
+        <main class="container">
+            <div id="initial-loading" class="center-content">
+                <div class="loading-icon"></div>
+                <span class="loading-text">加载中...</span>
+            </div>
+
+            <div id="error-message" class="error-message">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <span class="error-text" id="error-text"></span>
+            </div>
+
+            <div id="version-list"></div>
+
+            <div id="loading-more" class="center-content" style="display: none; padding: 2rem 0">
+                <div class="loading-icon"></div>
+                <span class="loading-text">加载更多...</span>
+            </div>
+
+            <div id="no-more-data" class="center-content no-more">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <p class="no-more-text">已经到底啦，没有更多历史版本</p>
+            </div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p class="footer-text">© 2025 hpack版权所有</p>
+            </div>
+        </footer>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const config = {
+                    baseUrl: 'https://raw.githubusercontent.com/iHongRen/hpack/refs/heads/main/custom/history.json',
+                    iconUrl: 'https://raw.githubusercontent.com/iHongRen/hpack/refs/heads/main/screenshots/app_icon.png',
+                    pageSize: 10
+                }
+
+                const logo = document.querySelector('.logo')
+                logo.src = config.iconUrl
+
+                const state = {
+                    currentPage: 1,
+                    isLoading: false,
+                    hasMore: true,
+                    allData: []
+                }
+
+                const UI = {
+                    versionList: document.getElementById('version-list'),
+                    initialLoading: document.getElementById('initial-loading'),
+                    loadingMore: document.getElementById('loading-more'),
+                    noMoreData: document.getElementById('no-more-data'),
+                    errorMessage: document.getElementById('error-message'),
+                    errorText: document.getElementById('error-text')
+                }
+
+                const setUIState = uiState => {
+                    UI.initialLoading.style.display = uiState === 'initial' ? 'flex' : 'none'
+                    UI.versionList.style.display = uiState === 'initial' || uiState === 'error' ? 'none' : 'grid'
+                    UI.loadingMore.style.display = uiState === 'loadingMore' ? 'flex' : 'none'
+                    UI.noMoreData.style.display = uiState === 'end' ? 'flex' : 'none'
+                    UI.errorMessage.style.display = uiState === 'error' ? 'flex' : 'none'
+                }
+
+                const getPackColor = (packText = '') => {
+                    if (packText.includes('测试')) return 'success'
+                    if (packText.includes('验收')) return 'warning'
+                    if (packText.includes('正式')) return 'primary'
+                    return 'secondary'
+                }
+
+                const createVersionCard = data => {
+                    const card = document.createElement('div')
+                    card.className = 'card'
+                    const color = getPackColor(data.packText)
+                    const installUrl = `store://enterprise/manifest?url=${data.manifest_url}`
+
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <span class="card-title text-${color}">${data.packText || '未知'}</span>
+                            <span class="card-version">(v${data.version} ${data.build})</span>
+                        </div>
+                        <div class="card-info">${data.date} • ${data.size}</div>
+                        <div class="card-desc">${data.desc || '无更新说明'}</div>
+                        <a href="${installUrl}" class="btn ${color}">安装</a>
+                    `
+
+                    card.addEventListener('click', e => {
+                        if (e.target.tagName.toLowerCase() !== 'a') {
+                            window.location.href = `${data.index_url}`
+                        }
+                    })
+                    return card
+                }
+
+                const renderCards = versions => {
+                    const fragment = document.createDocumentFragment()
+                    versions.forEach(version => {
+                        const card = createVersionCard(version)
+                        fragment.appendChild(card)
+                    })
+                    UI.versionList.appendChild(fragment)
+                }
+
+                const loadData = async () => {
+                    if (state.isLoading || !state.hasMore) return
+
+                    state.isLoading = true
+                    setUIState(state.currentPage === 1 ? 'initial' : 'loadingMore')
+
+                    try {
+                        if (state.allData.length === 0) {
+                            const response = await fetch(`${config.baseUrl}?t=${Date.now()}`)
+                            if (!response.ok) {
+                                throw new Error(`请求失败，状态码: ${response.status}`)
+                            }
+                            const data = await response.json()
+                            state.allData = data.reverse()
+                        }
+
+                        const start = (state.currentPage - 1) * config.pageSize
+                        const end = state.currentPage * config.pageSize
+                        const newItems = state.allData.slice(start, end)
+
+                        if (state.currentPage === 1 && newItems.length === 0) {
+                            state.hasMore = false
+                            setUIState('end')
+                            return
+                        }
+
+                        renderCards(newItems)
+                        state.currentPage++
+                        state.hasMore = end < state.allData.length
+                        setUIState(state.hasMore ? 'idle' : 'end')
+                    } catch (error) {
+                        console.error('加载版本数据失败:', error)
+                        UI.errorText.textContent = error.message
+                        setUIState('error')
+                    } finally {
+                        state.isLoading = false
+                    }
+                }
+
+                const handleScroll = () => {
+                    const { scrollTop, scrollHeight, clientHeight } = document.documentElement
+                    if (scrollTop + clientHeight >= scrollHeight - 300) {
+                        loadData()
+                    }
+                }
+
+                const init = () => {
+                    loadData()
+                    window.addEventListener('scroll', handleScroll, { passive: true })
+                }
+
+                init()
+            })
+        </script>
+    </body>
+</html>
