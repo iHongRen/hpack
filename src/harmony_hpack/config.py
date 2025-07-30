@@ -5,8 +5,10 @@ import os
 
 
 class Config: 
+    # 请将下面‘必填项’更换为你自己的
+
     # 安装包存放的服务器的域名 --- 必填项
-    DeployDomain = 'static.hpack.com'
+    DeployDomain = 'github.com/iHongRen'
     
     # 安装包存放的服务器地址，必须是 https --- 必填项
     BaseURL = f"https://{DeployDomain}/hpack"
@@ -53,8 +55,8 @@ class Config:
     HvigorwCommand = [] 
     
     
-    # 历史版本按钮
-    HistoryBtn = True
-    HistoryBtnTitle = "历史版本"
-    HistoryBtnUrl = "https://static.hpack.com/hpack/history.html"
+    # 历史版本按钮 - v1.0.9 新增配置
+    HistoryBtn = False  # 是否显示历史版本按钮,默认不开启
+    HistoryBtnTitle = "历史版本" # 可自定义标题
+    HistoryBtnUrl = "https://github.com/iHongRen/hpack/history.html" # 历史版本页面url地址
    

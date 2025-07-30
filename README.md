@@ -187,6 +187,11 @@ class Config:
     #    '--no-daemon'
     # ]
     HvigorwCommand = []
+
+    # 历史版本按钮 - v1.0.9 新增配置
+    HistoryBtn = False  # 是否显示历史版本按钮,默认不开启 Ture/False
+    HistoryBtnTitle = "历史版本" # 可自定义标题
+    HistoryBtnUrl = "https://github.com/iHongRen/hpack/history.html" # 历史版本页面url地址
 ```
 
 将你的证书文件放入 `hpack/sign/` 目录：
@@ -312,7 +317,7 @@ def didPack(packInfo):
 | `manifest_url` | String | manifest.json5 文件 URL |
 | `index_url` | String | 分发页面 URL |
 | `product` | String | 选择的 product |
-| `date` | String | 打包时间 date |
+| `date` | String | 打包时间 |
 | `willPack_output` | String | 打包前传入的参数 |
 | `qrcode` | String | 二维码 base64 数据 |
 
@@ -393,6 +398,28 @@ IndexTemplate = "default"  # 可选值：[default, simple, tech, cartoon, tradit
 | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/cartoon.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/tradition.png" width="300"> |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |                         cartoon 卡通                         |                        tradition 传统                        |
+
+
+
+## 自定义打包历史  - v1.0.9 新增功能
+
+#### 1、完成历史包 `history.json` 文件的上传
+
+
+
+
+
+1、在 `config.py` 中新增了三个字段，用于处理历史版本按钮
+
+```python
+class Config: 
+    # ...
+    HistoryBtn = False  # 是否显示历史版本按钮,默认不开启 Ture/False
+    HistoryBtnTitle = "历史版本" # 可自定义标题
+    HistoryBtnUrl = "https://github.com/iHongRen/hpack/history.html" # 历史版本页面url地址
+```
+
+hpack github 上提供了一个模板 [history.html](https://github.com/iHongRen/hpack/blob/main/custom/history.html)，你可以下载后稍作修改，然后部署到自己的服务器。
 
 
 

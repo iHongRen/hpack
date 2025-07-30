@@ -62,7 +62,7 @@ def handle_template_html(Config, packInfo):
             app_icon=Config.AppIcon,
             title=Config.AppName,
             badge=Config.Badge,
-            history_btn='block' if history_btn else 'none',
+            history_btn='inline-flex' if history_btn else 'none',
             history_btn_title=Config.HistoryBtnTitle if hasattr(Config, 'HistoryBtnTitle') else "历史版本",
             history_btn_url=Config.HistoryBtnUrl if hasattr(Config, 'HistoryBtnUrl') else "",
             date=packInfo.get("date"),
