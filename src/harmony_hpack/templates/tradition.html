@@ -183,9 +183,10 @@
                 cursor: pointer;
                 box-shadow: var(--shadow);
                 transition: all 0.3s ease;
-                display: flex;
+                display: inline-flex;
                 align-items: center;
                 justify-content: center;
+                vertical-align: middle;
                 position: relative;
                 overflow: hidden;
                 letter-spacing: 2px;
@@ -399,10 +400,27 @@
                 </svg>
                 立即安装
             </button>
+            <button
+                class="download-btn"
+                id="history_btn"
+                style="margin-top: 10px; background: linear-gradient(135deg, #e6a787 0%, #d88c6c 100%); display: none"
+                onclick="window.location.href='$history_btn_url'"
+            >
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z" />
+                </svg>
+                $history_btn_title
+            </button>
 
             <div class="harmony-badge">
                 <p class="hpack-power">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
             </div>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var historyBtn = document.getElementById('history_btn')
+                historyBtn.style.display = '$history_btn'
+            })
+        </script>
     </body>
 </html>

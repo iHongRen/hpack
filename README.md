@@ -289,10 +289,11 @@ def didPack(packInfo):
     "build_dir": "hpack/build/default",
     "remote_dir": "20250605200049",
     "manifest_url": "https://服务器域名/hpack/20250605200049/manifest.json5",
-    "qrcode": "data:image/svg+xml;charset=utf-8,xxx...",
     "index_url": "https://服务器域名/hpack/20250605200049/index.html",
     "product": "default",
-    "willPack_output": "willPack中打包前传入的参数"
+    "date": "2025-06-05 20:00:49",
+    "willPack_output": "willPack中打包前传入的参数",
+    "qrcode": "data:image/svg+xml;charset=utf-8,xxx...",
 }
 ```
 
@@ -309,10 +310,11 @@ def didPack(packInfo):
 | `build_dir` | String | 本地构建目录 |
 | `remote_dir` | String | 远程目录名（时间戳） |
 | `manifest_url` | String | manifest.json5 文件 URL |
-| `qrcode` | String | 二维码 base64 数据 |
 | `index_url` | String | 分发页面 URL |
 | `product` | String | 选择的 product |
+| `date` | String | 打包时间 date |
 | `willPack_output` | String | 打包前传入的参数 |
+| `qrcode` | String | 二维码 base64 数据 |
 
 
 
@@ -343,7 +345,6 @@ hpack template [tname]  # 简写：hpack t tech
 def customTemplateHtml(templateInfo):
     packInfo = templateInfo["packInfo"]
     html = templateInfo["html"]
-    date = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     # 填充模板变量
     template = Template(html)
@@ -351,7 +352,7 @@ def customTemplateHtml(templateInfo):
         app_icon=Config.AppIcon,
         title=Config.AppName,
         badge=Config.Badge,
-        date=date,
+        date=packInfo["date"],
         version_name=packInfo["version_name"],
         version_code=packInfo["version_code"],
         size=packInfo["size"],

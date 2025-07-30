@@ -189,7 +189,8 @@ def sign_info(Config, selected_product, desc=""):
         printError("无法获取 bundleName、versionCode 或 versionName，无法处理 manifest.json5 文件。")
         return
     
-    remote_dir = datetime.now().strftime("%Y%m%d%H%M%S")
+    date = datetime.now()
+    remote_dir = date.strftime("%Y%m%d%H%M%S")
     remotePath = f"{Config.BaseURL}/{remote_dir}"
 
     productName = selected_product.get('name')
@@ -229,9 +230,10 @@ def sign_info(Config, selected_product, desc=""):
         "build_dir": build_dir,
         "remote_dir": remote_dir,
         "manifest_url": manifest_url,
-        "qrcode": qrcode,
         "index_url": index_url,
+        "date": date.strftime("%Y-%m-%d %H:%M"),
         "product": productName,
+        "qrcode": qrcode
     }
     
     return packInfo

@@ -54,15 +54,18 @@ def handle_template_html(Config, packInfo):
         template_path = os.path.join(ToolConfig.TemplateDir, f"{Config.IndexTemplate}.html")
         with open(template_path, "r", encoding="utf-8") as template_file:
             html = template_file.read()
-
-        date = datetime.now().strftime("%Y-%m-%d %H:%M")
         
+        history_btn = Config.HistoryBtn if hasattr(Config, 'HistoryBtn') else False
+
         template = Template(html)
         html_template = template.safe_substitute(
             app_icon=Config.AppIcon,
             title=Config.AppName,
             badge=Config.Badge,
-            date=date,
+            history_btn='block' if history_btn else 'none',
+            history_btn_title=Config.HistoryBtnTitle if hasattr(Config, 'HistoryBtnTitle') else "历史版本",
+            history_btn_url=Config.HistoryBtnUrl if hasattr(Config, 'HistoryBtnUrl') else "",
+            date=packInfo.get("date"),
             version_name=packInfo.get("version_name"),
             version_code=packInfo.get("version_code"),
             size=packInfo.get("size"),

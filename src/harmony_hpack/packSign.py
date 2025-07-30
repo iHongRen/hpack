@@ -99,10 +99,7 @@ def sign(Config, unsigned_file_path, productName):
         '-keystorePwd', Config.KeystorePwd,
         '-signCode', '1'
     ]
-    try:
-        subprocess.run(command, check=True)
-    except subprocess.CalledProcessError as e:
-        printError(f"签名 {unsigned_file_path} 出错: {e}")
+    subprocess.run(command, check=True)
 
 
 def pack_sign(Config, product):

@@ -53,5 +53,8 @@ class Config:
     HvigorwCommand = [] 
     
     
-    
+    # 历史版本按钮
+    HistoryBtn = True
+    HistoryBtnTitle = "历史版本"
+    HistoryBtnUrl = "https://static.hpack.com/hpack/history.html"
    

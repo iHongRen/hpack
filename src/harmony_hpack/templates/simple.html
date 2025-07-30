@@ -127,8 +127,21 @@
                 <div class="qr-label">扫描二维码安装</div>
                 <img class="qr-code" src="$qrcode" alt="QR Code" />
             </div>
-            <button class="download-btn" onclick="window.location.href='store://enterprise/manifest?url=$manifest_url'">安装</button>
+            <button class="download-btn" onclick="window.location.href='store://enterprise/manifest?url=$manifest_url'">
+                <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" /></svg>
+                安装
+            </button>
+            <button class="download-btn" id="history_btn" style="margin-top: 10px; background: #bdbdbd; display: none" onclick="window.location.href='$history_btn_url'">
+                <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z" /></svg>
+                $history_btn_title
+            </button>
             <p class="link-wrap">powered by <a href="https://github.com/iHongRen/hpack" class="hpack-link" target="_blank">hpack</a></p>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var historyBtn = document.getElementById('history_btn')
+                historyBtn.style.display = '$history_btn'
+            })
+        </script>
     </body>
 </html>
