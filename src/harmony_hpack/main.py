@@ -196,6 +196,8 @@ def get_build_product_dirs():
 def show_help():
     print(f"""
 hpack: v{__version__} - 鸿蒙应用打包、签名、安装和上传工具
+文档: {BLUE}https://github.com/iHongRen/hpack{ENDC}
+
 {BLUE}查看:{ENDC}
   -v, --version  显示版本信息
   -h, --help     显示帮助信息
@@ -239,7 +241,7 @@ hpack: v{__version__} - 鸿蒙应用打包、签名、安装和上传工具
   Profile = './profile.p7b' # 相对于cert.py的路径
   Keystore =  './keystore.p12' # 相对于cert.py的路径
 
-  github: {BLUE}https://github.com/iHongRen/hpack{ENDC}
+  赞助: {BLUE}https://ihongren.github.io/donate.html{ENDC}
 """, end='')
 
 
