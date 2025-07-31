@@ -436,12 +436,12 @@ const getPackColor = (packText = '') => {
 **4、运行效果**
 
 下面使用 [custom/history.json](custom/history.json) 中的数据做演示：
-| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_app.png" width="300"> |
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="320" style="margin-right: 10px;"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_app.png" width="320" style="margin-left: 10px;"> |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                        分发页 index.html                       |                        移动端 history.html                         |
+|                      分发页 index.html                       |                     移动端 history.html                      |
 <br>
 
-| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="300"> |
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pc.png"> |
 | :----------------------------------------------------------:   |
 |                       PC端 history.html                        |
 
@@ -453,7 +453,7 @@ const getPackColor = (packText = '') => {
 
 模板中提供了**钉钉、企业微信、飞书**等平台的 webhook 使用示例。
 
-参见：[Webhook_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main//custom/Webhook_PackFile.py)
+参见：[custom/Webhook_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main//custom/Webhook_PackFile.py)
 
 ```python
 # 以钉钉为例
