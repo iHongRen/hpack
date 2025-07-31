@@ -437,7 +437,7 @@ const getPackColor = (packText = '') => {
 **4、运行效果**
 
 下面使用 [custom/history.json](custom/history.json) 中的数据做演示：
-| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="320> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_app.png" width="320"> |
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="320"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_app.png" width="320"> |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |                      分发页 index.html                       |                     移动端 history.html                      |
 <br>
