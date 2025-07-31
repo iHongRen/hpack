@@ -1,13 +1,12 @@
 # 版本更新：
 
-[v1.0.9](https://github.com/iHongRen/hpack/releases/tag/v1.0.9  — 2025.07.31
+[v1.0.9](https://github.com/iHongRen/hpack/releases/tag/v1.0.9)  — 2025.07.31
 
-1. 新增历史包页面
+1. 新增支持历史版本
 
 2. 新增支持 webhook
 
    
-
 
 [v1.0.8](https://github.com/iHongRen/hpack/releases/tag/v1.0.8)  — 2025.07.16  
 
@@ -16,7 +15,6 @@
 2. 非 url 编码路径问题修复  
 
   
-
 
 [v1.0.7](https://github.com/iHongRen/hpack/releases/tag/v1.0.7)  — 2025.07.02  
 

@@ -405,6 +405,7 @@ IndexTemplate = "default"  # 可选值：[default, simple, tech, cartoon, tradit
 在分发页会显示 '历史版本' 按钮，点击跳转到历史打包页面 `HistoryBtnUrl`
 
 ```python
+# 如果从老版本升级而来，需要自己添加这三个字段。或者重新 hpack init
 class Config: 
     # ...
     HistoryBtn = False  # 是否显示历史版本按钮,默认不开启 Ture/False
@@ -436,7 +437,7 @@ const getPackColor = (packText = '') => {
 **4、运行效果**
 
 下面使用 [custom/history.json](custom/history.json) 中的数据做演示：
-| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="320" style="margin-right: 10px;"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_app.png" width="320" style="margin-left: 10px;"> |
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="320> |        <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_app.png" width="320"> |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |                      分发页 index.html                       |                     移动端 history.html                      |
 <br>
