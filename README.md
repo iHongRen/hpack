@@ -286,9 +286,9 @@ def didPack(packInfo):
 
 在项目的 `custom/`目录中，提供了一些上传示例，可直接复制到你的 `PackFile.py` 中使用：
 
--  阿里云 OSS 上传 :  [OSS_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main//custom/OSS_PackFile.py)
+-  阿里云 OSS 上传 :  [OSS_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main/custom/OSS_PackFile.py)
 
-- 蒲公英上传：[PGY_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main//custom/PGY_PackFile.py)
+- 蒲公英上传：[PGY_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main/custom/PGY_PackFile.py)
 - 其他：欢迎 PR
 
 
@@ -334,12 +334,13 @@ hpack template [tname]  # 简写：hpack t tech
 > 💡 **提示**：命令会在 `hpack/` 目录下生成对应的 `index.html` 模板文件
 
 **3、配置模板处理**
-在 `Packfile.py` 中启用自定义模板处理：
+在 `Packfile.py` 中自处理定义模板，查看使用示例 [custom/Index_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main/custom/Index_PackFile.py)
 
 ```python
 def customTemplateHtml(templateInfo):
-    packInfo = templateInfo["packInfo"]
-    html = templateInfo["html"]
+    """_summary_: 用于生成 index.html 模板，并自定义"""
+    packInfo = templateInfo.get("packInfo")
+    html = templateInfo.get("html")
     
     # 填充模板变量
     template = Template(html)
@@ -347,15 +348,16 @@ def customTemplateHtml(templateInfo):
         app_icon=Config.AppIcon,
         title=Config.AppName,
         badge=Config.Badge,
-        date=packInfo["date"],
-        version_name=packInfo["version_name"],
-        version_code=packInfo["version_code"],
-        size=packInfo["size"],
-        desc=packInfo["desc"],
-        manifest_url=packInfo["manifest_url"],
-        qrcode=packInfo["qrcode"]
+        date=packInfo.get("date"),
+        version_name=packInfo.get("version_name"),
+        version_code=packInfo.get("version_code"),
+        size=packInfo.get("size"),
+        desc=packInfo.get("desc"),
+        manifest_url=packInfo.get("manifest_url"),
+        qrcode=packInfo.get("qrcode")
     )
-    print(html_template)  # ⚠️ 不可删除，用于传参
+    sys.stdout.buffer.write(html_template.encode('utf-8'))
+    sys.stdout.flush()
 
 # 调用处理函数
 if __name__ == "__main__":    

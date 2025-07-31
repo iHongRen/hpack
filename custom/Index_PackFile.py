@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # @github : https://github.com/iHongRen/hpack
+# 自定义 index.html 模板示例
  
 import argparse
 import json
@@ -9,6 +10,29 @@ from datetime import datetime
 from string import Template
 
 from config import Config
+
+
+def customTemplateHtml(templateInfo):
+    """_summary_: 用于生成 index.html 模板，并自定义"""
+    packInfo = templateInfo.get("packInfo")
+    html = templateInfo.get("html")
+    
+    # 填充模板变量
+    template = Template(html)
+    html_template = template.safe_substitute(
+        app_icon=Config.AppIcon,
+        title=Config.AppName,
+        badge=Config.Badge,
+        date=packInfo.get("date"),
+        version_name=packInfo.get("version_name"),
+        version_code=packInfo.get("version_code"),
+        size=packInfo.get("size"),
+        desc=packInfo.get("desc"),
+        manifest_url=packInfo.get("manifest_url"),
+        qrcode=packInfo.get("qrcode")
+    )
+    sys.stdout.buffer.write(html_template.encode('utf-8'))
+    sys.stdout.flush()
 
 
 def willPack():
@@ -25,11 +49,7 @@ def didPack(packInfo):
     print("============打印打包信息:============")
     print(json.dumps(packInfo, indent=4, ensure_ascii=False))
     print("================================")
-    print("请前往 https://github.com/iHongRen/hpack 查看文档:")
-    print("1、如何自定义上传打包结果到服务器")
-    print("2、如何自定义 index.html 分发页模板")
-    print("3、如何自定义历史打包页面")
-    print("4、如何自定义 webhook 通知")
+  
 
 
 if __name__ == "__main__":
@@ -48,8 +68,7 @@ if __name__ == "__main__":
     elif args.t:
         print("用于生成 index.html 模板，并自定义")
         # 修改 config.py 中的 IndexTemplate 为 custom，执行 hpack t [模板名]
-        # 打开下面注释，前往README.md文档中找到 customTemplateHtml 方法并添加到PackFile.py文件
-        # templateInfo = json.loads(sys.stdin.read())
-        # customTemplateHtml(templateInfo) 
+        templateInfo = json.loads(sys.stdin.read())
+        customTemplateHtml(templateInfo) 
     else:
         print("无效的参数，请使用 --will 、--did、--t")
