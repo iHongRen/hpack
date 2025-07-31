@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @github : https://github.com/iHongRen/hpack
+# 蒲公英上传，只支持单个 hap 文件上传
 # 请参考部分代码，复制到你的 PackFile.py 文件中
-# 蒲公英只支持单个 hap 文件
 
 import argparse
 import json

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-#  @github : https://github.com/iHongRen/hpack
- 
+# @github : https://github.com/iHongRen/hpack
+# Webhook 使用示例
+# 先安装依赖：pip install requests
+
 import argparse
 import json
 import os
@@ -9,9 +11,35 @@ from datetime import datetime
 from string import Template
 
 from config import Config
+from DingTalkBot import DingTalkBot
+from WeComBot import WeComBot
+from FeishuBot import FeishuBot
 
 
-def willPack():
+def dingtalk(packInfo):
+    """_summary_: 钉钉机器人"""
+    WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=你的token"
+    bot = DingTalkBot(WEBHOOK)
+    bot.send_text("测试")
+    bot.send_link(title="Python官网", text="Python官方网站", message_url="https://www.python.org/")
+    bot.send_markdown(title="Markdown测试", text="## 二级标题\n- 列表1\n- 列表2")
+
+def wecom(packInfo):
+    """_summary_: 企业微信机器人"""
+    WEBHOOK = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=你的key"
+    bot = WeComBot(WEBHOOK)
+    bot.send_text(content="测试")
+    bot.send_markdown(content="## 二级标题\n- 列表1\n- 列表2")
+
+def feishu(packInfo):
+    """_summary_: 飞书机器人"""
+    WEBHOOK = "https://open.feishu.cn/open-apis/bot/v2/hook/你的webhook"
+    bot = FeishuBot(WEBHOOK)
+    bot.send_text(content="测试")
+    bot.send_markdown(content="## 二级标题\n- 列表1\n- 列表2")
+
+
+def willPack(packInfo):
     """_summary_: 打包前调用"""
     # 打包前传值，可以在这里读取一些工程配置，再传递给打包脚本
     willParams = json.dumps({"data": "打包前传值"},ensure_ascii=False)
@@ -25,11 +53,13 @@ def didPack(packInfo):
     print("============打印打包信息:============")
     print(json.dumps(packInfo, indent=4, ensure_ascii=False))
     print("================================")
-    print("请前往 https://github.com/iHongRen/hpack 查看文档:")
-    print("1、如何自定义上传打包结果到服务器")
-    print("2、如何自定义 index.html 分发页模板")
-    print("3、如何自定义历史打包页面")
-    print("4、如何自定义 webhook 通知")
+    # 处理上传完成后...
+    # 上报到钉钉机器人
+    dingtalk(packInfo)
+    # 上报到企业微信机器人
+    wecom(packInfo)
+    # 上报到飞书机器人
+    feishu(packInfo)
 
 
 if __name__ == "__main__":

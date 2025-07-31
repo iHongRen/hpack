@@ -23,7 +23,9 @@
 -  **签名 manifest.json5**：读取应用打包数据，自动生成已签名 `manifest.json5` 文件
 -  **分发 index 页**：自动生成分发页，提供多种 HTML 模板，支持自定义模板
 -  **二维码生成**：自动生成应用的二维码，方便内测人员快速下载和安装
--  **OSS 上传**：支持将打包文件上传到阿里云 OSS，以及自定义上传
+-  **自定义上传**：支持将打包文件上传到阿里云 OSS，以及自定义上传
+-  **自定义历史打包页面：**提供了 `history.html` 模板
+-  **webhook支持**：提供了钉钉、企微、飞书等使用示例
 -  **显示设备**：显示正在连接的设备 `hpack targets`
 -  **查看UDID**：显示正在连接设备的 UDID `hpack -u`
 -  **签名工具**：支持对未签名的 `.app`、`.hap`、`.hsp` 和包目录签名
@@ -442,6 +444,30 @@ const getPackColor = (packText = '') => {
 | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="300"> |
 | :----------------------------------------------------------:   |
 |                       PC端 history.html                        |
+
+
+
+## 如何自定义 webhook 通知 
+
+上传完成后，我们还可以使用 webhook 发送消息到群聊，通知测试人员安装最新包。
+
+模板中提供了**钉钉、企业微信、飞书**等平台的 webhook 使用示例。
+
+参见：[Webhook_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main//custom/Webhook_PackFile.py)
+
+```python
+# 以钉钉为例
+def dingtalk(packInfo):
+    """_summary_: 钉钉机器人"""
+    WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=你的token"
+    bot = DingTalkBot(WEBHOOK)
+    bot.send_text("测试")
+    bot.send_link(title="Python官网", text="Python官方网站", message_url="https://www.python.org/")
+    bot.send_markdown(title="Markdown测试", text="## 二级标题\n- 列表1\n- 列表2")
+```
+
+⚠️ webhook 相关的代码都是由 ai 编写，作者没有相关环境，无法验证是否正确。如果在使用过程中遇到问题，欢迎提  [issue](https://github.com/iHongRen/hpack/issues) 。
+
 
 
 
