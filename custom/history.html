@@ -277,7 +277,14 @@
                 const config = {
                     baseUrl: 'https://raw.githubusercontent.com/iHongRen/hpack/refs/heads/main/custom/history.json',
                     iconUrl: 'https://raw.githubusercontent.com/iHongRen/hpack/refs/heads/main/screenshots/app_icon.png',
-                    pageSize: 10
+                    pageSize: 12
+                }
+
+                const getPackColor = (packText = '') => {
+                    if (packText.includes('测试')) return 'success'
+                    if (packText.includes('验收')) return 'warning'
+                    if (packText.includes('正式')) return 'primary'
+                    return 'secondary'
                 }
 
                 const logo = document.querySelector('.logo')
@@ -305,13 +312,6 @@
                     UI.loadingMore.style.display = uiState === 'loadingMore' ? 'flex' : 'none'
                     UI.noMoreData.style.display = uiState === 'end' ? 'flex' : 'none'
                     UI.errorMessage.style.display = uiState === 'error' ? 'flex' : 'none'
-                }
-
-                const getPackColor = (packText = '') => {
-                    if (packText.includes('测试')) return 'success'
-                    if (packText.includes('验收')) return 'warning'
-                    if (packText.includes('正式')) return 'primary'
-                    return 'secondary'
                 }
 
                 const createVersionCard = data => {

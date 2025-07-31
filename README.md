@@ -33,7 +33,7 @@
 
 ## 安装使用
 
-### 快速安装
+#### 快速安装
 
 ```bash
 pip install harmony-hpack
@@ -72,7 +72,7 @@ pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/si
 
 
 
-### 准备工作
+#### 准备工作
 
 > 💡 **重要提示**：在开始之前，建议先阅读鸿蒙官方文档 [HarmonyOS 应用内部测试](https://developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-internaltest-0000001937800101#section042515172197)
 
@@ -92,7 +92,7 @@ pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/si
 
 
 
-### 环境要求
+#### 环境要求
 
 | 工具 | 版本要求 | 说明 |
 |------|----------|------|
@@ -116,7 +116,7 @@ hdc -v                  # 检查 hdc（需配置环境变量）
 
 ### 快速开始
 
-#### 1、初始化项目
+##### 1、初始化项目
 
 在**项目根目录**下执行初始化命令：
 
@@ -133,7 +133,7 @@ hpack/
 └── sign/          # 证书目录：存放签名证书文件
 ```
 
-#### 2、修改配置
+##### 2、修改配置
 
 打开 `hpack/config.py` 文件，根据实际情况，修改配置信息：
 
@@ -205,7 +205,7 @@ sign/
 
 
 
-#### 3、开始打包
+##### 3、开始打包
 
 ```bash
 hpack p "修复了一些已知问题，优化了性能"  # 更新说明可选
@@ -221,58 +221,6 @@ hpack i -[product]
 
 
 
-#### 4、配置上传（可选）
-
-##### 阿里云 OSS 上传配置
-
-安装依赖包 oss2
-
-```bash
-pip install oss2
-```
-打开 `Packfile.py` 完成配置 OSS
-
-```python
-class OSSConfig: 
-    # OSS 配置信息
-    Access_key_id = 'your_access_key_id'
-    Access_key_secret = 'your_access_key_secret'
-    Endpoint = 'your_endpoint'
-    Bucket_name = 'your_bucket_name'
-    Bucket_dir = 'hpack'
-```
-
-#### 自定义服务器上传
-
-如果使用其他服务器，需要在`didPack`中编写上传代码：
-
-```python
-def didPack(packInfo):
-    """打包后回调，通常在这里上传打包结果到服务器"""
-    # 打包结果在 hpack/build/{product}，编写你的上传逻辑
-    pass
-```
-
-
-
-## 运行示例
-
-#### 🚀 开始打包
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/0.png" alt="开始打包" style="max-width: 100%; height: auto;">
-
-####  选择 Product (多目标产物情况)
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/2.png" alt="选择Product" style="max-width: 100%; height: auto;">
-
-####  ✅ 打包完成
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/1.png" alt="打包完成" style="max-width: 100%; height: auto;">
-
-
-#### 扫码安装
-<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/install.png" alt="扫码安装" width="300" style="max-width: 100%; height: auto;">
-
-
-
-
 ## 📊 打包信息说明
 
 打包完成后，`PackFile.py` 中的 `didPack` 方法会接收到详细的打包信息：
@@ -283,7 +231,7 @@ def didPack(packInfo):
     print(json.dumps(packInfo, indent=4, ensure_ascii=False))
 ```
 
-### 示例输出
+#### 示例输出
 ```json
 {
     "bundle_name": "com.cxy.hpack",
@@ -303,7 +251,7 @@ def didPack(packInfo):
 ```
 
 
-### 信息字段说明
+#### 信息字段说明
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
@@ -323,16 +271,56 @@ def didPack(packInfo):
 
 
 
+## 自定义上传到服务器
+
+打包完成后，我们需要将打包文件上传到服务器，与`config.py`中 `BaseURL`一致， 这样我们才能使用 [Deeplink](https://developer.huawei.com/consumer/cn/doc/app/agc-help-internal-test-release-app-0000002260691994) 形式安装。
+
+```python
+def didPack(packInfo):
+    """打包后回调，通常在这里上传打包结果到服务器"""
+    # 打包结果在 hpack/build/{product}，编写你的上传逻辑
+    pass
+```
+
+在项目的 `custom/`目录中，提供了一些上传示例，可直接复制到你的 `PackFile.py` 中使用：
+
+-  阿里云 OSS 上传 :  [OSS_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main//custom/OSS_PackFile.py)
+
+- 蒲公英上传：[PGY_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main//custom/PGY_PackFile.py)
+- 其他：欢迎 PR
+
+
+
+## 运行示例
+
+##### 🚀 开始打包
+<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/0.png" alt="开始打包" style="max-width: 100%; height: auto;">
+
+#####  选择 Product (多目标产物情况)
+<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/2.png" alt="选择Product" style="max-width: 100%; height: auto;">
+
+#####  ✅ 打包完成
+<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/1.png" alt="打包完成" style="max-width: 100%; height: auto;">
+
+
+##### 扫码安装
+<img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/install.png" alt="扫码安装" width="300" style="max-width: 100%; height: auto;">
+
+
+
+
 ## 自定义分发页
 
-#### 1、启用自定义模板
+**1、启用自定义模板**
 修改 `config.py` 文件：
+
 ```python
 IndexTemplate = 'custom'  # 启用自定义模板
 ```
 
-#### 2、生成模板文件
+**2、生成模板文件**
 使用内置模板作为基础：
+
 ```bash
 # 生成指定模板
 hpack template [tname]  # 简写：hpack t tech
@@ -343,7 +331,7 @@ hpack template [tname]  # 简写：hpack t tech
 
 > 💡 **提示**：命令会在 `hpack/` 目录下生成对应的 `index.html` 模板文件
 
-#### 3、配置模板处理
+**3、配置模板处理**
 在 `Packfile.py` 中启用自定义模板处理：
 
 ```python
@@ -375,7 +363,8 @@ if __name__ == "__main__":
         customTemplateHtml(templateInfo) 
 ```
 
-#### 4、执行打包
+**4、执行打包**
+
 ```bash
 hpack p '自定义index.html'
 ```
@@ -403,13 +392,15 @@ IndexTemplate = "default"  # 可选值：[default, simple, tech, cartoon, tradit
 
 ## 自定义打包历史  - v1.0.9 新增功能
 
-#### 1、完成历史包 `history.json` 文件的上传
+**1、完成历史包信息 `history.json` 文件的上传**
 
+你可以参照 [custom/OSS_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main/custom/OSS_PackFile.py) 中的代码，大致逻辑是：
 
+拉取服务器上的的 `history.json` -> 拼接上最新的打包信息，组成新的 `history.json` -> 重新上传`history.json `覆盖旧的。
 
+**2、开启历史版本按钮**
 
-
-1、在 `config.py` 中新增了三个字段，用于处理历史版本按钮
+在分发页会显示 '历史版本' 按钮，点击跳转到历史打包页面 `HistoryBtnUrl`
 
 ```python
 class Config: 
@@ -419,13 +410,44 @@ class Config:
     HistoryBtnUrl = "https://github.com/iHongRen/hpack/history.html" # 历史版本页面url地址
 ```
 
-hpack github 上提供了一个模板 [history.html](https://github.com/iHongRen/hpack/blob/main/custom/history.html)，你可以下载后稍作修改，然后部署到自己的服务器。
+**3、部署历史打包页面**
+
+[custom/history.html](https://raw.githubusercontent.com/iHongRen/hpack/main/custom/history.html)，提供了一个模板，下载后稍作修改，然后部署到自己的服务器。
+
+```js
+// history.html 文件，修改
+const config = {
+  baseUrl: 'https://服务器上历史json的位置/history.json',
+  iconUrl: '历史页面icon url',
+  pageSize: 12 //分页大小
+}
+
+// 自定义判断,主题颜色
+const getPackColor = (packText = '') => {
+    if (packText.includes('测试')) return 'success'
+    if (packText.includes('验收')) return 'warning'
+    if (packText.includes('正式')) return 'primary'
+    return 'secondary'
+}
+```
+
+**4、运行效果**
+
+下面使用 [custom/history.json](custom/history.json) 中的数据做演示：
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="300"> | <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_app.png" width="300"> |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                        分发页 index.html                       |                        移动端 history.html                         |
+<br>
+
+| <img src="https://raw.githubusercontent.com/iHongRen/hpack/main/screenshots/history_pack.png" width="300"> |
+| :----------------------------------------------------------:   |
+|                       PC端 history.html                        |
 
 
 
 ## 命令参考
 
-#### 查看命令
+##### 查看命令
 | 命令 | 说明 |
 |------|------|
 | `hpack -v, --version` | 显示版本信息 |
@@ -433,20 +455,20 @@ hpack github 上提供了一个模板 [history.html](https://github.com/iHongRen
 | `hpack -u, --udid` | 显示设备的 UDID |
 | `hpack targets` | 显示连接的设备列表 |
 
-#### 执行命令
+##### 执行命令
 | 命令 | 说明 |
 |------|------|
 | `hpack init` | 初始化 hpack 目录并创建配置文件 |
 | `hpack pack, p [desc]` | 执行打包签名和上传，desc 为打包描述（可选） |
 | `hpack template, t [tname]` | 生成 index.html 模板文件 |
 
-#### 安装打包产物
+##### 安装打包产物
 ```bash
 # 安装指定 product 的产物
 hpack i -myproduct  # 注意加上横杠(-)
 ```
 
-#### 安装已签名包
+##### 安装已签名包
 ```bash
 # 安装 .app 文件
 hpack i ./xx.app
@@ -458,7 +480,7 @@ hpack i ./xx.hap
 hpack i ./build/default
 ```
 
-#### 签名命令
+##### 签名命令
 
 ```bash
 hpack sign,s <unsignedPath> <certPath>
@@ -498,11 +520,9 @@ Keystore = './keystore.p12'  # 相对于cert.py的路径
 
 <br>
 
-
-
 ## 💡 Tips
 
-#### 配置环境变量
+##### 配置环境变量
 在**非 DevEco-Studio** 终端中使用时需要配置：
 
 ```bash
@@ -514,14 +534,14 @@ export DEVECO_SDK_HOME=/Applications/DevEco-Studio.app/Contents/sdk
 # 参考官方文档：https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-commandline
 ```
 
-#### Git 忽略配置
+##### Git 忽略配置
 在 `.gitignore` 文件中添加：
 ```gitignore
 # 忽略 Python 临时文件
 __pycache__/
 ```
 
-####  ⚠️ 常见问题
+#####  ⚠️ 常见问题
 
 **证书相关**
 
