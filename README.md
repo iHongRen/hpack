@@ -594,3 +594,17 @@ __pycache__/
 - ⭐ 给项目点个 [Star](https://github.com/iHongRen/hpack)
 - 🔄 分享给更多开发者
 - 💬 在社区中推荐使用
+- ❤️  [赞助](https://ihongren.github.io/donate.html) 
+
+我的其他鸿蒙相关项目：
+
+1、[SandboxFinder](https://github.com/iHongRen/SandboxFinder) - 鸿蒙沙箱文件浏览器，轻松操作沙箱文件
+
+2、[Open-in-DevEco-Studio](https://github.com/iHongRen/Open-in-DevEco-Studio)  - macOS 直接在 Finder 工具栏上，使用 DevEco-Studio 打开鸿蒙工程
+
+3、[cxy-theme](https://github.com/iHongRen/cxy-theme) - DevEco-Studio 绿色背景主题
+
+4、[harmony-udid-tool](https://github.com/iHongRen/harmony-udid-tool) - 桌面端跨平台工具，用与于获取设备 UDID 
+
+
+
