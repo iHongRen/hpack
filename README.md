@@ -400,7 +400,7 @@ IndexTemplate = "default"  # 可选值：[default, simple, tech, cartoon, tradit
 
 你可以参照 [custom/OSS_PackFile.py](https://raw.githubusercontent.com/iHongRen/hpack/main/custom/OSS_PackFile.py) 中的代码，大致逻辑是：
 
-拉取服务器上的的 `history.json` -> 拼接上最新的打包信息，组成新的 `history.json` -> 重新上传`history.json `覆盖旧的。
+拉取服务器上的 `history.json` -> 拼接上最新的打包信息，组成新的 `history.json` -> 重新上传`history.json `覆盖旧的。
 
 **2、开启历史版本按钮**
 
@@ -587,24 +587,23 @@ __pycache__/
 
   
 
+# 作者
 
-## 支持项目
+[@仙银](https://github.com/iHongRen) 鸿蒙相关开源作品
 
-如果 hpack 对你有帮助，请考虑：
-- ⭐ 给项目点个 [Star](https://github.com/iHongRen/hpack)
-- 🔄 分享给更多开发者
-- 💬 在社区中推荐使用
-- ❤️  [赞助](https://ihongren.github.io/donate.html) 
+1、[hpack](https://github.com/iHongRen/hpack) - 鸿蒙内部测试分发，一键脚本打包工具
 
-我的其他鸿蒙相关项目：
-
-1、[SandboxFinder](https://github.com/iHongRen/SandboxFinder) - 鸿蒙沙箱文件浏览器，轻松操作沙箱文件
-
-2、[Open-in-DevEco-Studio](https://github.com/iHongRen/Open-in-DevEco-Studio)  - macOS 直接在 Finder 工具栏上，使用 DevEco-Studio 打开鸿蒙工程
+2、[Open-in-DevEco-Studio](https://github.com/iHongRen/Open-in-DevEco-Studio)  - macOS 直接在 Finder 工具栏上，使用
+DevEco-Studio 打开鸿蒙工程。
 
 3、[cxy-theme](https://github.com/iHongRen/cxy-theme) - DevEco-Studio 绿色背景主题
 
-4、[harmony-udid-tool](https://github.com/iHongRen/harmony-udid-tool) - 桌面端跨平台工具，用与于获取设备 UDID 
+4、[harmony-udid-tool](https://github.com/iHongRen/harmony-udid-tool) - 简单易用的 HarmonyOS 设备 UDID 获取工具，适用于非开发人员。
 
+5、[SandboxFinder](https://github.com/iHongRen/SandboxFinder) - 鸿蒙沙箱文件浏览器
 
+6、[WebServer](https://github.com/iHongRen/WebServer) - 鸿蒙轻量级Web服务器框架
 
+7、[SelectableMenu](https://github.com/iHongRen/SelectableMenu) - 适用于聊天对话框中的文本选择菜单
+
+🌟 如果项目对你有帮助，欢迎持续关注和 Star ，[赞助](https://ihongren.github.io/donate.html)
