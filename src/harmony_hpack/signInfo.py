@@ -18,7 +18,7 @@ def read_app_info():
     json_path = os.path.join("AppScope", "app.json5")
     if not os.path.exists(json_path):
         printError(f"AppScope/app.json5 文件不存在: {json_path}")
-        return None
+        raise Exception(f"AppScope/app.json5 文件不存在: {json_path}")
     try:
         with open(json_path, "r", encoding="utf-8") as f:
             app_info = json5.load(f)
@@ -29,8 +29,7 @@ def read_app_info():
             return bundle_name, version_code, version_name
     except Exception as e:
         printError(f"读取 AppScope/app.json5 文件时出错: {e}")
-        return None
-    return None
+        raise Exception(f"读取 AppScope/app.json5 文件时出错: {e}")
 
 
 def read_api_version():
@@ -49,7 +48,7 @@ def read_api_version():
             return api_version
     except Exception as e:
         printError(f"读取 build-profile.json5 文件时出错: {e}")
-        return None
+        raise Exception(f"读取 build-profile.json5 文件时出错: {e}")
     return None
 
 
@@ -82,6 +81,7 @@ def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_c
     modules = get_module_infos(build_dir,remotePath)
     if not modules:
         printError("无法获取打包模块信息，hap、hsp 包签名失败，请检查你的签名文件配置。")
+        raise Exception(f"无法获取打包模块信息，hap、hsp 包签名失败，请检查你的签名文件配置。")
         return False
   
 
@@ -187,7 +187,7 @@ def sign_info(Config, selected_product, desc=""):
 
     if not bundle_name or not version_code or not version_name:
         printError("无法获取 bundleName、versionCode 或 versionName，无法处理 manifest.json5 文件。")
-        return
+        raise Exception("无法获取 bundleName、versionCode 或 versionName")
     
     date = datetime.now()
     remote_dir = date.strftime("%Y%m%d%H%M%S")
@@ -202,15 +202,15 @@ def sign_info(Config, selected_product, desc=""):
         apiVersion = read_api_version()
     if apiVersion is None:
         printError("无法获取 compatibleSdkVersion")
-        return
+        raise Exception("无法获取 compatibleSdkVersion")
 
     unsignRet = create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name,apiVersion)
     if not unsignRet:
-        return
+        raise Exception("创建未签名 manifest.json5 失败")
 
     signRet = create_sign_manifest(Config, build_dir)
     if not signRet:
-        return
+        raise Exception("签名 manifest.json5 失败")
     
     size = get_directory_size(build_dir)
 

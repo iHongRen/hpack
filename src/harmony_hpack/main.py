@@ -7,6 +7,7 @@ import os
 import shutil
 import subprocess
 import sys
+from datetime import datetime
 
 # 获取当前脚本所在目录
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -91,15 +92,36 @@ def pack_command(desc):
 @timeit(printName='打包')
 def do_pack(Config, selected_product, desc):
     willPack_output = execute_will_pack()
-    packInfo = execute_pack_sign_and_info(Config, selected_product, desc)
-    if not packInfo:
-        return
+    
+    try:
+        packInfo = execute_pack_sign_and_info(Config, selected_product, desc)
+        if not packInfo:
+            # 打包失败，调用 failPack 并终止
+            errorInfo = {
+                'error': '打包签名或生成信息失败',
+                'product': selected_product.get('name', ''),
+                'desc': desc,
+                'timestamp': datetime.now().isoformat()
+            }
+            execute_fail_pack(errorInfo)
+            return
 
-    if willPack_output:
-        packInfo['willPack_output'] = willPack_output
+        if willPack_output:
+            packInfo['willPack_output'] = willPack_output
 
-    if handle_template(Config, packInfo):
+        handle_template(Config, packInfo)
         execute_did_pack(packInfo)
+    except Exception as e:
+        # 捕获所有打包过程中的异常
+        errorInfo = {
+            'error': str(e),
+            'error_type': type(e).__name__,
+            'product': selected_product.get('name', ''),
+            'desc': desc,
+            'timestamp': datetime.now().isoformat()
+        }
+        execute_fail_pack(errorInfo)
+        return
 
 
 def execute_will_pack():
@@ -120,11 +142,8 @@ def execute_will_pack():
 
 
 def execute_pack_sign_and_info(config, selected_product, desc):
-    try:
-        pack_sign(config, selected_product)
-        return sign_info(config, selected_product, desc)
-    except Exception as e:
-        printError(f"执行打包签名或生成信息时出错: {e}")
+    pack_sign(config, selected_product)
+    return sign_info(config, selected_product, desc)
 
 
 def execute_did_pack(packInfo):
@@ -140,6 +159,21 @@ def execute_did_pack(packInfo):
 
     except subprocess.CalledProcessError as e:
         printError(f"执行 didPack 时出错: {e}")
+
+
+def execute_fail_pack(errorInfo):
+    try:
+        pack_file_path = os.path.join(ToolConfig.HpackDir, 'PackFile.py')
+        errorJson = json.dumps(errorInfo, ensure_ascii=False, indent=4)
+        subprocess.run(
+            [get_python_command(), pack_file_path, '--fail'],
+            input=errorJson,
+            text=True,
+            check=True
+        )
+
+    except subprocess.CalledProcessError as e:
+        printError(f"执行 failPack 时出错: {e}")
 
 
 def template_command(tname="default"):

@@ -32,11 +32,21 @@ def didPack(packInfo):
     print("4、如何自定义 webhook 通知")
 
 
+def failPack(errorInfo):
+    """_summary_: 打包失败回调，处理打包失败后的错误信息
+    """
+    print("============打包失败信息:============")
+    print(json.dumps(errorInfo, indent=4, ensure_ascii=False))
+    print("================================")
+    print("打包失败，请检查错误信息并修复问题后重试")
+
+
 if __name__ == "__main__":
     """_summary_: 无需修改"""
     parser = argparse.ArgumentParser(description="Packfile script")
     parser.add_argument('--will', action='store_true', help="Execute willPack")
     parser.add_argument('--did', action='store_true', help="Execute didPack")
+    parser.add_argument('--fail', action='store_true', help="Execute failPack")
     parser.add_argument('--t', action='store_true', help="Execute templateHtml")
     args = parser.parse_args()
 
@@ -45,6 +55,9 @@ if __name__ == "__main__":
     elif args.did:
         packInfo = json.loads(sys.stdin.read())  
         didPack(packInfo)
+    elif args.fail:
+        errorInfo = json.loads(sys.stdin.read())
+        failPack(errorInfo)
     elif args.t:
         print("用于生成 index.html 模板，并自定义")
         # 修改 config.py 中的 IndexTemplate 为 custom，执行 hpack t [模板名]
@@ -52,4 +65,4 @@ if __name__ == "__main__":
         # templateInfo = json.loads(sys.stdin.read())
         # customTemplateHtml(templateInfo) 
     else:
-        print("无效的参数，请使用 --will 、--did、--t")
+        print("无效的参数，请使用 --will 、--did、--fail、--t")

@@ -16,6 +16,7 @@ def clean():
         subprocess.run(["hvigorw", "clean", "--no-daemon"], check=True, shell=isWin())
     except subprocess.CalledProcessError as e:
         printError(f"清理操作出错: {e}")
+        raise Exception(f"清理操作失败: {e}")
 
 
 @timeit()
@@ -25,6 +26,7 @@ def sync():
         subprocess.run(["hvigorw", "--sync", "--no-daemon"], check=True, shell=isWin())
     except subprocess.CalledProcessError as e:
         printError(f"同步操作出错: {e}")
+        raise Exception(f"同步操作失败: {e}")
 
 @timeit()
 def buildHapHsp(Config, product):
@@ -43,10 +45,9 @@ def buildHapHsp(Config, product):
             ]
         subprocess.run(command, check=True, shell=isWin())
         print("构建 Hap Hsp 完成")
-        return True
     except subprocess.CalledProcessError as e:
-        print(f"构建 Hap 出错: {e}")
-        return False
+        print(f"构建 Hap/Hsp 出错: {e}")
+        raise Exception(f"构建 Hap/Hsp 出错: {e}")
 
 
 def mkBuildDir(productName):
@@ -72,6 +73,9 @@ def signHapHsp(Config, productName):
             elif '_hsp' in root and file.endswith('.hsp') and not file.endswith('-signed.hsp'):
                 # 未签名的 集成态hsp 文件
                 result.append(os.path.join(root, file))
+
+    if not result:
+        raise Exception("未找到需要签名的 Hap 或 Hsp 文件")
 
     for file in result:
         sign(Config, file, productName)
@@ -99,14 +103,16 @@ def sign(Config, unsigned_file_path, productName):
         '-keystorePwd', Config.KeystorePwd,
         '-signCode', '1'
     ]
-    subprocess.run(command, check=True)
+    try:
+        subprocess.run(command, check=True)
+    except subprocess.CalledProcessError as e:
+        raise Exception(f"签名文件 {unsigned_file_path} 失败: {e}")
 
 
 def pack_sign(Config, product):
     clean()
     sync()
-    if not buildHapHsp(Config, product):
-        return
+    buildHapHsp(Config, product)
     productName = product.get('name')
     mkBuildDir(productName)
     signHapHsp(Config, productName)

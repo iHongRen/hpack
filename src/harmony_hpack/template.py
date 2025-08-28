@@ -15,7 +15,7 @@ def handle_custom_html(packInfo):
     template_path = os.path.join(ToolConfig.HpackDir, "index.html")
     if not os.path.exists(template_path):
         printError("自定义的 hpack/index.html 文件不存在，请先执行 hpack t [tname] 命令，或手动创建 index.html 文件。")
-        return False
+        raise Exception("自定义模板文件不存在")
 
     try:
         with open(template_path, "r", encoding="utf-8") as template_file:
@@ -46,7 +46,7 @@ def handle_custom_html(packInfo):
             return True
     except Exception as e:
         printError(f"处理模板 HTML 时出错: {e}")
-        return False
+        raise Exception(f"处理自定义模板失败: {e}")
 
 
 def handle_template_html(Config, packInfo):
@@ -80,11 +80,15 @@ def handle_template_html(Config, packInfo):
         return True
     except Exception as e:
         printError(f"处理模板 HTML 时出错: {e}")
-        return False
+        raise Exception(f"处理模板失败: {e}")
 
 def handle_template(Config, packInfo):
     """处理模板 HTML"""
-    if Config.IndexTemplate == "custom" or not Config.IndexTemplate:
-        return handle_custom_html(packInfo)
-    else:
-        return handle_template_html(Config, packInfo)
+    try:
+        if Config.IndexTemplate == "custom" or not Config.IndexTemplate:
+            return handle_custom_html(packInfo)
+        else:
+            return handle_template_html(Config, packInfo)
+    except Exception as e:
+        # 重新抛出异常，让上层调用者处理
+        raise e
