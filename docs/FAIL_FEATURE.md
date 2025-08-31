@@ -55,25 +55,6 @@ def failPack(errorInfo):
     # 例如：发送通知、记录日志、上传错误信息等
 ```
 
-## 使用示例
-
-### 手动测试 --fail 功能
-
-```bash
-# 创建测试错误信息
-echo '{
-    "error": "测试错误",
-    "error_type": "TestError",
-    "product": "test_product",
-    "desc": "测试描述",
-    "timestamp": "2024-01-01T12:00:00"
-}' | python3 harmony_hpack/PackFile.py --fail
-```
-
-### 在打包过程中自动触发
-
-当执行 `hpack pack` 命令时，如果任何步骤失败，系统会自动调用 `--fail` 功能。
-
 ## 与现有功能的关系
 
 - `--will`: 打包前调用
