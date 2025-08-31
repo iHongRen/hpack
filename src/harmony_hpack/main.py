@@ -15,13 +15,14 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
 import json5
+import segno
 from hdc import install_command, show_targets, show_udid
 from packSign import pack_sign
 from sign import sign_command
 from signInfo import sign_info
 from template import handle_template
 from toolConfig import ToolConfig
-from utils import (BLUE, ENDC, get_python_command, printError, printSuccess,
+from utils import (BLUE, ENDC, RED, get_python_command, printError, printSuccess,
                    select_items, timeit)
 from version import __version__
 
@@ -82,32 +83,57 @@ def pack_command(desc):
     if not Config:
         return
 
+    # 检测项目类型
+    from flutterSupport import is_flutter_ohos_project, validate_flutter_ohos_environment
+    
+    is_flutter_project = is_flutter_ohos_project()
+    if is_flutter_project:
+        printSuccess("检测到 Flutter 鸿蒙项目")
+        
+        # 验证 Flutter 环境
+        env_issues = validate_flutter_ohos_environment()
+        if env_issues:
+            printError("Flutter 鸿蒙环境检查失败:")
+            for issue in env_issues:
+                printError(f"  - {issue}")
+            return
+        
+        printSuccess("Flutter 鸿蒙环境检查通过")
+
     selected_product = get_selected_product(Config)
     if not selected_product:
         return
 
-    do_pack(Config, selected_product, desc)
+    do_pack(Config, selected_product, desc, is_flutter_project)
 
 
 @timeit(printName='打包')
-def do_pack(Config, selected_product, desc):
+def do_pack(Config, selected_product, desc, is_flutter_project=False):
     willPack_output = execute_will_pack()
     
     try:
-        packInfo = execute_pack_sign_and_info(Config, selected_product, desc)
+        if is_flutter_project:
+            packInfo = execute_flutter_pack_sign_and_info(Config, selected_product, desc)
+        else:
+            packInfo = execute_pack_sign_and_info(Config, selected_product, desc)
+            
         if not packInfo:
             # 打包失败，调用 failPack 并终止
             errorInfo = {
                 'error': '打包签名或生成信息失败',
                 'product': selected_product.get('name', ''),
                 'desc': desc,
-                'timestamp': datetime.now().isoformat()
+                'timestamp': datetime.now().isoformat(),
+                'project_type': 'flutter_ohos' if is_flutter_project else 'native_ohos'
             }
             execute_fail_pack(errorInfo)
             return
 
         if willPack_output:
             packInfo['willPack_output'] = willPack_output
+
+        # 添加项目类型信息
+        packInfo['project_type'] = 'flutter_ohos' if is_flutter_project else 'native_ohos'
 
         handle_template(Config, packInfo)
         execute_did_pack(packInfo)
@@ -118,7 +144,8 @@ def do_pack(Config, selected_product, desc):
             'error_type': type(e).__name__,
             'product': selected_product.get('name', ''),
             'desc': desc,
-            'timestamp': datetime.now().isoformat()
+            'timestamp': datetime.now().isoformat(),
+            'project_type': 'flutter_ohos' if is_flutter_project else 'native_ohos'
         }
         execute_fail_pack(errorInfo)
         return
@@ -144,6 +171,85 @@ def execute_will_pack():
 def execute_pack_sign_and_info(config, selected_product, desc):
     pack_sign(config, selected_product)
     return sign_info(config, selected_product, desc)
+
+
+def execute_flutter_pack_sign_and_info(config, selected_product, desc):
+    """执行 Flutter 鸿蒙项目的打包签名和信息生成"""
+    from flutterSupport import flutter_ohos_pack_sign, get_flutter_ohos_app_info
+    
+    # 执行 Flutter 鸿蒙打包
+    flutter_ohos_pack_sign(config, selected_product)
+    
+    # 获取应用信息
+    flutter_app_info = get_flutter_ohos_app_info()
+    
+    # 如果 Flutter 项目信息不完整，尝试从鸿蒙原生部分获取
+    if not all([flutter_app_info.get('bundleName'), 
+                flutter_app_info.get('versionCode'), 
+                flutter_app_info.get('versionName')]):
+        
+        # 尝试从 ohos 目录获取信息
+        original_dir = os.getcwd()
+        try:
+            if os.path.exists('ohos'):
+                os.chdir('ohos')
+                native_info = sign_info(config, selected_product, desc)
+                if native_info:
+                    # 合并信息，Flutter 信息优先
+                    for key in ['bundleName', 'versionCode', 'versionName']:
+                        if not flutter_app_info.get(key) and native_info.get(key):
+                            flutter_app_info[key] = native_info.get(key)
+                    
+                    # 使用原生的其他信息
+                    return native_info
+        finally:
+            os.chdir(original_dir)
+    
+    # 如果仍然缺少信息，生成基本的打包信息
+    if not flutter_app_info.get('bundleName'):
+        raise Exception("无法获取 Flutter 应用的 bundleName")
+    
+    # 生成 Flutter 项目的打包信息
+    from datetime import datetime
+    from utils import get_directory_size
+    import segno
+    
+    date = datetime.now()
+    remote_dir = date.strftime("%Y%m%d%H%M%S")
+    remotePath = f"{config.BaseURL}/{remote_dir}"
+    
+    productName = selected_product.get('name') if selected_product else 'default'
+    build_dir = os.path.join(ToolConfig.BuildDir, productName)
+    
+    # 确保构建目录存在
+    os.makedirs(build_dir, exist_ok=True)
+    
+    size = get_directory_size(build_dir) if os.path.exists(build_dir) else "0B"
+    
+    # 生成二维码
+    index_url = f"{remotePath}/index.html"
+    qr = segno.make(index_url)
+    qrcode = qr.svg_data_uri(scale=10)
+    
+    manifest_url = f"{remotePath}/{ToolConfig.SignedManifestFile}"
+    
+    packInfo = {
+        "bundle_name": flutter_app_info.get('bundleName'),
+        "version_code": flutter_app_info.get('versionCode', 1),
+        "version_name": flutter_app_info.get('versionName', '1.0.0'),
+        "size": size,
+        "desc": desc,
+        "build_dir": build_dir,
+        "remote_dir": remote_dir,
+        "manifest_url": manifest_url,
+        "index_url": index_url,
+        "date": date.strftime("%Y-%m-%d %H:%M"),
+        "product": productName,
+        "qrcode": qrcode,
+        "project_type": "flutter_ohos"
+    }
+    
+    return packInfo
 
 
 def execute_did_pack(packInfo):

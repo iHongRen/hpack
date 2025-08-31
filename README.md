@@ -2,8 +2,7 @@
 
 
 <div align="center">  
-
-![Version](https://img.shields.io/badge/version-1.0.9-blue)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)    
 
 [🌐 **官网**](https://ihongren.github.io/hpack.html)   •   [📋 **更新日志**](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md)   •   [📚 **deepwiki**](https://deepwiki.com/iHongRen/hpack)  
