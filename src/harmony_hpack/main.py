@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 from datetime import datetime
+from tkinter import E
 
 # 获取当前脚本所在目录
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -22,15 +23,16 @@ from sign import sign_command
 from signInfo import sign_info
 from template import handle_template
 from toolConfig import ToolConfig
-from utils import (BLUE, ENDC, RED, get_python_command, printError, printSuccess,
-                   select_items, timeit)
+from utils import (BLUE, ENDC, RED, get_python_command, printError,
+                   printSuccess, select_items, timeit)
 from version import __version__
 
 
 def init_command():
     hpack_dir = ToolConfig.HpackDir
     if os.path.exists(hpack_dir):
-        return printError("init 失败：hpack 目录已存在。")
+        raise Exception("init 失败 - hpack 目录已存在。")
+
 
     try:
         os.makedirs(hpack_dir)
@@ -46,34 +48,42 @@ hpack/
   Packfile.py 打包完成后的回调文件
 """, end='')
     except Exception as e:
-        printError(f"init 失败 - {e}")
+        raise Exception(f"init 失败 - {e}")
 
 
 def get_products():
     try:
         with open("build-profile.json5", "r", encoding="utf-8") as f:
-            return json5.load(f).get("app", {}).get("products", [])
+            products = json5.load(f).get("app", {}).get("products", [])
+            if not products:
+                raise Exception("build-profile.json5 中未找到产品配置")
+            return products
     except Exception as e:
-        printError(f"读取 build-profile.json5 文件时出错: {e}")
-        return []
+        raise Exception(f"读取 build-profile.json5 文件时出错 - {e}")
 
 
 def get_selected_product(Config):
     products = get_products()
     if not products:
-        return None
+        raise Exception("未找到可用的产品配置")
 
     if hasattr(Config, 'HvigorwCommand') and Config.HvigorwCommand:
         name = next((item.split('=')[1] for item in Config.HvigorwCommand if item.startswith('product=')), None)
-        return next((p for p in products if p.get('name') == name), None)
+        product = next((p for p in products if p.get('name') == name), None)
+        if not product:
+            raise Exception(f"未找到指定的产品: {name}")
+        return product
 
     if hasattr(Config, 'Product') and Config.Product:
-        return next((p for p in products if p.get('name') == Config.Product), None)
+        product = next((p for p in products if p.get('name') == Config.Product), None)
+        if not product:
+            raise Exception(f"未找到指定的产品: {Config.Product}")
+        return product
 
     items = [item.get('name') for item in products]
     index = select_items(items, prompt_text="请选择要打包的 product:")
     if index is None:
-        return None
+        raise Exception("用户取消了产品选择")
     printSuccess(f"开始打包 product: {items[index]}")
     return products[index]
 
@@ -81,10 +91,11 @@ def get_selected_product(Config):
 def pack_command(desc):
     Config = get_config()
     if not Config:
-        return
+        raise Exception("无法读取配置文件")
 
     # 检测项目类型
-    from flutterSupport import is_flutter_ohos_project, validate_flutter_ohos_environment
+    from flutterSupport import (is_flutter_ohos_project,
+                                validate_flutter_ohos_environment)
     
     is_flutter_project = is_flutter_ohos_project()
     if is_flutter_project:
@@ -93,16 +104,15 @@ def pack_command(desc):
         # 验证 Flutter 环境
         env_issues = validate_flutter_ohos_environment()
         if env_issues:
-            printError("Flutter 鸿蒙环境检查失败:")
             for issue in env_issues:
                 printError(f"  - {issue}")
-            return
+            raise Exception("Flutter 鸿蒙环境检查失败")
         
         printSuccess("Flutter 鸿蒙环境检查通过")
 
     selected_product = get_selected_product(Config)
     if not selected_product:
-        return
+        raise Exception("无法获取产品配置")
 
     do_pack(Config, selected_product, desc, is_flutter_project)
 
@@ -127,7 +137,7 @@ def do_pack(Config, selected_product, desc, is_flutter_project=False):
                 'project_type': 'flutter_ohos' if is_flutter_project else 'native_ohos'
             }
             execute_fail_pack(errorInfo)
-            return
+            raise Exception("打包签名或生成信息失败")
 
         if willPack_output:
             packInfo['willPack_output'] = willPack_output
@@ -148,7 +158,8 @@ def do_pack(Config, selected_product, desc, is_flutter_project=False):
             'project_type': 'flutter_ohos' if is_flutter_project else 'native_ohos'
         }
         execute_fail_pack(errorInfo)
-        return
+        # 重新抛出异常，让上层调用者知道打包失败
+        raise e
 
 
 def execute_will_pack():
@@ -165,7 +176,7 @@ def execute_will_pack():
         return ret
 
     except subprocess.CalledProcessError as e:
-        printError(f"执行 willPack 时出错: {e}")
+        raise Exception(f"执行 willPack 失败 - {e}")
 
 
 def execute_pack_sign_and_info(config, selected_product, desc):
@@ -175,8 +186,9 @@ def execute_pack_sign_and_info(config, selected_product, desc):
 
 def execute_flutter_pack_sign_and_info(config, selected_product, desc):
     """执行 Flutter 鸿蒙项目的打包签名和信息生成"""
-    from flutterSupport import flutter_ohos_pack_sign, get_flutter_ohos_app_info
-    
+    from flutterSupport import (flutter_ohos_pack_sign,
+                                get_flutter_ohos_app_info)
+
     # 执行 Flutter 鸿蒙打包
     flutter_ohos_pack_sign(config, selected_product)
     
@@ -211,8 +223,9 @@ def execute_flutter_pack_sign_and_info(config, selected_product, desc):
     
     # 生成 Flutter 项目的打包信息
     from datetime import datetime
-    from utils import get_directory_size
+
     import segno
+    from utils import get_directory_size
     
     date = datetime.now()
     remote_dir = date.strftime("%Y%m%d%H%M%S")
@@ -264,7 +277,7 @@ def execute_did_pack(packInfo):
         )
 
     except subprocess.CalledProcessError as e:
-        printError(f"执行 didPack 时出错: {e}")
+        raise Exception(f"执行 didPack 时出错 - {e}")
 
 
 def execute_fail_pack(errorInfo):
@@ -279,26 +292,27 @@ def execute_fail_pack(errorInfo):
         )
 
     except subprocess.CalledProcessError as e:
-        printError(f"执行 failPack 时出错: {e}")
+        raise Exception(f"执行 failPack 时出错 - {e}")
 
 
 def template_command(tname="default"):
     if tname not in get_template_filenames():
-        return printError(f"该模板不存在，模板可选值：{get_template_filenames()}")
+        raise Exception(f"该模板不存在，模板可选值：{get_template_filenames()}")
 
     hpack_dir = ToolConfig.HpackDir
     if not os.path.exists(hpack_dir):
-        return printError("请先初始化：hpack init")
+        raise Exception("请先初始化：hpack init")
 
     try:
         template_path = os.path.join(ToolConfig.TemplateDir, f"{tname}.html")
         target_template_path = os.path.join(hpack_dir, "index.html")
         if os.path.exists(target_template_path):
-            return printError(f"html模板文件已存在：{target_template_path}")
+            raise Exception(f"html模板文件已存在：{target_template_path}")
         shutil.copy2(template_path, target_template_path)
         printSuccess(f"{tname} 风格模板已生成：{target_template_path}")
     except OSError as e:
-        printError(f"html模板文件生成 失败 - {e}")
+        raise Exception(f"html模板文件生成 失败 - {e}")
+
 
 
 def get_template_filenames():
@@ -318,9 +332,12 @@ def get_config():
         spec = importlib.util.spec_from_file_location("config", os.path.join(ToolConfig.HpackDir, 'config.py'))
         config_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(config_module)
-        return getattr(config_module, 'Config', None)
+        config = getattr(config_module, 'Config', None)
+        if config is None:
+            raise Exception("config.py 文件中未找到 Config 配置")
+        return config
     except Exception as e:
-        printError(f"读取 config.py 文件时出错 - {e}")
+        raise Exception(f"读取 config.py 文件时出错 - {e}")
 
 
 def show_version():
@@ -386,22 +403,40 @@ hpack: v{__version__} - 鸿蒙应用打包、签名、安装和上传工具
 
 
 def main():
-    commands = {
-        '-v': show_version, '--version': show_version,
-        '-h': show_help, '--help': show_help,
-        '-u': show_udid, '--udid': show_udid,
-        'targets': show_targets,
-        'init': init_command,
-        'pack': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
-        'p': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
-        'template': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
-        't': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
-        'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
-        'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
-        'sign': lambda: sign_command(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else ""),
-        's': lambda: sign_command(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else ""),
-    }
-    commands.get(sys.argv[1], lambda: print("无效的命令，请使用 'hpack -h' 查看帮助信息。"))()
+    try:
+        if len(sys.argv) < 2:
+            print("无效的命令，请使用 'hpack -h' 查看帮助信息。")
+            sys.exit(1)
+            
+        commands = {
+            '-v': show_version, '--version': show_version,
+            '-h': show_help, '--help': show_help,
+            '-u': show_udid, '--udid': show_udid,
+            'targets': show_targets,
+            'init': init_command,
+            'pack': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
+            'p': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
+            'template': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
+            't': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
+            'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
+            'i': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),
+            'sign': lambda: sign_command(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else ""),
+            's': lambda: sign_command(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else ""),
+        }
+        
+        command = sys.argv[1]
+        if command in commands:
+            commands[command]()
+        else:
+            print("无效的命令，请使用 'hpack -h' 查看帮助信息。")
+            sys.exit(1)
+            
+    except KeyboardInterrupt:
+        printError("\n用户中断操作")
+        sys.exit(130)  # 130 是 SIGINT 的标准退出码
+    except Exception as e:
+        printError(f"程序执行出错: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

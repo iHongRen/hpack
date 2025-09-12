@@ -114,8 +114,6 @@ def install_command(product="-default"):
         runCommand(["hdc", "-t", target, "shell", "rm", "-rf", tmpPath])
 
         # print(ret.stdout.decode())
-
-
         if product.endswith('.app'):
             # 删除解压目录
             shutil.rmtree(extract_dir, ignore_errors=True)

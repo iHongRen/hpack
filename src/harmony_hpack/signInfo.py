@@ -17,7 +17,6 @@ def read_app_info():
     # MARK: 另一种方法是读取打包后的pack.info
     json_path = os.path.join("AppScope", "app.json5")
     if not os.path.exists(json_path):
-        printError(f"AppScope/app.json5 文件不存在: {json_path}")
         raise Exception(f"AppScope/app.json5 文件不存在: {json_path}")
     try:
         with open(json_path, "r", encoding="utf-8") as f:
@@ -28,28 +27,25 @@ def read_app_info():
             version_name = app.get("versionName")
             return bundle_name, version_code, version_name
     except Exception as e:
-        printError(f"读取 AppScope/app.json5 文件时出错: {e}")
         raise Exception(f"读取 AppScope/app.json5 文件时出错: {e}")
 
 
 def read_api_version():
     json_path = os.path.join("build-profile.json5")
     if not os.path.exists(json_path):
-        printError(f"build-profile.json5 文件不存在: {json_path}")
-        return None
+        raise Exception(f"build-profile.json5 文件不存在: {json_path}")
+
     try:
         with open(json_path, "r", encoding="utf-8") as f:
             data = json5.load(f)
             try:
                 api_version = data.get("app").get("products")[0].get("compatibleSdkVersion")
                 print(f"compatibleSdkVersion 的值为: {api_version}")
-            except (KeyError, IndexError):
-                print("未找到 compatibleSdkVersion 的值。")
-            return api_version
+                return api_version
+            except (KeyError, IndexError) as e:
+                raise Exception(f"未找到 compatibleSdkVersion 的值。 - {e}")
     except Exception as e:
-        printError(f"读取 build-profile.json5 文件时出错: {e}")
-        raise Exception(f"读取 build-profile.json5 文件时出错: {e}")
-    return None
+        raise Exception(f"读取 build-profile.json5 文件时出错 - {e}")
 
 
 def get_module_infos(build_dir, remotePath):
@@ -80,10 +76,7 @@ def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_c
 
     modules = get_module_infos(build_dir,remotePath)
     if not modules:
-        printError("无法获取打包模块信息，hap、hsp 包签名失败，请检查你的签名文件配置。")
         raise Exception(f"无法获取打包模块信息，hap、hsp 包签名失败，请检查你的签名文件配置。")
-        return False
-  
 
     # 定义要写入文件的数据
     data = {
@@ -106,18 +99,13 @@ def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_c
 
     # 定义目标目录和文件名
     file_path = os.path.join(build_dir, ToolConfig.UnsignManifestFile)
-
- 
     # 将数据写入 JSON5 文件
     try:
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
         print(f"成功生成文件 {file_path}")
     except Exception as e:
-        printError(f"写入文件时出错: {e}")
-        return False
-
-    return True
+        raise Exception(f"写入文件时出错: {e}")
 
 
 def create_sign_manifest(Config, build_dir):
@@ -128,6 +116,7 @@ def create_sign_manifest(Config, build_dir):
     keystore = os.path.join(ToolConfig.HpackDir ,Config.Keystore)
     KeystorePwd = Config.KeystorePwd
     KeyPwd = Config.KeyPwd
+    Alias = Config.Alias
 
     # 定义签名命令
     sign_command = [
@@ -139,15 +128,14 @@ def create_sign_manifest(Config, build_dir):
         '-keystore', keystore,
         '-keystorepasswd', KeystorePwd,
         '-keyaliaspasswd', KeyPwd,
-        '-privatekey', Config.Alias
+        '-privatekey', Alias
     ]
 
     try:
         # 执行签名命令
         subprocess.run(sign_command, check=True)
     except subprocess.CalledProcessError as e:
-        printError(f"签名过程出错: {e}")
-        return False    
+        raise Exception(f"签名过程出错: {e}")
 
     # 打印验证开始信息
     print("----验证签名 manifest.json5----")
@@ -160,16 +148,12 @@ def create_sign_manifest(Config, build_dir):
         '-keystore', keystore,
         '-keystorepasswd', KeystorePwd
     ]
-
     try:
         # 执行验证命令
         subprocess.run(verify_command, check=True)
     except subprocess.CalledProcessError as e:
-        printError(f"验证过程出错: {e}")
-        return False
-        
-    return True
-
+        printError(f"验证过程出错 - {e}")
+        raise Exception(f"签名验证过程出错 - {e}")
 
 
 def sign_info(Config, selected_product, desc=""):
@@ -201,17 +185,10 @@ def sign_info(Config, selected_product, desc=""):
     else:
         apiVersion = read_api_version()
     if apiVersion is None:
-        printError("无法获取 compatibleSdkVersion")
         raise Exception("无法获取 compatibleSdkVersion")
 
-    unsignRet = create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name,apiVersion)
-    if not unsignRet:
-        raise Exception("创建未签名 manifest.json5 失败")
-
-    signRet = create_sign_manifest(Config, build_dir)
-    if not signRet:
-        raise Exception("签名 manifest.json5 失败")
-    
+    create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name,apiVersion)
+    create_sign_manifest(Config, build_dir)
     size = get_directory_size(build_dir)
 
     # 生成二维码

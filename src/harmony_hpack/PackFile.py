@@ -66,3 +66,4 @@ if __name__ == "__main__":
         # customTemplateHtml(templateInfo) 
     else:
         print("无效的参数，请使用 --will 、--did、--fail、--t")
+  

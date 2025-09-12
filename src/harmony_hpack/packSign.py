@@ -15,8 +15,7 @@ def clean():
     try:
         subprocess.run(["hvigorw", "clean", "--no-daemon"], check=True, shell=isWin())
     except subprocess.CalledProcessError as e:
-        printError(f"清理操作出错: {e}")
-        raise Exception(f"清理操作失败: {e}")
+        raise Exception(f"清理操作失败 - {e}")
 
 
 @timeit()
@@ -25,8 +24,7 @@ def sync():
     try:
         subprocess.run(["hvigorw", "--sync", "--no-daemon"], check=True, shell=isWin())
     except subprocess.CalledProcessError as e:
-        printError(f"同步操作出错: {e}")
-        raise Exception(f"同步操作失败: {e}")
+        raise Exception(f"同步操作失败 - {e}")
 
 @timeit()
 def buildHapHsp(Config, product):
@@ -46,8 +44,7 @@ def buildHapHsp(Config, product):
         subprocess.run(command, check=True, shell=isWin())
         print("构建 Hap Hsp 完成")
     except subprocess.CalledProcessError as e:
-        print(f"构建 Hap/Hsp 出错: {e}")
-        raise Exception(f"构建 Hap/Hsp 出错: {e}")
+        raise Exception(f"构建 Hap/Hsp 出错 - {e}")
 
 
 def mkBuildDir(productName):
