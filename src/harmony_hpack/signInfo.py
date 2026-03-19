@@ -39,9 +39,10 @@ def read_api_version():
         with open(json_path, "r", encoding="utf-8") as f:
             data = json5.load(f)
             try:
-                api_version = data.get("app").get("products")[0].get("compatibleSdkVersion")
-                print(f"compatibleSdkVersion 的值为: {api_version}")
-                return api_version
+                selected_product = data.get("app").get("products")[0]
+                api_version = selected_product.get("compatibleSdkVersion")
+                targetSdkVersion = selected_product.get("targetSdkVersion")
+                return api_version, targetSdkVersion
             except (KeyError, IndexError) as e:
                 raise Exception(f"未找到 compatibleSdkVersion 的值。 - {e}")
     except Exception as e:
@@ -72,7 +73,7 @@ def get_module_infos(build_dir, remotePath):
     return result
 
 
-def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name, apiVersion):
+def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name, apiVersion, targetSdkVersion):
 
     modules = get_module_infos(build_dir,remotePath)
     if not modules:
@@ -92,7 +93,7 @@ def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_c
                 "large": Config.AppIcon,
             },
             "minAPIVersion": apiVersion,
-            "targetAPIVersion": apiVersion,
+            "targetAPIVersion": targetSdkVersion,
             "modules": modules
         }
     }
@@ -183,11 +184,18 @@ def sign_info(Config, selected_product, desc=""):
     if 'compatibleSdkVersion' in selected_product:
         apiVersion = selected_product.get('compatibleSdkVersion')
     else:
-        apiVersion = read_api_version()
+        apiVersion, targetVersion = read_api_version()
     if apiVersion is None:
         raise Exception("无法获取 compatibleSdkVersion")
+    
+    if 'targetSdkVersion' in selected_product:
+        targetSdkVersion = selected_product.get('targetSdkVersion')
+    else:
+        targetSdkVersion = targetVersion
+        if targetSdkVersion is None:
+            targetSdkVersion = apiVersion
 
-    create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name,apiVersion)
+    create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name,apiVersion, targetSdkVersion)
     create_sign_manifest(Config, build_dir)
     size = get_directory_size(build_dir)
 
