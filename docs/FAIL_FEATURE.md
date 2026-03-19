@@ -53,6 +53,16 @@ def failPack(errorInfo):
     
     # 在这里添加你的自定义处理逻辑
     # 例如：发送通知、记录日志、上传错误信息等
+
+
+if __name__ == "__main__":
+    """_summary_: 无需修改"""
+    parser = argparse.ArgumentParser(description="Packfile script")
+    parser.add_argument('--will', action='store_true', help="Execute willPack")
+    parser.add_argument('--did', action='store_true', help="Execute didPack")
+    # --fail 处理
+    parser.add_argument('--fail', action='store_true', help="Execute failPack")
+    ...
 ```
 
 ## 与现有功能的关系

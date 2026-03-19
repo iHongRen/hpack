@@ -1,35 +1,12 @@
 # 版本更新：
 
-[v1.1.0](https://github.com/iHongRen/hpack/releases/tag/v1.1.0)  — 2025.08.31
+[v1.1.0](https://github.com/iHongRen/hpack/releases/tag/v1.1.0)  — 2026.03.19
 
-1、新增了 `--fail` 功能，用于处理打包过程中的失败情况。
+1、新增了 `--fail` 功能，用于处理打包过程中的失败情况。[--fail使用说明](https://github.com/iHongRen/hpack/blob/main/docs/FAIL_FEATURE.md)
 
-如果是从老版本版本升级，需要自己添加 `--fail`处理代码。
+2、更新 `hap-sign-tool.jar`
 
-```python
-# PackFile.py
-def failPack(errorInfo):
-    """_summary_: 打包失败回调，处理打包失败后的错误信息
-    """
-    print("============打包失败信息:============")
-    print(json.dumps(errorInfo, indent=4, ensure_ascii=False))
-    print("================================")
-    print("打包失败，请检查错误信息并修复问题后重试")
-
-
-if __name__ == "__main__":
-    """_summary_: 无需修改"""
-		#...
-    parser.add_argument('--fail', action='store_true', help="Execute failPack")
-		#...
-    elif args.fail:
-        errorInfo = json.loads(sys.stdin.read())
-        failPack(errorInfo)
-   
-```
-
-
-
+3、`targetSdkVersion` 字段获取
 
 
 

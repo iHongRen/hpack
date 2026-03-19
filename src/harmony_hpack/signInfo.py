@@ -181,21 +181,20 @@ def sign_info(Config, selected_product, desc=""):
     productName = selected_product.get('name')
     build_dir = os.path.join(ToolConfig.BuildDir, productName)
     
+    apiVersion, targetVersion = read_api_version()
     if 'compatibleSdkVersion' in selected_product:
         apiVersion = selected_product.get('compatibleSdkVersion')
-    else:
-        apiVersion, targetVersion = read_api_version()
+ 
     if apiVersion is None:
         raise Exception("无法获取 compatibleSdkVersion")
     
     if 'targetSdkVersion' in selected_product:
-        targetSdkVersion = selected_product.get('targetSdkVersion')
-    else:
-        targetSdkVersion = targetVersion
-        if targetSdkVersion is None:
-            targetSdkVersion = apiVersion
+        targetVersion = selected_product.get('targetSdkVersion')
+  
+    if targetVersion is None:
+        targetVersion = apiVersion
 
-    create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name,apiVersion, targetSdkVersion)
+    create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name,apiVersion, targetVersion)
     create_sign_manifest(Config, build_dir)
     size = get_directory_size(build_dir)
 
