@@ -6,8 +6,8 @@
   <a href="https://github.com/iHongRen/configEditor"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg" alt="License"></a>
   <a href="https://ihongren.github.io/donate.html"><img src="https://img.shields.io/badge/Sponsor-Donate-orange" alt="Sponsor"></a>
 </p>
-
 <p align="center">
+
 [🌐 **官网**](https://ihongren.github.io/hpack.html)   •   [📋 **更新日志**](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md)   •   [📚 **deepwiki**](https://deepwiki.com/iHongRen/hpack)  
 
 </p>
@@ -271,7 +271,7 @@ def didPack(packInfo):
 | `bundle_name` | String | 应用包名 |
 | `version_code` | Number | 版本号 |
 | `version_name` | String | 版本名称 |
-| `debug` | Boolean | 是否为 debug 包，`true` 表示 debug，`false` 表示 release |
+| `debug` | Boolean | 是否为 debug 包，`true` / `false` |
 | `size` | String | 包大小 |
 | `desc` | String | 打包说明 |
 | `build_dir` | String | 本地构建目录 |
