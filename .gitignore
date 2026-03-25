@@ -17,7 +17,7 @@ dist
 __pycache__/
 
 # 忽略 demo下的 hpack 目录
-/demo/hpack
+demo
 
 # 忽略 hpack.egg-info 目录
 **/harmony_hpack.egg-info

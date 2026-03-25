@@ -1,12 +1,19 @@
 # 版本更新：
 
+[v1.1.1](https://github.com/iHongRen/hpack/releases/tag/v1.1.1)  — 2026.03.25
+
+1. 新增 hpack pr / pd '打包说明' 命令， pr 直接打 release 包， pd 直接打 debug 包
+2. 打包完成后的信息中新增字段 debug: true/false，表示打的包是否是 debug 包
+
+
+
 [v1.1.0](https://github.com/iHongRen/hpack/releases/tag/v1.1.0)  — 2026.03.19
 
-1、新增了 `--fail` 功能，用于处理打包过程中的失败情况。[--fail使用说明](https://github.com/iHongRen/hpack/blob/main/docs/FAIL_FEATURE.md)
+1. 新增了 `--fail` 功能，用于处理打包过程中的失败情况。[--fail使用说明](https://github.com/iHongRen/hpack/blob/main/docs/FAIL_FEATURE.md)
 
-2、更新 `hap-sign-tool.jar`
+2. 更新 `hap-sign-tool.jar`
 
-3、`targetSdkVersion` 字段获取
+3. `targetSdkVersion` 字段获取
 
 
 
