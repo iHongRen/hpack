@@ -27,13 +27,16 @@ def sync():
         raise Exception(f"同步操作失败 - {e}")
 
 @timeit()
-def buildHapHsp(Config, product):
+def buildHapHsp(Config, product, forced_debug=None):
     """构建 Hap & Hsp"""
     try:
         if hasattr(Config, 'HvigorwCommand') and len(Config.HvigorwCommand) > 0:
             command = Config.HvigorwCommand
         else:
-            debug = "true" if hasattr(Config, 'Debug') and Config.Debug else "false"
+            debug_enabled = forced_debug if forced_debug is not None else (
+                hasattr(Config, 'Debug') and Config.Debug
+            )
+            debug = "true" if debug_enabled else "false"
             command = [
                 'hvigorw', 'assembleHap', 'assembleHsp', 
                 '--mode', 'module', 
@@ -106,11 +109,10 @@ def sign(Config, unsigned_file_path, productName):
         raise Exception(f"签名文件 {unsigned_file_path} 失败: {e}")
 
 
-def pack_sign(Config, product):
+def pack_sign(Config, product, forced_debug=None):
     clean()
     sync()
-    buildHapHsp(Config, product)
+    buildHapHsp(Config, product, forced_debug=forced_debug)
     productName = product.get('name')
     mkBuildDir(productName)
     signHapHsp(Config, productName)
-

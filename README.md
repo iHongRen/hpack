@@ -1,12 +1,16 @@
 # 🚀 hpack - 鸿蒙 HarmonyOS 内测签名打包分发工具
 
 
-<div align="center">  
+<p align="center">
+  <a href="https://github.com/iHongRen/hpack/releases/latest"><img src="https://img.shields.io/github/v/release/iHongRen/hpack?label=version&color=blue" alt="version"></a>
+  <a href="https://github.com/iHongRen/configEditor"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg" alt="License"></a>
+  <a href="https://ihongren.github.io/donate.html"><img src="https://img.shields.io/badge/Sponsor-Donate-orange" alt="Sponsor"></a>
+</p>
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue)  ![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)    
+<p align="center">
 [🌐 **官网**](https://ihongren.github.io/hpack.html)   •   [📋 **更新日志**](https://github.com/iHongRen/hpack/blob/main/CHANGELOG.md)   •   [📚 **deepwiki**](https://deepwiki.com/iHongRen/hpack)  
 
-</div>
+</p>
 
 ## 简介
 
@@ -174,6 +178,7 @@ class Config:
     Product = ""  
     
     # 编译模式，默认是 debug 模式，release 模式需要设置为False
+    # 执行 hpack pr / hpack pd 时，这里的 Debug 配置会被命令参数覆盖
     Debug = True  
     
     # 用于完全自定义 hvigorw 构建命令，配置后 Product、Debug 无效
@@ -211,6 +216,13 @@ sign/
 hpack p "修复了一些已知问题，优化了性能"  # 更新说明可选
 ```
 
+新增两种强制指定打包模式的命令：
+
+```bash
+hpack pr "发版包说明"   # 强制打 release 包，忽略 hpack/config.py 中的 Debug 配置
+hpack pd "调试包说明"   # 强制打 debug 包，忽略 hpack/config.py 中的 Debug 配置
+```
+
 ✅ **打包完成后**，所有打包文件将保存在 `hpack/build/{product}/` 目录下。  
 
 可执行命令安装到当前连接的设备：
@@ -237,6 +249,7 @@ def didPack(packInfo):
     "bundle_name": "com.cxy.hpack",
     "version_code": 1000000,
     "version_name": "1.0.0",
+    "debug": true,
     "size": "281KB",
     "desc": "打包说明",
     "build_dir": "hpack/build/default",
@@ -258,6 +271,7 @@ def didPack(packInfo):
 | `bundle_name` | String | 应用包名 |
 | `version_code` | Number | 版本号 |
 | `version_name` | String | 版本名称 |
+| `debug` | Boolean | 是否为 debug 包，`true` 表示 debug，`false` 表示 release |
 | `size` | String | 包大小 |
 | `desc` | String | 打包说明 |
 | `build_dir` | String | 本地构建目录 |
@@ -487,7 +501,11 @@ def dingtalk(packInfo):
 |------|------|
 | `hpack init` | 初始化 hpack 目录并创建配置文件 |
 | `hpack pack, p [desc]` | 执行打包签名和上传，desc 为打包描述（可选） |
+| `hpack pr [desc]` | 指定打 release 包，忽略 hpack/config.py 中的 Debug 配置 |
+| `hpack pd [desc]` | 指定打 debug 包，忽略 hpack/config.py 中的 Debug 配置 |
+
 | `hpack template, t [tname]` | 生成 index.html 模板文件 |
+
 
 ##### 安装打包产物
 ```bash

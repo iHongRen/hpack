@@ -40,6 +40,7 @@ class Config:
     Product = ""  
 
     # 编译模式，默认是 debug 模式，release 模式需要设置为False
+    # 执行 hpack pr / hpack pd 时，这里的 Debug 配置会被命令参数覆盖
     Debug = True  
 
     # 用于完全自定义 hvigorw 构建命令，配置后 Product、Debug 无效

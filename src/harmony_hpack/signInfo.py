@@ -157,7 +157,7 @@ def create_sign_manifest(Config, build_dir):
         raise Exception(f"签名验证过程出错 - {e}")
 
 
-def sign_info(Config, selected_product, desc=""):
+def sign_info(Config, selected_product, desc="", forced_debug=None):
 
     bundle_name, version_code, version_name = read_app_info()
  
@@ -204,11 +204,15 @@ def sign_info(Config, selected_product, desc=""):
     qrcode = qr.svg_data_uri(scale=10)
     
     manifest_url = f"{remotePath}/{ToolConfig.SignedManifestFile}"
+    debug_enabled = forced_debug if forced_debug is not None else (
+        hasattr(Config, 'Debug') and Config.Debug
+    )
 
     packInfo = {
         "bundle_name": bundle_name,
         "version_code": version_code,
         "version_name": version_name,
+        "debug": debug_enabled,
         "size": size,
         "desc": desc,
         "build_dir": build_dir,
@@ -221,4 +225,3 @@ def sign_info(Config, selected_product, desc=""):
     }
     
     return packInfo
-

@@ -88,7 +88,7 @@ def get_selected_product(Config):
     return products[index]
 
 
-def pack_command(desc):
+def pack_command(desc, forced_debug=None):
     Config = get_config()
     if not Config:
         raise Exception("无法读取配置文件")
@@ -99,15 +99,20 @@ def pack_command(desc):
     if not selected_product:
         raise Exception("无法获取产品配置")
 
-    do_pack(Config, selected_product, desc)
+    do_pack(Config, selected_product, desc, forced_debug=forced_debug)
 
 
 @timeit(printName='打包')
-def do_pack(Config, selected_product, desc):
+def do_pack(Config, selected_product, desc, forced_debug=None):
     willPack_output = execute_will_pack()
     
     try:
-        packInfo = execute_pack_sign_and_info(Config, selected_product, desc)
+        packInfo = execute_pack_sign_and_info(
+            Config,
+            selected_product,
+            desc,
+            forced_debug=forced_debug
+        )
             
         if not packInfo:
             # 打包失败，调用 failPack 并终止
@@ -157,9 +162,9 @@ def execute_will_pack():
         raise Exception(f"执行 willPack 失败 - {e}")
 
 
-def execute_pack_sign_and_info(config, selected_product, desc):
-    pack_sign(config, selected_product)
-    return sign_info(config, selected_product, desc)
+def execute_pack_sign_and_info(config, selected_product, desc, forced_debug=None):
+    pack_sign(config, selected_product, forced_debug=forced_debug)
+    return sign_info(config, selected_product, desc, forced_debug=forced_debug)
 
 
 def execute_did_pack(packInfo):
@@ -261,6 +266,8 @@ hpack: v{__version__} - 鸿蒙应用打包、签名、安装和上传工具
 {BLUE}执行:{ENDC}
   init                   初始化 hpack 目录并创建配置文件
   pack, p [desc]         执行打包签名和上传, desc 打包描述，可选
+  pr [desc]              执行 release 打包，忽略 config.py 中的 Debug 配置
+  pd [desc]              执行 debug 打包，忽略 config.py 中的 Debug 配置
   template, t [tname]    用于自定义模板时，生成 index.html 模板文件，tname 可选值：{get_template_filenames()}，默认为 default
 
 {BLUE}安装包:{ENDC}
@@ -313,6 +320,8 @@ def main():
             'init': init_command,
             'pack': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
             'p': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else ""),
+            'pr': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else "", forced_debug=False),
+            'pd': lambda: pack_command(sys.argv[2] if len(sys.argv) > 2 else "", forced_debug=True),
             'template': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
             't': lambda: template_command(sys.argv[2] if len(sys.argv) > 2 else "default"),
             'install': lambda: install_command(sys.argv[2] if len(sys.argv) > 2 else "-default"),

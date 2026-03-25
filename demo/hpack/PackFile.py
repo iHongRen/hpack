@@ -9,6 +9,7 @@ from datetime import datetime
 from string import Template
 
 import oss2  # pip/pip3 install oss2
+
 from config import Config
 
 
@@ -20,12 +21,13 @@ class OSSConfig:
     Bucket_name = ''
     Bucket_dir = 'hpack'
 
-# 初始化 OSS 客户端
-auth = oss2.Auth(OSSConfig.Access_key_id, OSSConfig.Access_key_secret)
-bucket = oss2.Bucket(auth, OSSConfig.Endpoint, OSSConfig.Bucket_name)
 
 def ossUpload(packInfo):
     """_summary_: 上传打包结果到 OSS"""
+
+    # 初始化 OSS 客户端
+    auth = oss2.Auth(OSSConfig.Access_key_id, OSSConfig.Access_key_secret)
+    bucket = oss2.Bucket(auth, OSSConfig.Endpoint, OSSConfig.Bucket_name)
 
     build_dir = packInfo.get("build_dir")
     remote_dir = packInfo.get("remote_dir")
@@ -84,7 +86,7 @@ def customTemplateHtml(templateInfo):
 def willPack():
     """_summary_: 打包前调用"""
     # 打包前传值，可以在这里读取一些工程配置，再传递给打包脚本
-    willParams = json.dumps({"data": "打包前传值"},ensure_ascii=False)
+    willParams = json.dumps({"data": "打包前传值"}, ensure_ascii=False)
     sys.stdout.buffer.write(willParams.encode('utf-8'))
     sys.stdout.flush()
 
@@ -105,6 +107,7 @@ def failPack(errorInfo):
     print(json.dumps(errorInfo, indent=4, ensure_ascii=False))
     print("================================")
     print("打包失败，请检查错误信息并修复问题后重试")
+
 
 if __name__ == "__main__":
     """_summary_: 无需修改"""
