@@ -1,5 +1,12 @@
 # 版本更新：
 
+
+
+[v1.1.2](https://github.com/iHongRen/hpack/releases/tag/v1.1.2)  — 2026.04.30
+
+1. 修复部分 hsp 包模块名获取不正确问题
+
+
 [v1.1.1](https://github.com/iHongRen/hpack/releases/tag/v1.1.1)  — 2026.03.25
 
 1. 新增 hpack pr / pd '打包说明' 命令， pr 直接打 release 包， pd 直接打 debug 包

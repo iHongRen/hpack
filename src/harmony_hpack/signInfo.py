@@ -49,28 +49,39 @@ def read_api_version():
         raise Exception(f"读取 build-profile.json5 文件时出错 - {e}")
 
 
-def get_module_infos(build_dir, remotePath):
-    result = []
-    for root, dirs, files in os.walk(build_dir):
+
+def get_module_infos(build_dir: str, remote_path: str) -> list:
+    module_list = []
+    for root, _, files in os.walk(build_dir):
         for file in files:
-            if file.endswith((".hsp", ".hap")):
-                file_path = os.path.join(root, file)
-                sha256 = calculate_sha256(file_path)
-                name = file.split("-")[0]
-                if file.endswith(".hap"):
-                    _type = "entry"
-                else:
-                    _type = "share"
-                package_url = f"{remotePath}/{quote(file)}"
-                file_info = {
-                    "name": name,
-                    "type": _type,
-                    "deviceTypes": ["tablet", "phone"],
-                    "packageUrl": package_url,
-                    "packageHash": sha256,
-                }
-                result.append(file_info)    
-    return result
+            if not file.endswith((".hsp", ".hap")):
+                continue
+
+            file_path = os.path.join(root, file)
+            sha256_hash = calculate_sha256(file_path)
+
+            is_unsigned_hsp = file.endswith(".hsp") and not file.endswith("-signed.hsp")
+            has_no_dash = "-" not in file
+
+            if is_unsigned_hsp or has_no_dash:
+                name = os.path.splitext(file)[0] 
+            else:
+                name = file.split("-")[0]        
+
+            module_type = "entry" if file.endswith(".hap") else "share"
+            package_url = f"{remote_path}/{quote(file)}"
+            module_info = {
+                "name": name,
+                "type": module_type,
+                "deviceTypes": ["tablet", "phone"],
+                "packageUrl": package_url,
+                "packageHash": sha256_hash,
+            }
+
+            module_list.append(module_info)
+
+    return module_list
+
 
 
 def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name, apiVersion, targetSdkVersion):
