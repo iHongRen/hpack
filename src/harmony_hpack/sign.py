@@ -8,6 +8,7 @@ import subprocess
 import zipfile
 
 from toolConfig import ToolConfig
+from utils import format_cmd_error, missing_file_message, require_existing_file
 
 # 证书配置文件示例 cert.py
 # Alias = 'key alias' 
@@ -24,18 +25,10 @@ def sign_command(unsignedPath, certPath):
     if not CertConfig:
         return
 
-    certDir = os.path.dirname(certPath)
-    Cert = CertConfig.get('Cert')
-    if not Cert.startswith(('/', '\\')):
-        CertConfig['Cert'] = os.path.join(certDir,Cert)
-
-    Profile = CertConfig.get('Profile')
-    if not Profile.startswith(('/', '\\')):
-        CertConfig['Profile'] = os.path.join(certDir,Profile)
-
-    Keystore = CertConfig.get('Keystore')
-    if not Keystore.startswith(('/', '\\')):
-        CertConfig['Keystore'] = os.path.join(certDir,Keystore)
+    certDir = os.path.dirname(os.path.abspath(certPath))
+    CertConfig['Cert'] = require_existing_file(CertConfig.get('Cert'), certDir, '证书 Cert')
+    CertConfig['Profile'] = require_existing_file(CertConfig.get('Profile'), certDir, 'Profile')
+    CertConfig['Keystore'] = require_existing_file(CertConfig.get('Keystore'), certDir, 'Keystore')
 
     if os.path.isdir(unsignedPath):
         dirname = os.path.dirname(unsignedPath)
@@ -53,6 +46,9 @@ def sign_command(unsignedPath, certPath):
 
 
 def read_cert_config(certPath):
+    if not certPath or not os.path.isfile(certPath):
+        print(missing_file_message('证书配置文件', certPath or '<empty>'))
+        return None
     try:
         file_name = os.path.basename(certPath)
         name = os.path.splitext(file_name)[0]
@@ -150,10 +146,21 @@ def sign_file(unsigned_file_path, signed_dir, CertConfig):
         '-signCode', '1'
     ]
     try:
-        subprocess.run(command, check=True)
+        process = subprocess.run(
+            command,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            errors='replace'
+        )
+        if process.stdout:
+            print(process.stdout, end='')
+        if process.stderr:
+            print(process.stderr, end='')
         return signed_file_path
     except subprocess.CalledProcessError as e:
-        print(f"签名 {unsigned_file_path} 出错: {e}")
+        print(format_cmd_error(e, f"签名 {unsigned_file_path} 出错"))
         return None
 
 

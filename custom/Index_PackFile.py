@@ -32,7 +32,7 @@ def customTemplateHtml(templateInfo):
         qrcode=packInfo.get("qrcode")
     )
     sys.stdout.buffer.write(html_template.encode('utf-8'))
-    sys.stdout.flush()
+    sys.stdout.buffer.flush()
 
 
 def willPack():
@@ -40,7 +40,7 @@ def willPack():
     # 打包前传值，可以在这里读取一些工程配置，再传递给打包脚本
     willParams = json.dumps({"data": "打包前传值"},ensure_ascii=False)
     sys.stdout.buffer.write(willParams.encode('utf-8'))
-    sys.stdout.flush()
+    sys.stdout.buffer.flush()
 
 
 def didPack(packInfo):
