@@ -11,12 +11,28 @@ from string import Template
 from config import Config
 
 
+def write_utf8_stdout(text):
+    """Write UTF-8 to stdout without a locale-dependent text flush.
+
+    On Linux, writing via stdout.buffer then calling sys.stdout.flush() (or
+    interpreter shutdown flushing a C/POSIX locale stdout) can turn a
+    successful willPack into exit code 1 when stdout is a pipe.
+    """
+    data = text.encode('utf-8') if isinstance(text, str) else text
+    buffer = getattr(sys.stdout, 'buffer', None)
+    if buffer is not None:
+        buffer.write(data)
+        buffer.flush()
+        return
+    sys.stdout.write(text)
+    sys.stdout.flush()
+
+
 def willPack():
     """_summary_: 打包前调用"""
     # 打包前传值，可以在这里读取一些工程配置，再传递给打包脚本
     willParams = json.dumps({"data": "打包前传值"},ensure_ascii=False)
-    sys.stdout.buffer.write(willParams.encode('utf-8'))
-    sys.stdout.flush()
+    write_utf8_stdout(willParams)
 
 
 def didPack(packInfo):

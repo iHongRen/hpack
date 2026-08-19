@@ -369,7 +369,7 @@ def customTemplateHtml(templateInfo):
         qrcode=packInfo.get("qrcode")
     )
     sys.stdout.buffer.write(html_template.encode('utf-8'))
-    sys.stdout.flush()
+    sys.stdout.buffer.flush()
 
 # 调用处理函数
 if __name__ == "__main__":    

@@ -2,6 +2,13 @@
 
 
 
+[v1.1.3](https://github.com/iHongRen/hpack/releases/tag/v1.1.3)  — 2026.08.19
+
+1. Linux 打包失败时打印 willPack / PackFile.py / 签名命令的 stderr，不再只显示 exit status
+2. 证书与 PackFile、hvigorw 查找失败时输出「已查找: 路径」；模块信息为空时不再误报签名配置
+3. 证书路径改用 `os.path.isabs`（不再把 Linux 下以 `\` 开头的路径当作绝对路径）；Linux 补充查找项目根目录的 `hvigorw`
+
+
 [v1.1.2](https://github.com/iHongRen/hpack/releases/tag/v1.1.2)  — 2026.04.30
 
 1. 修复部分 hsp 包模块名获取不正确问题

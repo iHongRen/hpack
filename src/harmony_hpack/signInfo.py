@@ -10,7 +10,8 @@ from urllib.parse import quote
 import json5
 import segno  # 生成二维码
 from toolConfig import ToolConfig
-from utils import calculate_sha256, get_directory_size, printError
+from utils import (calculate_sha256, format_cmd_error, get_directory_size,
+                   missing_modules_message, printError, require_existing_file)
 
 
 def read_app_info():
@@ -83,12 +84,11 @@ def get_module_infos(build_dir: str, remote_path: str) -> list:
     return module_list
 
 
-
 def create_unsign_manifest(Config, build_dir, remotePath, bundle_name, version_code, version_name, apiVersion, targetSdkVersion):
 
     modules = get_module_infos(build_dir,remotePath)
     if not modules:
-        raise Exception(f"无法获取打包模块信息，hap、hsp 包签名失败，请检查你的签名文件配置。")
+        raise Exception(missing_modules_message(build_dir))
 
     # 定义要写入文件的数据
     data = {
@@ -125,7 +125,7 @@ def create_sign_manifest(Config, build_dir):
     print("----开始签名 manifest.json5----")
     inputFile = os.path.join(build_dir , ToolConfig.UnsignManifestFile) 
     outputFile = os.path.join(build_dir , ToolConfig.SignedManifestFile) 
-    keystore = os.path.join(ToolConfig.HpackDir ,Config.Keystore)
+    keystore = require_existing_file(Config.Keystore, ToolConfig.HpackDir, 'Keystore')
     KeystorePwd = Config.KeystorePwd
     KeyPwd = Config.KeyPwd
     Alias = Config.Alias
@@ -145,9 +145,20 @@ def create_sign_manifest(Config, build_dir):
 
     try:
         # 执行签名命令
-        subprocess.run(sign_command, check=True)
+        process = subprocess.run(
+            sign_command,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            errors='replace'
+        )
+        if process.stdout:
+            print(process.stdout, end='')
+        if process.stderr:
+            print(process.stderr, end='')
     except subprocess.CalledProcessError as e:
-        raise Exception(f"签名过程出错: {e}")
+        raise Exception(format_cmd_error(e, "签名过程出错"))
 
     # 打印验证开始信息
     print("----验证签名 manifest.json5----")
@@ -162,10 +173,21 @@ def create_sign_manifest(Config, build_dir):
     ]
     try:
         # 执行验证命令
-        subprocess.run(verify_command, check=True)
+        process = subprocess.run(
+            verify_command,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            errors='replace'
+        )
+        if process.stdout:
+            print(process.stdout, end='')
+        if process.stderr:
+            print(process.stderr, end='')
     except subprocess.CalledProcessError as e:
-        printError(f"验证过程出错 - {e}")
-        raise Exception(f"签名验证过程出错 - {e}")
+        printError(format_cmd_error(e, "验证过程出错"))
+        raise Exception(format_cmd_error(e, "签名验证过程出错"))
 
 
 def sign_info(Config, selected_product, desc="", forced_debug=None):

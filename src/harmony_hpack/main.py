@@ -8,7 +8,6 @@ import shutil
 import subprocess
 import sys
 from datetime import datetime
-from tkinter import E
 
 # 获取当前脚本所在目录
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -23,7 +22,8 @@ from sign import sign_command
 from signInfo import sign_info
 from template import handle_template
 from toolConfig import ToolConfig
-from utils import (BLUE, ENDC, RED, get_python_command, printError,
+from utils import (BLUE, ENDC, RED, format_cmd_error, get_python_command,
+                   interpret_will_pack_result, packfile_env, printError,
                    printSuccess, select_items, timeit)
 from version import __version__
 
@@ -146,20 +146,33 @@ def do_pack(Config, selected_product, desc, forced_debug=None):
 
 
 def execute_will_pack():
+    pack_file_path = os.path.join(ToolConfig.HpackDir, 'PackFile.py')
+    looked = os.path.abspath(pack_file_path)
+    if not os.path.isfile(pack_file_path):
+        raise Exception(f"未找到 PackFile.py，已查找: {looked}")
+
+    command = [get_python_command(), pack_file_path, '--will']
     try:
-        pack_file_path = os.path.join(ToolConfig.HpackDir, 'PackFile.py')
         process = subprocess.run(
-            [get_python_command(), pack_file_path, '--will'],
+            command,
             capture_output=True,
             text=True,
-            check=True,
-            encoding='utf-8'
+            check=False,
+            encoding='utf-8',
+            errors='replace',
+            env=packfile_env()
         )
-        ret = process.stdout.strip()
-        return ret
-
-    except subprocess.CalledProcessError as e:
+    except OSError as e:
         raise Exception(f"执行 willPack 失败 - {e}")
+
+    # Existing project PackFile.py copies may still flush text stdout and exit 1
+    # after writing JSON when stdout is a pipe (Linux + capture_output).
+    stdout, warning = interpret_will_pack_result(
+        process.returncode, process.stdout, process.stderr, command
+    )
+    if warning:
+        printError(warning)
+    return stdout
 
 
 def execute_pack_sign_and_info(config, selected_product, desc, forced_debug=None):
@@ -175,11 +188,12 @@ def execute_did_pack(packInfo):
             [get_python_command(), pack_file_path, '--did'],
             input=packJson,
             text=True,
-            check=True
+            check=True,
+            env=packfile_env()
         )
 
     except subprocess.CalledProcessError as e:
-        raise Exception(f"执行 didPack 时出错 - {e}")
+        raise Exception(format_cmd_error(e, "执行 didPack 时出错"))
 
 
 def execute_fail_pack(errorInfo):
@@ -194,7 +208,7 @@ def execute_fail_pack(errorInfo):
         )
 
     except subprocess.CalledProcessError as e:
-        raise Exception(f"执行 failPack 时出错 - {e}")
+        raise Exception(format_cmd_error(e, "执行 failPack 时出错"))
 
 
 def template_command(tname="default"):
