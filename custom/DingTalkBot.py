@@ -58,7 +58,8 @@ class DingTalkBot:
             response = requests.post(
                 url=self.webhook,
                 headers=self.headers,
-                data=json.dumps(data)
+                data=json.dumps(data),
+                timeout=30
             )
             response.raise_for_status()  # 抛出HTTP错误
             return response.json()
