@@ -32,7 +32,8 @@ class WeComBot:
             response = requests.post(
                 url=self.webhook_url,
                 headers=self.headers,
-                data=json.dumps(data)
+                data=json.dumps(data),
+                timeout=30
             )
             response.raise_for_status()
             return response.json()
